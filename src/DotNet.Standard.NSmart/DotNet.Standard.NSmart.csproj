@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\bin</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DotNet.Standard">
+      <HintPath>..\..\lib\DotNet.Standard.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNet.Standard.NParsing">
+      <HintPath>..\..\lib\DotNet.Standard.NParsing.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

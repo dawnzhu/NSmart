@@ -1,0 +1,3 @@
+﻿基于.NET Standard开发的跨平台HTTP参数解析框架
+
+需要结合nparsing框架使用
