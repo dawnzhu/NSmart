@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "DotNet.Standard.NSmart/1.0.1": {
+      "DotNet.Standard.NSmart/1.0.2": {
         "dependencies": {
           "DotNet.Standard.Common": "1.0.0",
           "DotNet.Standard.NParsing": "1.0.0",
@@ -179,7 +179,7 @@
     }
   },
   "libraries": {
-    "DotNet.Standard.NSmart/1.0.1": {
+    "DotNet.Standard.NSmart/1.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
