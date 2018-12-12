@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DotNet.Standard.Utilities;
+using DotNet.Standard.Common.Utilities;
 using Microsoft.Extensions.Configuration;
 
 namespace DotNet.Standard.NSmart.Utilities

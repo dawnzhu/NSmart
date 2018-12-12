@@ -1,0 +1,9 @@
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\bin\Release\netstandard2.0\DotNet.Standard.NSmart.deps.json
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\bin\Release\netstandard2.0\DotNet.Standard.NSmart.dll
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\bin\Release\netstandard2.0\DotNet.Standard.NSmart.pdb
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\obj\Release\netstandard2.0\DotNet.Standard.NSmart.csproj.CoreCompileInputs.cache
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\obj\Release\netstandard2.0\DotNet.Standard.NSmart.AssemblyInfoInputs.cache
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\obj\Release\netstandard2.0\DotNet.Standard.NSmart.AssemblyInfo.cs
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\obj\Release\netstandard2.0\DotNet.Standard.NSmart.dll
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\obj\Release\netstandard2.0\DotNet.Standard.NSmart.pdb
+C:\Users\zhi_d\Work\GitHub\NSmart\src\DotNet.Standard.NSmart\obj\Release\netstandard2.0\DotNet.Standard.NSmart.csprojAssemblyReference.cache

@@ -2,24 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>dawn zhu</Authors>
+    <Description>DotNet.Standard.NSmart .Net Standard Class Library</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\bin</OutputPath>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.Standard.Common" Version="1.0.0" />
+    <PackageReference Include="DotNet.Standard.NParsing" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="DotNet.Standard">
-      <HintPath>..\..\lib\DotNet.Standard.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNet.Standard.NParsing">
-      <HintPath>..\..\lib\DotNet.Standard.NParsing.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
