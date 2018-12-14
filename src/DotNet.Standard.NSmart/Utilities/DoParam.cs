@@ -11,9 +11,22 @@ using DotNet.Standard.Common.Utilities;
 
 namespace DotNet.Standard.NSmart.Utilities
 {
-    public static class DoParamUtil
+    public static class DoParam
     {
-        public static Dictionary<string, ParamConfig> Config { get; set; }
+        public static bool Initialized { get; private set; }
+
+        public static void Initialize()
+        {
+            Initialize(DoParamConfig.Get());
+        }
+
+        public static void Initialize(Dictionary<string, ParamConfig> config)
+        {
+            Config = config;
+            Initialized = true;
+        }
+
+        public static Dictionary<string, ParamConfig> Config { get; private set; }
 
         public static T ToRequestParam<T>(this IEnumerable<string> strRequestJsons)
             where T : DoRequestParamBase, new()
@@ -73,9 +86,7 @@ namespace DotNet.Standard.NSmart.Utilities
         private static bool TryKey(this MethodBase method, out string key)
         {
             key = null;
-            if(Config == null)
-                Config = DoParamConfig.Get();
-            if (method.DeclaringType == null) return false;
+            if (!Initialized || method.DeclaringType == null) return false;
             key = method.DeclaringType.FullName + "." + method.Name;
             return Config.ContainsKey(key);
         }
