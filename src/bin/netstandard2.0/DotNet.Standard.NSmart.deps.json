@@ -1,15 +1,15 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "ef0c00f456c6a9c7dcbdbab4d9aeffb30faa9a10"
+    "signature": ""
   },
   "compilationOptions": {},
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "DotNet.Standard.NSmart/1.0.4": {
+      "DotNet.Standard.NSmart/1.1.0": {
         "dependencies": {
-          "DotNet.Standard.NParsing.DbUtilities": "1.0.3",
+          "DotNet.Standard.NParsing.DbUtilities": "1.1.0",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "11.0.1"
@@ -18,33 +18,34 @@
           "DotNet.Standard.NSmart.dll": {}
         }
       },
-      "DotNet.Standard.Common/1.0.0": {
+      "DotNet.Standard.Common/1.0.2": {
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.Common.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.0.2.0",
+            "fileVersion": "1.0.2.0"
           }
         }
       },
-      "DotNet.Standard.NParsing/1.0.1": {
+      "DotNet.Standard.NParsing/1.1.0": {
         "dependencies": {
-          "DotNet.Standard.Common": "1.0.0"
+          "DotNet.Standard.Common": "1.0.2",
+          "System.Reflection.Emit": "4.6.0"
         },
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.NParsing.dll": {
-            "assemblyVersion": "1.0.1.0",
-            "fileVersion": "1.0.1.0"
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
           }
         }
       },
-      "DotNet.Standard.NParsing.DbUtilities/1.0.3": {
+      "DotNet.Standard.NParsing.DbUtilities/1.1.0": {
         "dependencies": {
-          "DotNet.Standard.NParsing": "1.0.1"
+          "DotNet.Standard.NParsing": "1.1.0"
         },
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.NParsing.DbUtilities.dll": {
-            "assemblyVersion": "1.0.3.0",
-            "fileVersion": "1.0.3.0"
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
           }
         }
       },
@@ -151,6 +152,25 @@
           }
         }
       },
+      "System.Reflection.Emit/4.6.0": {
+        "dependencies": {
+          "System.Reflection.Emit.ILGeneration": "4.6.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Reflection.Emit.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.700.19.46214"
+          }
+        }
+      },
+      "System.Reflection.Emit.ILGeneration/4.6.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.Reflection.Emit.ILGeneration.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.700.19.46214"
+          }
+        }
+      },
       "System.Runtime.CompilerServices.Unsafe/4.4.0": {
         "runtime": {
           "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {
@@ -162,92 +182,92 @@
     }
   },
   "libraries": {
-    "DotNet.Standard.NSmart/1.0.4": {
+    "DotNet.Standard.NSmart/1.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "DotNet.Standard.Common/1.0.0": {
+    "DotNet.Standard.Common/1.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rMCnuj2rThw2JjPz8ukc7Gyjr1JmzY2B39vZGpnXFwidYX9a4J3v5EVXVrqCCXHUaG00e6935GRVTo0NrvpSSw==",
-      "path": "dotnet.standard.common/1.0.0",
-      "hashPath": "dotnet.standard.common.1.0.0.nupkg.sha512"
+      "sha512": "sha512-oEvLuOzbzIu2RuYXo3ZzvSkg7R2y2Vg3jaTyTZpU2ohQRUnZQTBZZLawaeVPNnd57ke9rX7iic9nudtCgNNZmA==",
+      "path": "dotnet.standard.common/1.0.2",
+      "hashPath": "dotnet.standard.common.1.0.2.nupkg.sha512"
     },
-    "DotNet.Standard.NParsing/1.0.1": {
+    "DotNet.Standard.NParsing/1.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Cyn5l0pmiLnOaSRdJsiSJwD6g3kjWIR/sxCQ/rhbdXB5IWr1Ibg44I/lDEUO4QKp0ogDcCuiMPRyOslhpX0Saw==",
-      "path": "dotnet.standard.nparsing/1.0.1",
-      "hashPath": "dotnet.standard.nparsing.1.0.1.nupkg.sha512"
+      "sha512": "sha512-8ie39GnN8/CYXJXrbNCME8b10U/sb66RolzP8hEkbhuH0srPqiLGeefkIyPDjBNaW3MEK/L/4iP8CfFPrXYupA==",
+      "path": "dotnet.standard.nparsing/1.1.0",
+      "hashPath": "dotnet.standard.nparsing.1.1.0.nupkg.sha512"
     },
-    "DotNet.Standard.NParsing.DbUtilities/1.0.3": {
+    "DotNet.Standard.NParsing.DbUtilities/1.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-M4iUrnJPd8+3S6jTTMqK/qRN9wNYgbdQ3jihXWuPB5tTsO4EyXUhJCD6tt3cDZzRn+P5rURWkd+VlGGmLto3ww==",
-      "path": "dotnet.standard.nparsing.dbutilities/1.0.3",
-      "hashPath": "dotnet.standard.nparsing.dbutilities.1.0.3.nupkg.sha512"
+      "sha512": "sha512-qKAkmJivJqx9L9dsh2+vWdy42lstgu1u196NDVCL7xYmXJ/BiEAzzr2FnvhkQgVA5P8ZW8PzhP7+BiMoHSv1SA==",
+      "path": "dotnet.standard.nparsing.dbutilities/1.1.0",
+      "hashPath": "dotnet.standard.nparsing.dbutilities.1.1.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration/2.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Pq3lwQQ2zB/meGk7D0kf2n6i/N/+/+0OwgyovGzfEAhsM7XWf24dP7Q2PmAJPKOXhQA++gzvQqYUhA19JuwW8g==",
+      "sha512": "sha512-L51zGiDlJ4dPpKhFnP6grn2AQlZix9SvyEJ+HO7j/C2lyGA+cd6aDLqJTUhbXZGZ9zaa11eHvz14zG9HV24DRA==",
       "path": "microsoft.extensions.configuration/2.0.2",
       "hashPath": "microsoft.extensions.configuration.2.0.2.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration.Abstractions/2.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2b4XZRT3fHB9fkcfQS9/S4ClYcYYx2FGVReTurtT1mhV/Kg/OtWIYx4Saar2LHlCdz90OqM/AGjDSfzsbOzFsQ==",
+      "sha512": "sha512-ZIuzorFmrbHqS8xucmLDFl4JtdaexHTpyS0+tdm6pRAB7dLp6ERQloGeUwuREBoz/ciW/Su21mgISCtXH+j1Eg==",
       "path": "microsoft.extensions.configuration.abstractions/2.0.2",
       "hashPath": "microsoft.extensions.configuration.abstractions.2.0.2.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration.FileExtensions/2.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KaMJOx3SKUGlAijiP4zNgC74gS+pYijD1z1sVTqd4NpA12RDlLkXbOHC9h4L0NO72J8qQw595SDpd+dQ2lusyQ==",
+      "sha512": "sha512-JYRlhw9S+BQcjFMH8fbVakvP3qgzkfxiVFmAC1Dovtym5HBuvwPW721pMyFHjElzRXnn08eAVSBgJ+E51MqJ3w==",
       "path": "microsoft.extensions.configuration.fileextensions/2.0.2",
       "hashPath": "microsoft.extensions.configuration.fileextensions.2.0.2.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration.Json/2.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rSxkoyL5tSWrJ9ka2Pf+1FlgsnjcBIQu+x+EMQUrTdGbQXi4Tso7oKfAdnW63GKvzSkABZqWKe2epMS+TSMlaQ==",
+      "sha512": "sha512-qzC41UpYMTFljf7S7osc91PIqeUvhZ1ZJnQ6ka1zQy8C9/Z/0rQwEYHY7Om4W0gVPDKXcJMoeR46o+FEivTE6w==",
       "path": "microsoft.extensions.configuration.json/2.0.2",
       "hashPath": "microsoft.extensions.configuration.json.2.0.2.nupkg.sha512"
     },
     "Microsoft.Extensions.FileProviders.Abstractions/2.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-X3qVOCDZmj1mQnN2SfFUZZ3qfA4OPmD6XxxZpx43g/OKYvf3RI9tvVUsNECVMHEW7PjYfH83wNpqn6fThFAD0g==",
+      "sha512": "sha512-Gzc5yXvwIrKpdti0Ev4jC0inVrGZpI86eLZorMVRqAPXowR8JDRbcHjhmID2EqA4rdhL/IsfD42+4upKpHULDw==",
       "path": "microsoft.extensions.fileproviders.abstractions/2.0.1",
       "hashPath": "microsoft.extensions.fileproviders.abstractions.2.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.FileProviders.Physical/2.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-jPqutmmCQ0SQwX6f9VYg4n/Lgah056GgfeIGoY/9G5jQDDe9Kz2q2T3lc75rNyPKG2pej3sTz+dX1uI+l2vSVA==",
+      "sha512": "sha512-h+6bcXYlGldl7BUhnQKFxL2sMfeg9Gr/AuVexYOCYWmzDsc4iyUoy3NL7i2vkG209wd0ZXf+pZzRDwGPFhmlSw==",
       "path": "microsoft.extensions.fileproviders.physical/2.0.1",
       "hashPath": "microsoft.extensions.fileproviders.physical.2.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.FileSystemGlobbing/2.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+Es2DplDfGchyuZ/IgSzLkL8FSsLn9u1lJdrP9GwAP8FyAIIQg6e7xg4BZYLq3DDi+X6+iJrkmSU8ZzOyhZQqQ==",
+      "sha512": "sha512-q7KsG2kjwo2Ps0WdV7MFh64cQS0UHikV8qv4HQrUfWQyxim5vNmLzAbuduarS9QWbhRHTtUanx+ohyAQdumdnw==",
       "path": "microsoft.extensions.filesystemglobbing/2.0.1",
       "hashPath": "microsoft.extensions.filesystemglobbing.2.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.Primitives/2.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-AMyFwlYdEY4GjjCFGQhUr1/0ZZyYyNjjpCx8Vwfy+Ylxv8pn649uaX5J2L7aknEtQY5+XA+TSfxRSBCgy68yvQ==",
+      "sha512": "sha512-ukg53qNlqTrK38WA30b5qhw0GD7y3jdI9PHHASjdKyTcBHTevFM2o23tyk3pWCgAV27Bbkm+CPQ2zUe1ZOuYSA==",
       "path": "microsoft.extensions.primitives/2.0.0",
       "hashPath": "microsoft.extensions.primitives.2.0.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KhU7Eg2Kj2oYdtv2SU1CFsJ6Lh4lDHTTYbNaWLawcm8Bnq4N9/FipD72ALPfZUQUKLgLhevSv5W4aJee2LS7YA==",
+      "sha512": "sha512-kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
       "path": "microsoft.netcore.platforms/1.1.0",
       "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
     },
@@ -265,10 +285,24 @@
       "path": "newtonsoft.json/11.0.1",
       "hashPath": "newtonsoft.json.11.0.1.nupkg.sha512"
     },
+    "System.Reflection.Emit/4.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qAo4jyXtC9i71iElngX7P2r+zLaiHzxKwf66sc3X91tL5Ks6fnQ1vxL04o7ZSm3sYfLExySL7GN8aTpNYpU1qw==",
+      "path": "system.reflection.emit/4.6.0",
+      "hashPath": "system.reflection.emit.4.6.0.nupkg.sha512"
+    },
+    "System.Reflection.Emit.ILGeneration/4.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-z3r/uEhMj+1wUNUa/EA2bWxEL9M8bgFt/22xCOQivES28ex3zWxE+2j0gQF/mdRwzlr0jir64HVlwV5J4zTOfw==",
+      "path": "system.reflection.emit.ilgeneration/4.6.0",
+      "hashPath": "system.reflection.emit.ilgeneration.4.6.0.nupkg.sha512"
+    },
     "System.Runtime.CompilerServices.Unsafe/4.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oXzVVwwsT4sfWRzOEKaHn6GLleNZ7gGTjk+gHgLuXj3M61p3TjoAvWmZDJDeDuf0WX8UW4ew0MTJbJOmCSZrVA==",
+      "sha512": "sha512-9dLLuBxr5GNmOfl2jSMcsHuteEg32BEfUotmmUkmZjpR3RpVHE8YQwt0ow3p6prwA1ME8WqDVZqrr8z6H8G+Kw==",
       "path": "system.runtime.compilerservices.unsafe/4.4.0",
       "hashPath": "system.runtime.compilerservices.unsafe.4.4.0.nupkg.sha512"
     }

@@ -21,7 +21,12 @@ namespace DotNet.Standard.NSmart
         protected TT Term;
         protected IList<IObHelper<TM, TT>> BaseDals;
         private readonly DoConfigDbs _doConfigDb;
-        
+
+        /// <summary>
+        /// 拆分数据关键字
+        /// </summary>
+        public int SplitDataKey { get; set; }
+
         protected DoServiceBase() : this(null, DoConfig.Get(), "MainDbs")
         { }
 
@@ -68,6 +73,85 @@ namespace DotNet.Standard.NSmart
             }
         }
 
+        private bool GetDal(string type, out IObHelper<TM, TT> dal)
+        {
+            dal = null;
+            var doType = DoType.None;
+            var doModel = (DoModelAttribute)typeof(TM).GetCustomAttribute(typeof(DoModelAttribute), true);
+            if (doModel != null)
+            {
+                doType = doModel.DoType;
+            }
+            var index = -1;
+            switch (type)
+            {
+                case "ADD": //INSERT
+                    switch (doType)
+                    {
+                        case DoType.None:
+                            return false;
+                        case DoType.Id:
+                        case DoType.Business:
+                            if (SplitDataKey == 0)
+                            {
+                                throw new Exception("请设置SplitDataKey值。");
+                            }
+                            index = SplitDataKey % BaseDals.Count;
+                            break;
+                        case DoType.Minute:
+                            index = DateTime.Now.Minute % BaseDals.Count;
+                            break;
+                        case DoType.Hour:
+                            index = DateTime.Now.Hour % BaseDals.Count;
+                            break;
+                        case DoType.Day:
+                            index = DateTime.Now.Day % BaseDals.Count;
+                            break;
+                    }
+                    break;
+                case "MOD": //UPDATE DELETE
+                    switch (doType)
+                    {
+                        case DoType.None:
+                        case DoType.Minute:
+                        case DoType.Hour:
+                        case DoType.Day:
+                            return false;
+                        case DoType.Id:
+                        case DoType.Business:
+                            if (SplitDataKey == 0)
+                            {
+                                return false;
+                            }
+                            index = SplitDataKey % BaseDals.Count;
+                            break;
+                    }
+                    break;
+                case "QUERY": //SELECT
+                    switch (doType)
+                    {
+                        case DoType.None:
+                            index = new Random((int)DateTime.Now.Ticks).Next(0, BaseDals.Count - 1);
+                            break;
+                        case DoType.Id:
+                        case DoType.Minute:
+                        case DoType.Hour:
+                        case DoType.Day:
+                            return false;
+                        case DoType.Business:
+                            if (SplitDataKey == 0)
+                            {
+                                return false;
+                            }
+                            index = SplitDataKey % BaseDals.Count;
+                            break;
+                    }
+                    break;
+            }
+            dal = BaseDals[index];
+            return true;
+        }
+
         /// <summary>
         /// 添加
         /// </summary>
@@ -83,31 +167,13 @@ namespace DotNet.Standard.NSmart
             {
                 model.Id = NewIdentity();
             }
-            var doModel = (DoModelAttribute)typeof(TM).GetCustomAttribute(typeof(DoModelAttribute), true);
-            if (doModel != null)
+            if (SplitDataKey == 0)
             {
-                int index;
-                if (doModel.DoType == DoType.Id && model.Id == 0)
-                {
-                    throw new Exception("当模型类DoModel.DoType设置为Id时，主键Id值不能由数据库生成。");
-                }
-                switch (doModel.DoType)
-                {
-                    case DoType.Id:
-                        index = model.Id % BaseDals.Count;
-                        break;
-                    case DoType.Hour:
-                        index = DateTime.Now.Hour % BaseDals.Count;
-                        break;
-                    case DoType.Day:
-                        index = DateTime.Now.Day % BaseDals.Count;
-                        break;
-                    //case DoType.Minute:
-                    default:
-                        index = DateTime.Now.Minute % BaseDals.Count;
-                        break;
-                }
-                ret = BaseDals[index].Add(model);
+                SplitDataKey = model.Id;
+            }
+            if (GetDal("ADD", out var dal))
+            {
+                ret = dal.Add(model);
             }
             else
             {
@@ -139,17 +205,24 @@ namespace DotNet.Standard.NSmart
             OnUpdating(model, Term, ref paramBase);
             param = paramBase;
             var ret = 0;
-            Parallel.For(0, BaseDals.Count, new ParallelOptions
+            if (GetDal("MOD", out var dal))
             {
-                MaxDegreeOfParallelism = BaseDals.Count
-            }, i =>
+                ret = dal.Update(model, param);
+            }
+            else
             {
-                var r = BaseDals[i].Update(model, param);
-                if (r > ret)
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
                 {
-                    ret = r;
-                }
-            });
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    var r = BaseDals[i].Update(model, param);
+                    if (r > ret)
+                    {
+                        ret = r;
+                    }
+                });
+            }
             OnUpdated(model, ret);
             return ret;
         }
@@ -170,17 +243,24 @@ namespace DotNet.Standard.NSmart
             OnDeleting(Term, ref paramBase);
             param = paramBase;
             var ret = 0;
-            Parallel.For(0, BaseDals.Count, new ParallelOptions
+            if (GetDal("MOD", out var dal))
             {
-                MaxDegreeOfParallelism = BaseDals.Count
-            }, i =>
+                ret = dal.Delete(param);
+            }
+            else
             {
-                var r = BaseDals[i].Delete(param);
-                if (r > ret)
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
                 {
-                    ret = r;
-                }
-            });
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    var r = BaseDals[i].Delete(param);
+                    if (r > ret)
+                    {
+                        ret = r;
+                    }
+                });
+            }
             OnDeleted(ret);
             return ret;
         }
@@ -292,7 +372,7 @@ namespace DotNet.Standard.NSmart
             var paramBase = (ObParameterBase) param;
             OnListing(Term, ref paramBase);
             param = paramBase;
-            var doModel = (DoModelAttribute)typeof(TM).GetCustomAttribute(typeof(DoModelAttribute), true);
+            var isDal = GetDal("QUERY", out var dal);
             var sourceList = new List<TM>();
             if (pageSize.HasValue)
             {
@@ -300,7 +380,11 @@ namespace DotNet.Standard.NSmart
                 {
                     pageIndex = 1;
                 }
-                if (doModel != null)
+                if (isDal)
+                {
+                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList(pageSize.Value, pageIndex.Value, out total);
+                }
+                else
                 {
                     Parallel.For(0, BaseDals.Count, new ParallelOptions
                     {
@@ -315,15 +399,15 @@ namespace DotNet.Standard.NSmart
                         }
                     });
                 }
-                else
-                {
-                    var index = new Random((int) DateTime.Now.Ticks).Next(0, BaseDals.Count - 1);
-                    sourceList = (List<TM>)BaseDals[index].Query(join, param, group, groupParam, sort).ToList(pageSize.Value, pageIndex.Value, out total);
-                }
             }
             else
             {
-                if (doModel != null)
+                if (isDal)
+                {
+                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList();
+                    total = sourceList.Count;
+                }
+                else
                 {
                     Parallel.For(0, BaseDals.Count, new ParallelOptions
                     {
@@ -339,15 +423,9 @@ namespace DotNet.Standard.NSmart
                         }
                     });
                 }
-                else
-                {
-                    var index = new Random((int)DateTime.Now.Ticks).Next(0, BaseDals.Count - 1);
-                    sourceList = (List<TM>)BaseDals[index].Query(join, param, group, groupParam, sort).ToList();
-                    total = sourceList.Count;
-                }
             }
             IList<TM> list;
-            if (sort != null && doModel != null)
+            if (sort != null && isDal)
             {
                 //排序
                 IOrderedEnumerable<TM> order = null;
@@ -385,6 +463,42 @@ namespace DotNet.Standard.NSmart
                 if (index + 1 == properties.Length) return obj;
                 index++;
             }
+        }
+
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams)
+        {
+            return GetList(keySelector, requestParams, null, null, null, null, out _);
+        }
+
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+            IDictionary<string, object> requestGroupParams)
+        {
+            return GetList(keySelector, requestParams, requestGroupParams, null, null, null, out _);
+        }
+
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, string> requestSorts)
+        {
+            return GetList(keySelector, requestParams, null, requestSorts, null, null, out _);
+        }
+
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
+        {
+            return GetList(keySelector, requestParams, requestGroupParams, requestSorts, null, null, out _);
+        }
+
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(keySelector, requestParams, null, requestSorts, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            var query = keySelector(BaseDals.First());
+            return GetList(query.ObJoin, query.ObParameter, requestParams, query.ObGroup, query.ObGroupParameter, requestGroupParams, query.ObSort, requestSorts, pageSize, pageIndex, out count);
         }
 
         /// <summary>
@@ -529,17 +643,24 @@ namespace DotNet.Standard.NSmart
             OnModeling(Term, ref paramBase);
             param = paramBase;
             TM model = null;
-            Parallel.For(0, BaseDals.Count, new ParallelOptions
+            if (GetDal("QUERY", out var dal))
             {
-                MaxDegreeOfParallelism = BaseDals.Count
-            }, i =>
+                model = dal.Query(param).ToModel();
+            }
+            else
             {
-                var ret = BaseDals[i].Query(param).ToModel();
-                if (ret != null)
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
                 {
-                    model = ret;
-                }
-            });
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    var ret = BaseDals[i].Query(param).ToModel();
+                    if (ret != null)
+                    {
+                        model = ret;
+                    }
+                });
+            }
             OnModeled(model);
             return model;
         }
@@ -630,16 +751,23 @@ namespace DotNet.Standard.NSmart
             OnExisting(Term, ref paramBase);
             param = paramBase;
             var ret = false;
-            Parallel.For(0, BaseDals.Count, new ParallelOptions
+            if (GetDal("QUERY", out var dal))
             {
-                MaxDegreeOfParallelism = BaseDals.Count
-            }, i =>
+                ret = dal.Query(param).Exists();
+            }
+            else
             {
-                if (BaseDals[i].Query(param).Exists())
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
                 {
-                    ret = true;
-                }
-            });
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    if (BaseDals[i].Query(param).Exists())
+                    {
+                        ret = true;
+                    }
+                });
+            }
             OnExisted(ret);
             return ret;
         }
@@ -856,7 +984,7 @@ namespace DotNet.Standard.NSmart
 
         protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
         {
-            return await Task.Run(() => GetList(keySelector));
+            return await GetListAsync(keySelector, (int?)null, null, null);
         }
 
         protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, int? pageSize, int? pageIndex, Action<int> countAccessor)
@@ -943,6 +1071,53 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() =>
             {
                 var list = GetList(join, param, group, groupParam, sort, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+
+        /// <summary>
+        /// 获取列表数据
+        /// </summary>
+        /// <param name="keySelector"></param>
+        /// <param name="requestParams"></param>
+        /// <returns></returns>
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams)
+        {
+            return await GetListAsync(keySelector, requestParams, null, null, null, null, null);
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+            IDictionary<string, object> requestGroupParams)
+        {
+            return await GetListAsync(keySelector, requestParams, requestGroupParams, null, null, null, null);
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, string> requestSorts)
+        {
+            return await GetListAsync(keySelector, requestParams, null, requestSorts, null, null, null);
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
+        {
+            return await GetListAsync(keySelector, requestParams, requestGroupParams, requestSorts, null, null, null);
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await GetListAsync(keySelector, requestParams, null, requestSorts, pageSize, pageIndex, countAccessor);
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(keySelector, requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out var count);
                 countAccessor?.Invoke(count);
                 return list;
             });
@@ -1061,10 +1236,10 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() =>
             {
                 var paramBase = (ObParameterBase)param;
-                var gp = (ObParameterBase)groupParam;
-                GetList(ref paramBase, requestParams, ref gp, requestGroupParams, ref sort, requestSorts);
+                var groupParamBase = (ObParameterBase)groupParam;
+                GetList(ref paramBase, requestParams, ref groupParamBase, requestGroupParams, ref sort, requestSorts);
                 param = paramBase;
-                groupParam = gp;
+                groupParam = groupParamBase;
                 var list = GetList(join, param, group, groupParam, sort, pageSize, pageIndex, out var count);
                 countAccessor?.Invoke(count);
                 return list;
@@ -1108,7 +1283,7 @@ namespace DotNet.Standard.NSmart
 
         protected async Task<int> NewIdentityAsync()
         {
-            return await Task.Run(() => NewIdentity());
+            return await Task.Run(NewIdentity);
         }
     }
 }

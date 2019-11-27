@@ -35,6 +35,9 @@ namespace DotNet.Standard.NSmart
         protected DoTermBase(Type modelType, ObTermBase parent, MethodBase currentMethod) : base(modelType, parent, currentMethod)
         { }
 
+        protected DoTermBase(Type modelType, ObTermBase parent, string rename) : base(modelType, parent, rename)
+        { }
+
         /// <summary>
         /// 编号
         /// </summary>
