@@ -7,9 +7,9 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "DotNet.Standard.NSmart/1.1.0": {
+      "DotNet.Standard.NSmart/1.1.2": {
         "dependencies": {
-          "DotNet.Standard.NParsing.DbUtilities": "1.1.0",
+          "DotNet.Standard.NParsing.DbUtilities": "1.1.2",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "11.0.1"
@@ -18,34 +18,34 @@
           "DotNet.Standard.NSmart.dll": {}
         }
       },
-      "DotNet.Standard.Common/1.0.2": {
+      "DotNet.Standard.Common/1.0.3": {
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.Common.dll": {
-            "assemblyVersion": "1.0.2.0",
-            "fileVersion": "1.0.2.0"
+            "assemblyVersion": "1.0.3.0",
+            "fileVersion": "1.0.3.0"
           }
         }
       },
-      "DotNet.Standard.NParsing/1.1.0": {
+      "DotNet.Standard.NParsing/1.1.2": {
         "dependencies": {
-          "DotNet.Standard.Common": "1.0.2",
+          "DotNet.Standard.Common": "1.0.3",
           "System.Reflection.Emit": "4.6.0"
         },
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.NParsing.dll": {
-            "assemblyVersion": "1.1.0.0",
-            "fileVersion": "1.1.0.0"
+            "assemblyVersion": "1.1.2.0",
+            "fileVersion": "1.1.2.0"
           }
         }
       },
-      "DotNet.Standard.NParsing.DbUtilities/1.1.0": {
+      "DotNet.Standard.NParsing.DbUtilities/1.1.2": {
         "dependencies": {
-          "DotNet.Standard.NParsing": "1.1.0"
+          "DotNet.Standard.NParsing": "1.1.2"
         },
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.NParsing.DbUtilities.dll": {
-            "assemblyVersion": "1.1.0.0",
-            "fileVersion": "1.1.0.0"
+            "assemblyVersion": "1.1.2.0",
+            "fileVersion": "1.1.2.0"
           }
         }
       },
@@ -182,31 +182,31 @@
     }
   },
   "libraries": {
-    "DotNet.Standard.NSmart/1.1.0": {
+    "DotNet.Standard.NSmart/1.1.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "DotNet.Standard.Common/1.0.2": {
+    "DotNet.Standard.Common/1.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oEvLuOzbzIu2RuYXo3ZzvSkg7R2y2Vg3jaTyTZpU2ohQRUnZQTBZZLawaeVPNnd57ke9rX7iic9nudtCgNNZmA==",
-      "path": "dotnet.standard.common/1.0.2",
-      "hashPath": "dotnet.standard.common.1.0.2.nupkg.sha512"
+      "sha512": "sha512-grjkbs+B259JTYKRoNDvghPg/B6fjqtLa4MfNxaKbcTRVbkYit3BuL6sOIVFMSyJ5diYotQPrBitTSgRiytx5A==",
+      "path": "dotnet.standard.common/1.0.3",
+      "hashPath": "dotnet.standard.common.1.0.3.nupkg.sha512"
     },
-    "DotNet.Standard.NParsing/1.1.0": {
+    "DotNet.Standard.NParsing/1.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-8ie39GnN8/CYXJXrbNCME8b10U/sb66RolzP8hEkbhuH0srPqiLGeefkIyPDjBNaW3MEK/L/4iP8CfFPrXYupA==",
-      "path": "dotnet.standard.nparsing/1.1.0",
-      "hashPath": "dotnet.standard.nparsing.1.1.0.nupkg.sha512"
+      "sha512": "sha512-SSoLwGXe1CZLZnHOSAf5xcRjdjF+rQec0H1Pj/rAXwr0wKwuGMIcW3tdvD0qAc9lz2t4YgwQdZ9Nfp4X7DTjXA==",
+      "path": "dotnet.standard.nparsing/1.1.2",
+      "hashPath": "dotnet.standard.nparsing.1.1.2.nupkg.sha512"
     },
-    "DotNet.Standard.NParsing.DbUtilities/1.1.0": {
+    "DotNet.Standard.NParsing.DbUtilities/1.1.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-qKAkmJivJqx9L9dsh2+vWdy42lstgu1u196NDVCL7xYmXJ/BiEAzzr2FnvhkQgVA5P8ZW8PzhP7+BiMoHSv1SA==",
-      "path": "dotnet.standard.nparsing.dbutilities/1.1.0",
-      "hashPath": "dotnet.standard.nparsing.dbutilities.1.1.0.nupkg.sha512"
+      "sha512": "sha512-qPKcgPfYXcmJlBFwamYMmxV6l6N3alSxSmEL1e2DzErgqX5EQVZoWswJTFarZa2Zbj7PyB0l03277kyNlSXmiA==",
+      "path": "dotnet.standard.nparsing.dbutilities/1.1.2",
+      "hashPath": "dotnet.standard.nparsing.dbutilities.1.1.2.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration/2.0.2": {
       "type": "package",

@@ -282,7 +282,9 @@ namespace DotNet.Standard.NSmart
 
         protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, int? pageSize, int? pageIndex, out int count)
         {
-            var query = keySelector(BaseDals.First());
+            var query = keySelector != null
+                ? keySelector(BaseDals.First())
+                : BaseDals.First().Where(o => null);
             return GetList(query.ObJoin, query.ObParameter, query.ObGroup, query.ObGroupParameter, query.ObSort, pageSize, pageIndex, out count);
         }
 
@@ -366,7 +368,8 @@ namespace DotNet.Standard.NSmart
         /// <param name="pageIndex"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        protected IList<TM> GetList(IObJoin join, IObParameter param, IObGroup group, IObParameter groupParam, IObSort sort, int? pageSize, int? pageIndex, out int count)
+        protected IList<TM> GetList(IObJoin join, IObParameter param, IObGroup group, IObParameter groupParam, IObSort sort, int? pageSize, 
+            int? pageIndex, out int count)
         {
             var total = 0;
             var paramBase = (ObParameterBase) param;
@@ -497,7 +500,9 @@ namespace DotNet.Standard.NSmart
         protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
-            var query = keySelector(BaseDals.First());
+            var query = keySelector != null 
+                ? keySelector(BaseDals.First())
+                : BaseDals.First().Where(o => null);
             return GetList(query.ObJoin, query.ObParameter, requestParams, query.ObGroup, query.ObGroupParameter, requestGroupParams, query.ObSort, requestSorts, pageSize, pageIndex, out count);
         }
 
@@ -525,14 +530,12 @@ namespace DotNet.Standard.NSmart
         /// <param name="sort"></param>
         /// <param name="requestSorts"></param>
         /// <returns></returns>
-        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams, IObSort sort, IDictionary<string, string> requestSorts)
         {
             return GetList(param, requestParams, sort, requestSorts, null, null, out _);
         }
 
-        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObSort sort, IDictionary<string, string> requestSorts)
         {
             return GetList(join, param, requestParams, sort, requestSorts, null, null, out _);
         }
@@ -548,14 +551,14 @@ namespace DotNet.Standard.NSmart
         /// <param name="pageIndex"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams, IObSort sort, IDictionary<string, string> requestSorts, 
+            int? pageSize, int? pageIndex, out int count)
         {
             return GetList(param, requestParams, null, null, null, sort, requestSorts, pageSize, pageIndex, out count);
         }
 
-        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObSort sort, 
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
             return GetList(join, param, requestParams, null, null, null, sort, requestSorts, pageSize, pageIndex, out count);
         }
@@ -571,16 +574,14 @@ namespace DotNet.Standard.NSmart
         /// <param name="sort"></param>
         /// <param name="requestSorts"></param>
         /// <returns></returns>
-        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams, IObGroup group, IObParameter groupParam, 
+            IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts)
         {
             return GetList(null, param, requestParams, group, groupParam, requestGroupParams, sort, requestSorts);
         }
 
-        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObGroup group, IObParameter groupParam, 
+            IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts)
         {
             return GetList(join, param, requestParams, group, groupParam, requestGroupParams, sort, requestSorts, null, null, out _);
         }
@@ -599,16 +600,14 @@ namespace DotNet.Standard.NSmart
         /// <param name="pageIndex"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        protected IList<TM> GetList(IObParameter param, IDictionary<string, object> requestParams, IObGroup group, IObParameter groupParam, 
+            IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
             return GetList(null, param, requestParams, group, groupParam, requestGroupParams, sort, requestSorts, pageSize, pageIndex, out count);
         }
 
-        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        protected IList<TM> GetList(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObGroup group, IObParameter groupParam, 
+            IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
             var paramBase = (ObParameterBase) param;
             var groupParamBase = (ObParameterBase) groupParam;
@@ -627,9 +626,8 @@ namespace DotNet.Standard.NSmart
         /// <param name="requestGroupParams"></param>
         /// <param name="sort"></param>
         /// <param name="requestSorts"></param>
-        protected virtual void GetList(ref ObParameterBase param, IDictionary<string, object> requestParams,
-            ref ObParameterBase groupParam, IDictionary<string, object> requestGroupParams,
-            ref IObSort sort, IDictionary<string, string> requestSorts)
+        protected virtual void GetList(ref ObParameterBase param, IDictionary<string, object> requestParams, ref ObParameterBase groupParam, 
+            IDictionary<string, object> requestGroupParams, ref IObSort sort, IDictionary<string, string> requestSorts)
         { }
 
         /// <summary>
@@ -721,7 +719,9 @@ namespace DotNet.Standard.NSmart
 
         protected TM GetModel(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
         {
-            var query = keySelector(BaseDals.First());
+            var query = keySelector != null
+                ? keySelector(BaseDals.First())
+                : BaseDals.First().Where(o => null);
             var paramBase = (ObParameterBase) query.ObParameter;
             OnModeling(Term, ref paramBase);
             TM model = null;
@@ -779,7 +779,9 @@ namespace DotNet.Standard.NSmart
 
         protected bool Exists(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
         {
-            var query = keySelector(BaseDals.First());
+            var query = keySelector != null
+                ? keySelector(BaseDals.First())
+                : BaseDals.First().Where(o => null);
             var paramBase = (ObParameterBase)query.ObParameter;
             OnExisting(Term, ref paramBase);
             var ret = false;
@@ -1148,14 +1150,14 @@ namespace DotNet.Standard.NSmart
         /// <param name="sort"></param>
         /// <param name="requestSorts"></param>
         /// <returns></returns>
-        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams, IObSort sort, 
+            IDictionary<string, string> requestSorts)
         {
             return await GetListAsync(param, requestParams, sort, requestSorts, null, null, null);
         }
 
-        protected async Task<IList<TM>> GetListAsync(IObJoin join, IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+        protected async Task<IList<TM>> GetListAsync(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObSort sort, 
+            IDictionary<string, string> requestSorts)
         {
             return await GetListAsync(join, param, requestParams, sort, requestSorts, null, null, null);
         }
@@ -1171,14 +1173,14 @@ namespace DotNet.Standard.NSmart
         /// <param name="pageIndex"></param>
         /// <param name="countAccessor"></param>
         /// <returns></returns>
-        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams, IObSort sort, 
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
             return await GetListAsync(param, requestParams, null, null, null, sort, requestSorts, pageSize, pageIndex, countAccessor);
         }
 
-        protected async Task<IList<TM>> GetListAsync(IObJoin join, IObParameter param, IDictionary<string, object> requestParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        protected async Task<IList<TM>> GetListAsync(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObSort sort, 
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
             return await GetListAsync(join, param, requestParams, null, null, null, sort, requestSorts, pageSize, pageIndex, countAccessor);
         }
@@ -1194,16 +1196,14 @@ namespace DotNet.Standard.NSmart
         /// <param name="sort"></param>
         /// <param name="requestSorts"></param>
         /// <returns></returns>
-        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams, IObGroup group, 
+            IObParameter groupParam, IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts)
         {
             return await GetListAsync(null, param, requestParams, group, groupParam, requestGroupParams, sort, requestSorts);
         }
 
         protected async Task<IList<TM>> GetListAsync(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts)
+            IObParameter groupParam, IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts)
         {
             return await GetListAsync(join, param, requestParams, group, groupParam, requestGroupParams, sort, requestSorts, null, null, null);
         }
@@ -1222,16 +1222,16 @@ namespace DotNet.Standard.NSmart
         /// <param name="pageIndex"></param>
         /// <param name="countAccessor"></param>
         /// <returns></returns>
-        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        protected async Task<IList<TM>> GetListAsync(IObParameter param, IDictionary<string, object> requestParams, IObGroup group, 
+            IObParameter groupParam, IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts, 
+            int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
             return await GetListAsync(null, param, requestParams, group, groupParam, requestGroupParams, sort, requestSorts, pageSize, pageIndex, countAccessor);
         }
 
         protected async Task<IList<TM>> GetListAsync(IObJoin join, IObParameter param, IDictionary<string, object> requestParams, IObGroup group,
-            IObParameter groupParam, IDictionary<string, object> requestGroupParams,
-            IObSort sort, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+            IObParameter groupParam, IDictionary<string, object> requestGroupParams, IObSort sort, IDictionary<string, string> requestSorts,
+            int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
             return await Task.Run(() =>
             {

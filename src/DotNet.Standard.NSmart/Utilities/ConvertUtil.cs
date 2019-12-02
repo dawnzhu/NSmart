@@ -22,30 +22,17 @@ namespace DotNet.Standard.NSmart.Utilities
         /// <returns></returns>
         public static string ToJsonString(this object value, Formatting format)
         {
-            //return value == null ? "" : new JavaScriptSerializer().Serialize(value);
-            return JsonConvert.SerializeObject(value,
-                format,
-                new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(), //首字母小写
-                    NullValueHandling = NullValueHandling.Ignore, //不显示值为null的属性
-                    //DateFormatHandling = DateFormatHandling.MicrosoftDateFormat, //时间格式
-                    Converters = new JsonConverter[]
-                    {
-                        new IsoDateTimeConverter {DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff"} //日期格式化
-                    }
-                }
-            );
+            return JsonConvert.SerializeObject(value, format, CreateJsonSerializerSettings());
         }
 
         public static T ToObject<T>(this string strJson)
         {
-            return JsonConvert.DeserializeObject<T>(strJson);
+            return JsonConvert.DeserializeObject<T>(strJson, CreateJsonSerializerSettings());
         }
 
         public static object ToObject(this string strJson, Type t)
         {
-            return JsonConvert.DeserializeObject(strJson, t);
+            return JsonConvert.DeserializeObject(strJson, t, CreateJsonSerializerSettings());
         }
 
         public static IDictionary<string, object> ToDictionary(this string queryString)
@@ -79,5 +66,20 @@ namespace DotNet.Standard.NSmart.Utilities
             }
             return dic;
         }
+
+        private static JsonSerializerSettings CreateJsonSerializerSettings()
+        {
+            return new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(), //首字母小写
+                NullValueHandling = NullValueHandling.Ignore, //不显示值为null的属性
+                Converters = new JsonConverter[]
+                {
+                    new IsoDateTimeConverter {DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff"}, //日期格式化
+                    new DoModelConverter()
+                }
+            };
+        }
+
     }
 }

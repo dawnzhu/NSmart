@@ -83,6 +83,63 @@ namespace DotNet.Standard.NSmart.Utilities
             return rp;
         }
 
+        public static Dictionary<string, object> ToProxyArguments<T>(this T requestParam, Dictionary<string, object> args)
+            where T : DoRequestParamBase
+        {
+            return ToProxyArguments(requestParam.Params, args);
+        }
+
+        private static Dictionary<string, object> ToProxyArguments(IDictionary<string, object> requestParams, Dictionary<string, object> args)
+        {
+            foreach (var key in args.Keys.ToList())
+            {
+                var value = args[key];
+                var valueType = value.GetType();
+                if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    var subRequestParams = requestParams.First(o => string.Equals(o.Key, key, StringComparison.OrdinalIgnoreCase)).Value.ToJsonString().ToObject<IList<Dictionary<string, object>>>();
+                    foreach (var subRequestParam in subRequestParams)
+                    {
+                        var subObj = Activator.CreateInstance(valueType.GenericTypeArguments.First());
+                        valueType.GetMethod("Add", BindingFlags.Instance | BindingFlags.Public)?.Invoke(value, new[] { ToProxyArgument(subObj, subRequestParam) });
+                    }
+                    args[key] = value;
+                }
+                else
+                {
+                    args[key] = ToProxyArgument(value, requestParams);
+                }
+            }
+            return args;
+        }
+
+        private static object ToProxyArgument(object value, IDictionary<string, object> requestParams)
+        {
+            if (!(value is DoModelBase)) return value;
+            value = typeof(ObModel).GetMethod("Of", BindingFlags.Static | BindingFlags.Public)
+                ?.MakeGenericMethod(value.GetType()).Invoke(null, new [] { value });
+            if (value == null) return null;
+            foreach (var param in requestParams)
+            {
+                var property = value.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    .FirstOrDefault(o => string.Equals(o.Name, param.Key, StringComparison.OrdinalIgnoreCase));
+                if (property == null) continue;
+                if (property.PropertyType.IsSystem())
+                {
+                    property.SetValue(value, param.Value);
+                }
+                else
+                {
+                    var subRequestParams = param.Value is Newtonsoft.Json.Linq.JArray
+                        ? new Dictionary<string, object> { { param.Key, param.Value } }
+                        : param.Value.ToJsonString().ToObject<Dictionary<string, object>>();
+                    var subObj = ToProxyArguments(subRequestParams, new Dictionary<string, object> { { property.Name, Activator.CreateInstance(property.PropertyType) } }).First();
+                    property.SetValue(value, subObj.Value);
+                }
+            }
+            return value;
+        }
+
         private static bool TryKey(this MethodBase method, out string key)
         {
             key = null;
