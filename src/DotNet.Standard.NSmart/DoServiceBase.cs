@@ -283,7 +283,7 @@ namespace DotNet.Standard.NSmart
         protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, int? pageSize, int? pageIndex, out int count)
         {
             var query = keySelector != null
-                ? keySelector(BaseDals.First())
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
                 : BaseDals.First().Where(o => null);
             return GetList(query.ObJoin, query.ObParameter, query.ObGroup, query.ObGroupParameter, query.ObSort, pageSize, pageIndex, out count);
         }
@@ -428,7 +428,7 @@ namespace DotNet.Standard.NSmart
                 }
             }
             IList<TM> list;
-            if (sort != null && isDal)
+            if (sort != null && !isDal)
             {
                 //排序
                 IOrderedEnumerable<TM> order = null;
@@ -501,7 +501,7 @@ namespace DotNet.Standard.NSmart
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
             var query = keySelector != null 
-                ? keySelector(BaseDals.First())
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
                 : BaseDals.First().Where(o => null);
             return GetList(query.ObJoin, query.ObParameter, requestParams, query.ObGroup, query.ObGroupParameter, requestGroupParams, query.ObSort, requestSorts, pageSize, pageIndex, out count);
         }
@@ -720,7 +720,7 @@ namespace DotNet.Standard.NSmart
         protected TM GetModel(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
         {
             var query = keySelector != null
-                ? keySelector(BaseDals.First())
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
                 : BaseDals.First().Where(o => null);
             var paramBase = (ObParameterBase) query.ObParameter;
             OnModeling(Term, ref paramBase);
@@ -780,7 +780,7 @@ namespace DotNet.Standard.NSmart
         protected bool Exists(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
         {
             var query = keySelector != null
-                ? keySelector(BaseDals.First())
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
                 : BaseDals.First().Where(o => null);
             var paramBase = (ObParameterBase)query.ObParameter;
             OnExisting(Term, ref paramBase);

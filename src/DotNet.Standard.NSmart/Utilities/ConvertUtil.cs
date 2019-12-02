@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Web;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace DotNet.Standard.NSmart.Utilities
@@ -73,9 +72,9 @@ namespace DotNet.Standard.NSmart.Utilities
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(), //首字母小写
                 NullValueHandling = NullValueHandling.Ignore, //不显示值为null的属性
+                DateFormatString = "yyyy-MM-dd HH:mm:ss.fff", //日期格式化
                 Converters = new JsonConverter[]
                 {
-                    new IsoDateTimeConverter {DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff"}, //日期格式化
                     new DoModelConverter()
                 }
             };

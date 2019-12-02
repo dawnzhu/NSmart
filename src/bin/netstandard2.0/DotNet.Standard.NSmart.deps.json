@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "DotNet.Standard.NSmart/1.1.2": {
+      "DotNet.Standard.NSmart/1.1.3": {
         "dependencies": {
           "DotNet.Standard.NParsing.DbUtilities": "1.1.2",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
@@ -182,7 +182,7 @@
     }
   },
   "libraries": {
-    "DotNet.Standard.NSmart/1.1.2": {
+    "DotNet.Standard.NSmart/1.1.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
