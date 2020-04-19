@@ -193,13 +193,19 @@ namespace DotNet.Standard.NSmart
             return ret;
         }
 
+        protected int Update(TM model, IObParameter param)
+        {
+            return Update(model, null, param);
+        }
+
         /// <summary>
         /// 修改
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        protected int Update(TM model, IObParameter param)
+        protected int Update(TM model, IObJoin join, IObParameter param)
         {
             var paramBase = (ObParameterBase) param;
             OnUpdating(model, Term, ref paramBase);
@@ -207,7 +213,7 @@ namespace DotNet.Standard.NSmart
             var ret = 0;
             if (GetDal("MOD", out var dal))
             {
-                ret = dal.Update(model, param);
+                ret = dal.Update(model, join, param);
             }
             else
             {
@@ -216,7 +222,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    var r = BaseDals[i].Update(model, param);
+                    var r = BaseDals[i].Update(model, join, param);
                     if (r > ret)
                     {
                         ret = r;
@@ -232,6 +238,11 @@ namespace DotNet.Standard.NSmart
             return Update(model, keySelector(Term));
         }
 
+        protected int Update<TKey>(TM model, Func<TT, TKey> joinSelector, Func<TT, IObParameter> keySelector)
+        {
+            return Update(model, BaseDals.First().Join(joinSelector).ObJoin, keySelector(Term));
+        }
+
         /// <summary>
         /// 删除
         /// </summary>
@@ -239,13 +250,18 @@ namespace DotNet.Standard.NSmart
         /// <returns></returns>
         protected int Delete(IObParameter param)
         {
+            return Delete(null, param);
+        }
+
+        protected int Delete(IObJoin join, IObParameter param)
+        {
             var paramBase = (ObParameterBase) param;
             OnDeleting(Term, ref paramBase);
             param = paramBase;
             var ret = 0;
             if (GetDal("MOD", out var dal))
             {
-                ret = dal.Delete(param);
+                ret = dal.Delete(join, param);
             }
             else
             {
@@ -254,7 +270,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    var r = BaseDals[i].Delete(param);
+                    var r = BaseDals[i].Delete(join, param);
                     if (r > ret)
                     {
                         ret = r;
@@ -268,6 +284,11 @@ namespace DotNet.Standard.NSmart
         protected int Delete(Func<TT, IObParameter> keySelector)
         {
             return Delete(keySelector(Term));
+        }
+
+        protected int Delete<TKey>(Func<TT, TKey> joinSelector, Func<TT, IObParameter> keySelector)
+        {
+            return Delete(BaseDals.First().Join(joinSelector).ObJoin, keySelector(Term));
         }
 
         /// <summary>
@@ -637,13 +658,18 @@ namespace DotNet.Standard.NSmart
         /// <returns></returns>
         protected TM GetModel(IObParameter param)
         {
-            var paramBase = (ObParameterBase) param;
+            return GetModel(null, param);
+        }
+
+        protected TM GetModel(IObJoin join, IObParameter param)
+        {
+            var paramBase = (ObParameterBase)param;
             OnModeling(Term, ref paramBase);
             param = paramBase;
             TM model = null;
             if (GetDal("QUERY", out var dal))
             {
-                model = dal.Query(param).ToModel();
+                model = dal.Query(join, param).ToModel();
             }
             else
             {
@@ -652,7 +678,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    var ret = BaseDals[i].Query(param).ToModel();
+                    var ret = BaseDals[i].Query(join, param).ToModel();
                     if (ret != null)
                     {
                         model = ret;
@@ -663,11 +689,6 @@ namespace DotNet.Standard.NSmart
             return model;
         }
 
-        protected TM GetModel(Func<TT, IObParameter> keySelector)
-        {
-            return GetModel(keySelector(Term));
-        }
-
         /// <summary>
         /// 获取模型数据
         /// </summary>
@@ -676,45 +697,64 @@ namespace DotNet.Standard.NSmart
         /// <returns></returns>
         protected TM GetModel(IObParameter param, IObSort sort)
         {
+            return GetModel(null, param, sort);
+        }
+
+        protected TM GetModel(IObJoin join, IObParameter param, IObSort sort)
+        {
             var paramBase = (ObParameterBase)param;
             OnModeling(Term, ref paramBase);
             param = paramBase;
             TM model;
             var list = new List<TM>();
-            Parallel.For(0, BaseDals.Count, new ParallelOptions
+            if (GetDal("QUERY", out var dal))
             {
-                MaxDegreeOfParallelism = BaseDals.Count
-            }, i =>
-            {
-                var m = BaseDals[i].Query(param, sort).ToModel();
-                if (m != null)
-                {
-                    list.Add(m);
-                }
-            });
-            if (sort != null)
-            {
-                //排序
-                IOrderedEnumerable<TM> order = null;
-                foreach (var dbSort in sort.List)
-                {
-                    var properties = $"{dbSort.TableName}_{dbSort.ObProperty.PropertyName}".Split('_').Skip(1).ToArray();
-                    order = order == null
-                        ? (dbSort.IsAsc
-                            ? list.OrderBy(obj => GetValue(obj, properties))
-                            : list.OrderByDescending(obj => GetValue(obj, properties)))
-                        : (dbSort.IsAsc
-                            ? order.ThenBy(obj => GetValue(obj, properties))
-                            : order.ThenByDescending(obj => GetValue(obj, properties)));
-                }
-                model = order?.ToList().FirstOrDefault();
+                model = dal.Query(join, param, sort).ToModel();
             }
             else
             {
-                model = list.FirstOrDefault();
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    var m = BaseDals[i].Query(join, param, sort).ToModel();
+                    if (m != null)
+                    {
+                        list.Add(m);
+                    }
+                });
+                if (sort != null)
+                {
+                    //排序
+                    IOrderedEnumerable<TM> order = null;
+                    foreach (var dbSort in sort.List)
+                    {
+                        var properties = $"{dbSort.TableName}_{dbSort.ObProperty.PropertyName}".Split('_').Skip(1)
+                            .ToArray();
+                        order = order == null
+                            ? (dbSort.IsAsc
+                                ? list.OrderBy(obj => GetValue(obj, properties))
+                                : list.OrderByDescending(obj => GetValue(obj, properties)))
+                            : (dbSort.IsAsc
+                                ? order.ThenBy(obj => GetValue(obj, properties))
+                                : order.ThenByDescending(obj => GetValue(obj, properties)));
+                    }
+
+                    model = order?.ToList().FirstOrDefault();
+                }
+                else
+                {
+                    model = list.FirstOrDefault();
+                }
             }
             OnModeled(model);
             return model;
+        }
+
+        protected TM GetModel(Func<TT, IObParameter> keySelector)
+        {
+            return GetModel(keySelector(Term));
         }
 
         protected TM GetModel(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
@@ -747,13 +787,18 @@ namespace DotNet.Standard.NSmart
         /// <returns></returns>
         protected bool Exists(IObParameter param)
         {
-            var paramBase = (ObParameterBase) param;
+            return Exists(null, param);
+        }
+
+        protected bool Exists(IObJoin join, IObParameter param)
+        {
+            var paramBase = (ObParameterBase)param;
             OnExisting(Term, ref paramBase);
             param = paramBase;
             var ret = false;
             if (GetDal("QUERY", out var dal))
             {
-                ret = dal.Query(param).Exists();
+                ret = dal.Query(join, param).Exists();
             }
             else
             {
@@ -762,7 +807,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    if (BaseDals[i].Query(param).Exists())
+                    if (BaseDals[i].Query(join, param).Exists())
                     {
                         ret = true;
                     }
@@ -969,9 +1014,19 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => Update(model, param));
         }
 
+        protected async Task<int> UpdateAsync(TM model, IObJoin join, IObParameter param)
+        {
+            return await Task.Run(() => Update(model, join, param));
+        }
+
         protected async Task<int> UpdateAsync(TM model, Func<TT, IObParameter> keySelector)
         {
             return await Task.Run(() => Update(model, keySelector));
+        }
+
+        protected async Task<int> UpdateAsync<TKey>(TM model, Func<TT, TKey> joinSelector, Func<TT, IObParameter> keySelector)
+        {
+            return await Task.Run(() => Update(model, joinSelector, keySelector));
         }
 
         protected async Task<int> DeleteAsync(IObParameter param)
@@ -979,9 +1034,19 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => Delete(param));
         }
 
+        protected async Task<int> DeleteAsync(IObJoin join, IObParameter param)
+        {
+            return await Task.Run(() => Delete(join, param));
+        }
+
         protected async Task<int> DeleteAsync(Func<TT, IObParameter> keySelector)
         {
             return await Task.Run(() => Delete(keySelector));
+        }
+
+        protected async Task<int> DeleteAsync<TKey>(Func<TT, TKey> joinSelector, Func<TT, IObParameter> keySelector)
+        {
+            return await Task.Run(() => Delete(joinSelector, keySelector));
         }
 
         protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
@@ -1251,6 +1316,11 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => GetModel(param));
         }
 
+        protected async Task<TM> GetModelAsync(IObJoin join, IObParameter param)
+        {
+            return await Task.Run(() => GetModel(join, param));
+        }
+
         protected async Task<TM> GetModelAsync(Func<TT, IObParameter> keySelector)
         {
             return await Task.Run(() => GetModel(keySelector));
@@ -1261,6 +1331,11 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => GetModel(param, sort));
         }
 
+        protected async Task<TM> GetModelAsync(IObJoin join, IObParameter param, IObSort sort)
+        {
+            return await Task.Run(() => GetModel(join, param, sort));
+        }
+
         protected async Task<TM> GetModelAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
         {
             return await Task.Run(() => GetModel(keySelector));
@@ -1269,6 +1344,11 @@ namespace DotNet.Standard.NSmart
         protected async Task<bool> ExistsAsync(IObParameter param)
         {
             return await Task.Run(() => Exists(param));
+        }
+
+        protected async Task<bool> ExistsAsync(IObJoin join, IObParameter param)
+        {
+            return await Task.Run(() => Exists(join, param));
         }
 
         protected async Task<bool> ExistsAsync(Func<TT, IObParameter> keySelector)
