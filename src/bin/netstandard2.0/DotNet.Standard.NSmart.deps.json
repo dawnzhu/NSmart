@@ -7,9 +7,9 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "DotNet.Standard.NSmart/1.2.0": {
+      "DotNet.Standard.NSmart/1.2.1": {
         "dependencies": {
-          "DotNet.Standard.NParsing.DbUtilities": "1.2.0",
+          "DotNet.Standard.NParsing.DbUtilities": "1.2.1",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "11.0.1"
@@ -26,26 +26,26 @@
           }
         }
       },
-      "DotNet.Standard.NParsing/1.2.0": {
+      "DotNet.Standard.NParsing/1.2.1": {
         "dependencies": {
           "DotNet.Standard.Common": "1.0.3",
           "System.Reflection.Emit": "4.6.0"
         },
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.NParsing.dll": {
-            "assemblyVersion": "1.2.0.0",
-            "fileVersion": "1.2.0.0"
+            "assemblyVersion": "1.2.1.0",
+            "fileVersion": "1.2.1.0"
           }
         }
       },
-      "DotNet.Standard.NParsing.DbUtilities/1.2.0": {
+      "DotNet.Standard.NParsing.DbUtilities/1.2.1": {
         "dependencies": {
-          "DotNet.Standard.NParsing": "1.2.0"
+          "DotNet.Standard.NParsing": "1.2.1"
         },
         "runtime": {
           "lib/netstandard2.0/DotNet.Standard.NParsing.DbUtilities.dll": {
-            "assemblyVersion": "1.2.0.0",
-            "fileVersion": "1.2.0.0"
+            "assemblyVersion": "1.2.1.0",
+            "fileVersion": "1.2.1.0"
           }
         }
       },
@@ -182,7 +182,7 @@
     }
   },
   "libraries": {
-    "DotNet.Standard.NSmart/1.2.0": {
+    "DotNet.Standard.NSmart/1.2.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -194,19 +194,19 @@
       "path": "dotnet.standard.common/1.0.3",
       "hashPath": "dotnet.standard.common.1.0.3.nupkg.sha512"
     },
-    "DotNet.Standard.NParsing/1.2.0": {
+    "DotNet.Standard.NParsing/1.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-BJci10vgXKH6dC4wtPrQ0BhPHDIRg4keGPSBQo4FK1koCpfpst10TiBPAMLS+U+52c5bLoi9w6pW+v6o4S66xA==",
-      "path": "dotnet.standard.nparsing/1.2.0",
-      "hashPath": "dotnet.standard.nparsing.1.2.0.nupkg.sha512"
+      "sha512": "sha512-CrEGWA5rMTMA3M/wdifyOeXx0htR/HObTJBwfFYO3R1L/eZFIl5xXTdP6nGffcfWEdq/c/xTmOGKFPZfqLF/zg==",
+      "path": "dotnet.standard.nparsing/1.2.1",
+      "hashPath": "dotnet.standard.nparsing.1.2.1.nupkg.sha512"
     },
-    "DotNet.Standard.NParsing.DbUtilities/1.2.0": {
+    "DotNet.Standard.NParsing.DbUtilities/1.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xUr7lX1U8K9Uple3mFU/SnQYs9Se961jwzw1dxu6+XEKZljylgzKDyR2Y3bCKwKyn+JRUweEkv/aPfEWBEMMHA==",
-      "path": "dotnet.standard.nparsing.dbutilities/1.2.0",
-      "hashPath": "dotnet.standard.nparsing.dbutilities.1.2.0.nupkg.sha512"
+      "sha512": "sha512-hWuIaLqsufsCUxP0k+AUHsV4bKc7+ltXAP0/iDzu7rTcGmQRlZRA7Zkb0dZJxy0EBtutR61Zl1SWk6hpbQPLWQ==",
+      "path": "dotnet.standard.nparsing.dbutilities/1.2.1",
+      "hashPath": "dotnet.standard.nparsing.dbutilities.1.2.1.nupkg.sha512"
     },
     "Microsoft.Extensions.Configuration/2.0.2": {
       "type": "package",

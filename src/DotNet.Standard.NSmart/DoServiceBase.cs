@@ -159,8 +159,9 @@ namespace DotNet.Standard.NSmart
         /// <returns></returns>
         protected object Add(TM model)
         {
-            ObParameterBase p = null;
-            OnAdding(model, Term, ref p);
+            ObParameterBase param = null;
+            ObJoinBase join = null;
+            OnAdding(model, Term, ref join, ref param);
             object ret = null;
             var obIdentity = (ObIdentityAttribute)typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
             if (obIdentity == null || obIdentity.ObIdentity == ObIdentity.Program)
@@ -208,12 +209,13 @@ namespace DotNet.Standard.NSmart
         protected int Update(TM model, IObJoin join, IObParameter param)
         {
             var paramBase = (ObParameterBase) param;
-            OnUpdating(model, Term, ref paramBase);
+            var joinBase = (ObJoinBase) join;
+            OnUpdating(model, Term, ref joinBase, ref paramBase);
             param = paramBase;
             var ret = 0;
             if (GetDal("MOD", out var dal))
             {
-                ret = dal.Update(model, join, param);
+                ret = dal.Update(model, joinBase, param);
             }
             else
             {
@@ -222,7 +224,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    var r = BaseDals[i].Update(model, join, param);
+                    var r = BaseDals[i].Update(model, joinBase, param);
                     if (r > ret)
                     {
                         ret = r;
@@ -256,12 +258,13 @@ namespace DotNet.Standard.NSmart
         protected int Delete(IObJoin join, IObParameter param)
         {
             var paramBase = (ObParameterBase) param;
-            OnDeleting(Term, ref paramBase);
+            var joinBase = (ObJoinBase) join;
+            OnDeleting(Term, ref joinBase, ref paramBase);
             param = paramBase;
             var ret = 0;
             if (GetDal("MOD", out var dal))
             {
-                ret = dal.Delete(join, param);
+                ret = dal.Delete(joinBase, param);
             }
             else
             {
@@ -270,7 +273,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    var r = BaseDals[i].Delete(join, param);
+                    var r = BaseDals[i].Delete(joinBase, param);
                     if (r > ret)
                     {
                         ret = r;
@@ -394,7 +397,8 @@ namespace DotNet.Standard.NSmart
         {
             var total = 0;
             var paramBase = (ObParameterBase) param;
-            OnListing(Term, ref paramBase);
+            var joinBase = (ObJoinBase) join;
+            OnListing(Term, ref joinBase, ref paramBase);
             param = paramBase;
             var isDal = GetDal("QUERY", out var dal);
             var sourceList = new List<TM>();
@@ -406,7 +410,7 @@ namespace DotNet.Standard.NSmart
                 }
                 if (isDal)
                 {
-                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList(pageSize.Value, pageIndex.Value, out total);
+                    sourceList = (List<TM>)dal.Query(joinBase, param, group, groupParam, sort).ToList(pageSize.Value, pageIndex.Value, out total);
                 }
                 else
                 {
@@ -415,7 +419,7 @@ namespace DotNet.Standard.NSmart
                         MaxDegreeOfParallelism = BaseDals.Count
                     }, i =>
                     {
-                        var subList = BaseDals[i].Query(join, param, group, groupParam, sort).ToList(pageSize.Value * pageIndex.Value, 1, out var c);
+                        var subList = BaseDals[i].Query(joinBase, param, group, groupParam, sort).ToList(pageSize.Value * pageIndex.Value, 1, out var c);
                         lock (sourceList)
                         {
                             total += c;
@@ -428,7 +432,7 @@ namespace DotNet.Standard.NSmart
             {
                 if (isDal)
                 {
-                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList();
+                    sourceList = (List<TM>)dal.Query(joinBase, param, group, groupParam, sort).ToList();
                     total = sourceList.Count;
                 }
                 else
@@ -438,7 +442,7 @@ namespace DotNet.Standard.NSmart
                         MaxDegreeOfParallelism = BaseDals.Count
                     }, i =>
                     {
-                        var query = BaseDals[i].Query(join, param, group, groupParam, sort);
+                        var query = BaseDals[i].Query(joinBase, param, group, groupParam, sort);
                         var subList = query.ToList();
                         lock (sourceList)
                         {
@@ -664,12 +668,13 @@ namespace DotNet.Standard.NSmart
         protected TM GetModel(IObJoin join, IObParameter param)
         {
             var paramBase = (ObParameterBase)param;
-            OnModeling(Term, ref paramBase);
+            var joinBase = (ObJoinBase)join;
+            OnModeling(Term, ref joinBase, ref paramBase);
             param = paramBase;
             TM model = null;
             if (GetDal("QUERY", out var dal))
             {
-                model = dal.Query(join, param).ToModel();
+                model = dal.Query(joinBase, param).ToModel();
             }
             else
             {
@@ -678,7 +683,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    var ret = BaseDals[i].Query(join, param).ToModel();
+                    var ret = BaseDals[i].Query(joinBase, param).ToModel();
                     if (ret != null)
                     {
                         model = ret;
@@ -703,13 +708,14 @@ namespace DotNet.Standard.NSmart
         protected TM GetModel(IObJoin join, IObParameter param, IObSort sort)
         {
             var paramBase = (ObParameterBase)param;
-            OnModeling(Term, ref paramBase);
+            var joinBase = (ObJoinBase)join;
+            OnModeling(Term, ref joinBase, ref paramBase);
             param = paramBase;
             TM model;
             var list = new List<TM>();
             if (GetDal("QUERY", out var dal))
             {
-                model = dal.Query(join, param, sort).ToModel();
+                model = dal.Query(joinBase, param, sort).ToModel();
             }
             else
             {
@@ -718,7 +724,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    var m = BaseDals[i].Query(join, param, sort).ToModel();
+                    var m = BaseDals[i].Query(joinBase, param, sort).ToModel();
                     if (m != null)
                     {
                         list.Add(m);
@@ -763,14 +769,15 @@ namespace DotNet.Standard.NSmart
                 ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
                 : BaseDals.First().Where(o => null);
             var paramBase = (ObParameterBase) query.ObParameter;
-            OnModeling(Term, ref paramBase);
+            var joinBase = (ObJoinBase) query.ObJoin;
+            OnModeling(Term, ref joinBase, ref paramBase);
             TM model = null;
             Parallel.For(0, BaseDals.Count, new ParallelOptions
             {
                 MaxDegreeOfParallelism = BaseDals.Count
             }, i =>
             {
-                var ret = BaseDals[i].Query(query.ObJoin, paramBase, query.ObGroup, query.ObGroupParameter, query.ObSort).ToModel();
+                var ret = BaseDals[i].Query(joinBase, paramBase, query.ObGroup, query.ObGroupParameter, query.ObSort).ToModel();
                 if (ret != null)
                 {
                     model = ret;
@@ -793,12 +800,13 @@ namespace DotNet.Standard.NSmart
         protected bool Exists(IObJoin join, IObParameter param)
         {
             var paramBase = (ObParameterBase)param;
-            OnExisting(Term, ref paramBase);
+            var joinBase = (ObJoinBase)join;
+            OnExisting(Term, ref joinBase, ref paramBase);
             param = paramBase;
             var ret = false;
             if (GetDal("QUERY", out var dal))
             {
-                ret = dal.Query(join, param).Exists();
+                ret = dal.Query(joinBase, param).Exists();
             }
             else
             {
@@ -807,7 +815,7 @@ namespace DotNet.Standard.NSmart
                     MaxDegreeOfParallelism = BaseDals.Count
                 }, i =>
                 {
-                    if (BaseDals[i].Query(join, param).Exists())
+                    if (BaseDals[i].Query(joinBase, param).Exists())
                     {
                         ret = true;
                     }
@@ -827,15 +835,16 @@ namespace DotNet.Standard.NSmart
             var query = keySelector != null
                 ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
                 : BaseDals.First().Where(o => null);
-            var paramBase = (ObParameterBase)query.ObParameter;
-            OnExisting(Term, ref paramBase);
+            var paramBase = (ObParameterBase) query.ObParameter;
+            var joinBase = (ObJoinBase) query.ObJoin;
+            OnExisting(Term, ref joinBase, ref paramBase);
             var ret = false;
             Parallel.For(0, BaseDals.Count, new ParallelOptions
             {
                 MaxDegreeOfParallelism = BaseDals.Count
             }, i =>
             {
-                if (BaseDals[i].Query(query.ObJoin, paramBase, query.ObGroup, query.ObGroupParameter, query.ObSort).Exists())
+                if (BaseDals[i].Query(joinBase, paramBase, query.ObGroup, query.ObGroupParameter, query.ObSort).Exists())
                 {
                     ret = true;
                 }
@@ -850,8 +859,9 @@ namespace DotNet.Standard.NSmart
         /// 查询前
         /// </summary>
         /// <param name="term"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
-        protected virtual void OnGlobalExecuting(TT term, ref ObParameterBase param)
+        protected virtual void OnGlobalExecuting(TT term, ref ObJoinBase join, ref ObParameterBase param)
         {
         }
 
@@ -859,11 +869,12 @@ namespace DotNet.Standard.NSmart
         /// 添加前
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
         /// <param name="term"></param>
-        protected virtual void OnAdding(TM model, TT term, ref ObParameterBase param)
+        protected virtual void OnAdding(TM model, TT term, ref ObJoinBase join, ref ObParameterBase param)
         {
-            OnGlobalExecuting(term, ref param);
+            OnGlobalExecuting(term, ref join, ref param);
         }
 
         /// <summary>
@@ -880,10 +891,11 @@ namespace DotNet.Standard.NSmart
         /// </summary>
         /// <param name="model"></param>
         /// <param name="term"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
-        protected virtual void OnUpdating(TM model, TT term, ref ObParameterBase param)
+        protected virtual void OnUpdating(TM model, TT term, ref ObJoinBase join, ref ObParameterBase param)
         {
-            OnGlobalExecuting(term, ref param);
+            OnGlobalExecuting(term, ref join, ref param);
         }
 
         /// <summary>
@@ -899,10 +911,11 @@ namespace DotNet.Standard.NSmart
         /// 删除前
         /// </summary>
         /// <param name="term"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
-        protected virtual void OnDeleting(TT term, ref ObParameterBase param)
+        protected virtual void OnDeleting(TT term, ref ObJoinBase join, ref ObParameterBase param)
         {
-            OnGlobalExecuting(term, ref param);
+            OnGlobalExecuting(term, ref join, ref param);
         }
 
         /// <summary>
@@ -917,10 +930,11 @@ namespace DotNet.Standard.NSmart
         /// 获取列表前
         /// </summary>
         /// <param name="term"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
-        protected virtual void OnListing(TT term, ref ObParameterBase param)
+        protected virtual void OnListing(TT term, ref ObJoinBase join, ref ObParameterBase param)
         {
-            OnGlobalExecuting(term, ref param);
+            OnGlobalExecuting(term, ref join, ref param);
         }
 
         /// <summary>
@@ -935,10 +949,11 @@ namespace DotNet.Standard.NSmart
         /// 获取模型前
         /// </summary>
         /// <param name="term"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
-        protected virtual void OnModeling(TT term, ref ObParameterBase param)
+        protected virtual void OnModeling(TT term, ref ObJoinBase join, ref ObParameterBase param)
         {
-            OnGlobalExecuting(term, ref param);
+            OnGlobalExecuting(term, ref join, ref param);
         }
 
         /// <summary>
@@ -953,10 +968,11 @@ namespace DotNet.Standard.NSmart
         /// 判断是否存在前
         /// </summary>
         /// <param name="term"></param>
+        /// <param name="join"></param>
         /// <param name="param"></param>
-        protected virtual void OnExisting(TT term, ref ObParameterBase param)
+        protected virtual void OnExisting(TT term, ref ObJoinBase join, ref ObParameterBase param)
         {
-            OnGlobalExecuting(term, ref param);
+            OnGlobalExecuting(term, ref join, ref param);
         }
 
         /// <summary>

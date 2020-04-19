@@ -13,7 +13,7 @@
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <dependencies>
-      <dependency id="DotNet.Standard.NParsing.DbUtilities" version="1.2.0"/>
+      <dependency id="DotNet.Standard.NParsing.DbUtilities" version="1.2.1"/>
       <dependency id="Microsoft.Extensions.Configuration.Json" version="2.0.2"/>
       <dependency id="Newtonsoft.Json" version="11.0.1"/>
     </dependencies>
