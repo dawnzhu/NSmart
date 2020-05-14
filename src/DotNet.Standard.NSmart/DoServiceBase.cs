@@ -163,8 +163,10 @@ namespace DotNet.Standard.NSmart
             ObJoinBase join = null;
             OnAdding(model, Term, ref join, ref param);
             object ret = null;
-            var obIdentity = (ObIdentityAttribute)typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
-            if (obIdentity == null || obIdentity.ObIdentity == ObIdentity.Program)
+            var property = typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var obSettled = (ObSettledAttribute)property?.GetCustomAttribute(typeof(ObSettledAttribute), true);
+            var obIdentity = (ObIdentityAttribute)property?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
+            if (obSettled == null && (obIdentity == null || obIdentity.ObIdentity == ObIdentity.Program))
             {
                 model.Id = NewIdentity();
             }

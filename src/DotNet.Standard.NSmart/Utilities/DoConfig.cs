@@ -16,13 +16,24 @@ namespace DotNet.Standard.NSmart.Utilities
                 {
                     ConnectionString = value["ConnectionString"],
                     ProviderName = value["ProviderName"],
-                    Adds = value.GetSection("Dbs").GetChildren().Select(obj => new DoConfigDb
-                    {
-                        Name = obj["Name"],
-                        ReadConnectionString = obj["ReadConnectionString"] ?? obj["ConnectionString"],
-                        WriteConnectionString = obj["WriteConnectionString"] ?? obj["ConnectionString"],
-                        ProviderName = obj["ProviderName"]
-                    }).ToList()
+                    Adds = value.GetSection("Dbs").GetChildren().Any()
+                        ? value.GetSection("Dbs").GetChildren().Select(obj => new DoConfigDb
+                        {
+                            Name = obj["Name"],
+                            ReadConnectionString = obj["ReadConnectionString"] ?? obj["ConnectionString"],
+                            WriteConnectionString = obj["WriteConnectionString"] ?? obj["ConnectionString"],
+                            ProviderName = obj["ProviderName"]
+                        }).ToList()
+                        : new List<DoConfigDb>
+                        {
+                            new DoConfigDb
+                            {
+                                Name = "default",
+                                ReadConnectionString = value["ConnectionString"],
+                                WriteConnectionString = value["ConnectionString"],
+                                ProviderName = value["ProviderName"]
+                            }
+                        }
                 });
             return config;
         }
