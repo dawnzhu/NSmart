@@ -140,7 +140,7 @@ namespace DotNet.Standard.NSmart.Utilities
             return value;
         }
 
-        private static bool TryKey(this MethodBase method, out string key)
+        private static bool TryKey(MethodBase method, out string key)
         {
             key = null;
             if (!Initialized || method.DeclaringType == null) return false;
@@ -148,35 +148,124 @@ namespace DotNet.Standard.NSmart.Utilities
             return Config.ContainsKey(key);
         }
 
-        public static ObParameterBase CreateParameter(this ObTermBase obTerm, MethodBase currentMethod,
-            IDictionary<string, object> requestParams)
+        public static IObQueryable<T> CreateQueryable<T>(this MethodBase currentMethodBase, IObQueryable<T> queryable,
+            IDictionary<string, object> requestParams, IDictionary<string, object> requestGroupParams,
+            IDictionary<string, string> requestSorts)
+            where T : ObModelBase
         {
-            return CreateParameter(obTerm, currentMethod, null, requestParams);
+            queryable.ObParameter = CreateParameter<T>(currentMethodBase, queryable.ObParameter, requestParams);
+            queryable.ObGroupParameter = CreateGroupParameter<T>(currentMethodBase, queryable.ObGroupParameter, requestGroupParams);
+            queryable.ObSort = CreateSort<T>(currentMethodBase, queryable.ObSort, requestSorts);
+            return queryable;
         }
 
-        public static ObParameterBase CreateParameter(this ObTermBase obTerm, MethodBase currentMethod, ObParameterBase obParameter,
-            IDictionary<string, object> requestParams)
+        public static IObQueryable<TM, TT> CreateQueryable<TM, TT>(this MethodBase currentMethodBase, TT obTerm, IObQueryable<TM, TT> queryable,
+            IDictionary<string, object> requestParams, IDictionary<string, object> requestGroupParams,
+            IDictionary<string, string> requestSorts)
+            where TM : ObModelBase
+            where TT : ObTermBase
         {
-            return currentMethod.TryKey(out var key) 
+            queryable.ObParameter = CreateParameter(currentMethodBase, obTerm, queryable.ObParameter, requestParams);
+            queryable.ObGroupParameter = CreateGroupParameter(currentMethodBase, obTerm, queryable.ObGroupParameter, requestGroupParams);
+            queryable.ObSort = CreateSort(currentMethodBase, obTerm, queryable.ObSort, requestSorts);
+            return queryable;
+        }
+
+        public static ObParameterBase CreateParameter<T>(this MethodBase currentMethod, IDictionary<string, object> requestParams)
+            where T : ObModelBase
+        {
+            return CreateParameter<T>(currentMethod, null, requestParams);
+        }
+
+        public static ObParameterBase CreateParameter<T>(this MethodBase currentMethod, IObParameter obParameter, IDictionary<string, object> requestParams)
+            where T : ObModelBase
+        {
+            return CreateParameter<T>(currentMethod, (ObParameterBase)obParameter, requestParams);
+        }
+
+        public static ObParameterBase CreateParameter<T>(this MethodBase currentMethod, ObParameterBase obParameter, IDictionary<string, object> requestParams)
+            where T : ObModelBase
+        {
+            return TryKey(currentMethod, out var key)
+                ? CreateParameter<T>(null, obParameter, requestParams, Config[key].Params)
+                : obParameter;
+        }
+
+        public static ObParameterBase CreateGroupParameter<T>(this MethodBase currentMethod, IDictionary<string, object> requestParams)
+            where T : ObModelBase
+        {
+            return CreateGroupParameter<T>(currentMethod, null, requestParams);
+        }
+
+        public static ObParameterBase CreateGroupParameter<T>(this MethodBase currentMethod, IObParameter obParameter, IDictionary<string, object> requestParams)
+            where T : ObModelBase
+        {
+            return CreateGroupParameter<T>(currentMethod, (ObParameterBase)obParameter, requestParams);
+        }
+
+        public static ObParameterBase CreateGroupParameter<T>(this MethodBase currentMethod, ObParameterBase obParameter, IDictionary<string, object> requestParams)
+            where T : ObModelBase
+        {
+            return TryKey(currentMethod, out var key)
+                ? CreateParameter<T>(null, obParameter, requestParams, Config[key].GroupParams)
+                : obParameter;
+        }
+
+        public static IObSort CreateSort<T>(this MethodBase currentMethod, IDictionary<string, string> requestSorts)
+            where T : ObModelBase
+        {
+            return CreateSort<T>(currentMethod, null, requestSorts);
+        }
+
+        public static IObSort CreateSort<T>(this MethodBase currentMethod, IObSort iObSort, IDictionary<string, string> requestSorts)
+            where T : ObModelBase
+        {
+            return TryKey(currentMethod, out var key)
+                ? CreateSort<T>(null, iObSort, requestSorts, Config[key].Sorts)
+                : iObSort;
+        }
+
+        public static ObParameterBase CreateParameter<T>(this MethodBase currentMethod, T obTerm, IDictionary<string, object> requestParams)
+            where T : ObTermBase
+        {
+            return CreateParameter(currentMethod, obTerm, null, requestParams);
+        }
+
+        public static ObParameterBase CreateParameter<T>(this MethodBase currentMethod, T obTerm, IObParameter obParameter, IDictionary<string, object> requestParams)
+            where T : ObTermBase
+        {
+            return CreateParameter(currentMethod, obTerm, (ObParameterBase)obParameter, requestParams);
+        }
+
+        public static ObParameterBase CreateParameter<T>(this MethodBase currentMethod, T obTerm, ObParameterBase obParameter, IDictionary<string, object> requestParams)
+            where T : ObTermBase
+        {
+            return TryKey(currentMethod, out var key) 
                 ? CreateParameter(obTerm, obParameter, requestParams, Config[key].Params)
                 : obParameter;
         }
 
-        public static ObParameterBase CreateGroupParameter(this ObTermBase obTerm, MethodBase currentMethod,
-            IDictionary<string, object> requestParams)
+        public static ObParameterBase CreateGroupParameter<T>(this MethodBase currentMethod, T obTerm, IDictionary<string, object> requestParams)
+            where T : ObTermBase
         {
-            return CreateGroupParameter(obTerm, currentMethod, null, requestParams);
+            return CreateGroupParameter(currentMethod, obTerm, null, requestParams);
         }
-         
-        public static ObParameterBase CreateGroupParameter(this ObTermBase obTerm, MethodBase currentMethod, ObParameterBase obParameter,
-            IDictionary<string, object> requestParams)
+
+        public static ObParameterBase CreateGroupParameter<T>(this MethodBase currentMethod, T obTerm, IObParameter obParameter, IDictionary<string, object> requestParams)
+            where T : ObTermBase
         {
-            return currentMethod.TryKey(out var key)
+            return CreateGroupParameter(currentMethod, obTerm, (ObParameterBase) obParameter, requestParams);
+        }
+
+        public static ObParameterBase CreateGroupParameter<T>(this MethodBase currentMethod, T obTerm, ObParameterBase obParameter, IDictionary<string, object> requestParams)
+            where T : ObTermBase
+        {
+            return TryKey(currentMethod, out var key)
                 ? CreateParameter(obTerm, obParameter, requestParams, Config[key].GroupParams)
                 : obParameter;
         }
 
-        private static ObParameterBase CreateParameter(ObTermBase obTerm, ObParameterBase obParameter, IDictionary<string, object> requestParams, IDictionary<string, ParamInfo> dictParams)
+        private static ObParameterBase CreateParameter<T>(T obTerm, ObParameterBase obParameter, IDictionary<string, object> requestParams, IDictionary<string, ParamInfo> dictParams)
         {
             if (requestParams == null) return obParameter;
             foreach (var param in dictParams.Where(param => requestParams.ContainsKey(param.Key.Split(',')[0])))
@@ -314,17 +403,22 @@ namespace DotNet.Standard.NSmart.Utilities
             return obParameter;
         }
 
-        public static IObSort CreateSort(this ObTermBase obTerm, MethodBase currentMethod,
-            IDictionary<string, string> requestSorts)
+        public static IObSort CreateSort<T>(this MethodBase currentMethod, T obTerm, IDictionary<string, string> requestSorts)
+            where T : ObTermBase
         {
-            return CreateSort(obTerm, currentMethod, null, requestSorts);
+            return CreateSort(currentMethod, obTerm, null, requestSorts);
         }
 
-        public static IObSort CreateSort(this ObTermBase obTerm, MethodBase currentMethod, IObSort iObSort,
-            IDictionary<string, string> requestSorts)
+        public static IObSort CreateSort<T>(this MethodBase currentMethod, T obTerm, IObSort iObSort, IDictionary<string, string> requestSorts)
+            where T : ObTermBase
         {
-            if (!currentMethod.TryKey(out var key)) return iObSort;
-            var dictSorts = Config[key].Sorts;
+            return TryKey(currentMethod, out var key)
+                ? CreateSort(obTerm, iObSort, requestSorts, Config[key].Sorts)
+                : iObSort;
+        }
+
+        private static IObSort CreateSort<T>(T obTerm, IObSort iObSort, IDictionary<string, string> requestSorts, IDictionary<string, ParamInfo> dictSorts)
+        {
             if (dictSorts == null || dictSorts.Count == 0) return iObSort;
             IObSort obSort = null;
             //用户排序
@@ -402,12 +496,12 @@ namespace DotNet.Standard.NSmart.Utilities
         /// <param name="symbolString"></param>
         /// <param name="value"></param>
         /// <param name="symbol"></param>
-        /// <param name="dbvalue"></param>
+        /// <param name="dbValue"></param>
         /// <returns>0失败 1正常 2is null或is not null</returns>
-        private static int SymbolTryParse(string symbolString, object value, out DbSymbol symbol, out DbValue dbvalue)
+        private static int SymbolTryParse(string symbolString, object value, out DbSymbol symbol, out DbValue dbValue)
         {
             var ret = 1;
-            dbvalue = DbValue.IsNull;
+            dbValue = DbValue.IsNull;
             switch (symbolString)
             {
                 case "==":
@@ -415,7 +509,7 @@ namespace DotNet.Standard.NSmart.Utilities
                     if (value == null)
                     {
                         ret = 2;
-                        dbvalue = DbValue.IsNull;
+                        dbValue = DbValue.IsNull;
                     }
                     break;
                 case ">":
@@ -435,7 +529,7 @@ namespace DotNet.Standard.NSmart.Utilities
                     if (value == null)
                     {
                         ret = 2;
-                        dbvalue = DbValue.IsNotNull;
+                        dbValue = DbValue.IsNotNull;
                     }
                     break;
                 default:
@@ -447,14 +541,14 @@ namespace DotNet.Standard.NSmart.Utilities
                                 if (value == null)
                                 {
                                     ret = 2;
-                                    dbvalue = DbValue.IsNull;
+                                    dbValue = DbValue.IsNull;
                                 }
                                 break;
                             case DbSymbol.NotEqual:
                                 if (value == null)
                                 {
                                     ret = 2;
-                                    dbvalue = DbValue.IsNotNull;
+                                    dbValue = DbValue.IsNotNull;
                                 }
                                 break;
                             case DbSymbol.Like:
@@ -493,21 +587,58 @@ namespace DotNet.Standard.NSmart.Utilities
             return true;
         }
 
-        private static ObProperty GetProperty(ObTermBase obTerm, string propertyName)
+        private static ObProperty GetProperty<T>(string propertyName)
         {
-            while (true)
+            if (string.IsNullOrEmpty(propertyName)) return null;
+            var type = typeof(T);
+            var tableName = type.ToTableName();
+            var index = 0;
+            var pns = propertyName.Split('.').ToList();
+            while (index < pns.Count)
             {
-                if (string.IsNullOrEmpty(propertyName)) return null;
-                var pns = propertyName.Split('.').ToList();
-                if (pns.Count == 1) return obTerm.GetProperty(propertyName);
-                var pn = pns[0];
-                var propertyInfo = obTerm.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault(obj => obj.Name == pn);
-                if (propertyInfo == null) return null;
-                var subObTrem = (ObTermBase) propertyInfo.GetValue(obTerm);
-                obTerm = subObTrem;
-                pns.RemoveAt(0);
-                propertyName = string.Join(".", pns);
+                propertyName = pns[index];
+                var property = type.GetProperties(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault(obj => obj.Name == propertyName);
+                if (property == null) return null;
+                type = property.PropertyType;
+                index++;
             }
+            pns.Insert(0, tableName);
+            pns.RemoveAt(pns.Count - 1);
+            tableName = string.Join("_", pns);
+            var obRedefine = ObRedefine.Create(type, tableName);
+            return ObProperty.Create(type, obRedefine, propertyName);
+        }
+
+        private static ObProperty GetProperty<T>(T m, string propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName)) return null;
+            object model = m;
+            var type = typeof(T);
+            var tableName = type.ToTableName();
+            var index = 0;
+            var pns = propertyName.Split('.').ToList();
+            while (index < pns.Count)
+            {
+                propertyName = pns[index];
+                var property = type.GetProperties(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault(obj => obj.Name == propertyName);
+                if (property == null) return null;
+                type = property.PropertyType;
+                if (typeof(ObTermBase).IsAssignableFrom(type))
+                {
+                    model = property.GetValue(model);
+                    if (m == null) return null;
+                }
+                index++;
+            }
+            if (model is ObTermBase obTerm)
+            {
+                return obTerm.GetProperty(propertyName);
+            }
+            pns.Insert(0, tableName);
+            pns.RemoveAt(pns.Count - 1);
+            tableName = string.Join("_", pns);
+            var obRedefine = ObRedefine.Create(type, tableName);
+            return ObProperty.Create(type, obRedefine, propertyName);
         }
     }
 }

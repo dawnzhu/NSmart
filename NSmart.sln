@@ -1,9 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Standard.NSmart", "src\DotNet.Standard.NSmart\DotNet.Standard.NSmart.csproj", "{08262873-4301-402E-A864-E09791EE5A0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NParsing", "NParsing", "{3ADE5815-DE5F-4E4F-9FD9-FB99E782C748}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Standard.Common", "..\NParsing\src\DotNet.Standard.Common\DotNet.Standard.Common.csproj", "{7368B7BD-9AF0-4C30-8232-D6D6A9D3A21D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Standard.NParsing", "..\NParsing\src\DotNet.Standard.NParsing\DotNet.Standard.NParsing.csproj", "{A1F3CEA1-1D64-4187-9851-1321EBA4F501}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Standard.NParsing.DbUtilities", "..\NParsing\src\DotNet.Standard.NParsing.DbUtilities\DotNet.Standard.NParsing.DbUtilities.csproj", "{CBDEED7D-D5E9-456A-90AB-0B4301DE871D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.Standard.NSmart.UnitTest", "src\DotNet.Standard.NSmart.UnitTest\DotNet.Standard.NSmart.UnitTest.csproj", "{65AE1637-ED93-4013-BF52-D00B178E6016}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Standard.NParsing.SQLServer", "..\NParsing\src\DotNet.Standard.NParsing.SQLServer\DotNet.Standard.NParsing.SQLServer.csproj", "{20D695B6-DE54-4C83-B5EF-D6AEB3A6DDAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +27,35 @@ Global
 		{08262873-4301-402E-A864-E09791EE5A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08262873-4301-402E-A864-E09791EE5A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08262873-4301-402E-A864-E09791EE5A0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7368B7BD-9AF0-4C30-8232-D6D6A9D3A21D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7368B7BD-9AF0-4C30-8232-D6D6A9D3A21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7368B7BD-9AF0-4C30-8232-D6D6A9D3A21D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7368B7BD-9AF0-4C30-8232-D6D6A9D3A21D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1F3CEA1-1D64-4187-9851-1321EBA4F501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F3CEA1-1D64-4187-9851-1321EBA4F501}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F3CEA1-1D64-4187-9851-1321EBA4F501}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F3CEA1-1D64-4187-9851-1321EBA4F501}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBDEED7D-D5E9-456A-90AB-0B4301DE871D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBDEED7D-D5E9-456A-90AB-0B4301DE871D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBDEED7D-D5E9-456A-90AB-0B4301DE871D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBDEED7D-D5E9-456A-90AB-0B4301DE871D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65AE1637-ED93-4013-BF52-D00B178E6016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65AE1637-ED93-4013-BF52-D00B178E6016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65AE1637-ED93-4013-BF52-D00B178E6016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65AE1637-ED93-4013-BF52-D00B178E6016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20D695B6-DE54-4C83-B5EF-D6AEB3A6DDAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20D695B6-DE54-4C83-B5EF-D6AEB3A6DDAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20D695B6-DE54-4C83-B5EF-D6AEB3A6DDAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20D695B6-DE54-4C83-B5EF-D6AEB3A6DDAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7368B7BD-9AF0-4C30-8232-D6D6A9D3A21D} = {3ADE5815-DE5F-4E4F-9FD9-FB99E782C748}
+		{A1F3CEA1-1D64-4187-9851-1321EBA4F501} = {3ADE5815-DE5F-4E4F-9FD9-FB99E782C748}
+		{CBDEED7D-D5E9-456A-90AB-0B4301DE871D} = {3ADE5815-DE5F-4E4F-9FD9-FB99E782C748}
+		{20D695B6-DE54-4C83-B5EF-D6AEB3A6DDAB} = {3ADE5815-DE5F-4E4F-9FD9-FB99E782C748}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A457E38-F9CA-46E3-ADD6-E0E5F6E12065}

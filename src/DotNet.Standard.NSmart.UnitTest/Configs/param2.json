@@ -1,0 +1,56 @@
+{
+  "ParamConfig": [
+    {
+      "Class": "DotNet.Core.Demo.Services.DepartmentService2",
+      "Method": [
+        {
+          "Key": "GetList",
+          "Param": [
+            {
+              "Key": "keyword",
+              "Name": "Name",
+              "Type": "System.String, mscorlib",
+              "Symbol": "Like"
+            }
+          ],
+          "Sort": [
+            {
+              "Name": "Id",
+              "Symbol": "Desc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Class": "DotNet.Core.Demo.Services.EmployeService2",
+      "Method": [
+        {
+          "Key": "GetList",
+          "Param": [
+            {
+              "Key": "keyword",
+              "Name": "Name",
+              "Type": "System.String, mscorlib",
+              "Symbol": "Like"
+            }
+          ],
+          "Sort": [
+            {
+              "Name": "Id",
+              "Symbol": "Desc"
+            },
+            {
+              "Name": "Department.Id",
+              "Symbol": "Desc"
+            },
+            {
+              "Name": "Department.Director.Id",
+              "Symbol": "Desc"
+            }
+          ]
+        }
+      ]
+    }
+  ] 
+}

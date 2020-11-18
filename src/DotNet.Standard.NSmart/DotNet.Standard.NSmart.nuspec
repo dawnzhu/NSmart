@@ -6,16 +6,18 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <license type="expression">Apache-2.0</license>
     <projectUrl>https://github.com/dawnzhu/NSmart</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Main class library.</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <dependencies>
-      <dependency id="DotNet.Standard.NParsing.DbUtilities" version="1.2.2"/>
-      <dependency id="Microsoft.Extensions.Configuration.Json" version="2.0.2"/>
-      <dependency id="Newtonsoft.Json" version="11.0.1"/>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="DotNet.Standard.NParsing.DbUtilities" version="2.0.0"/>
+        <dependency id="Microsoft.Extensions.Configuration.Json" version="2.0.2"/>
+        <dependency id="Newtonsoft.Json" version="11.0.1"/>
+      </group>
     </dependencies>
   </metadata>
 </package>

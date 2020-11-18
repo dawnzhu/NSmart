@@ -4,22 +4,21 @@ using System.Threading.Tasks;
 using DotNet.Standard.NParsing.Factory;
 using DotNet.Standard.NParsing.Interface;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using DotNet.Standard.NParsing.ComponentModel;
+using DotNet.Standard.NParsing.Utilities;
 using DotNet.Standard.NSmart.ComponentModel;
 using DotNet.Standard.NSmart.Utilities;
 
 namespace DotNet.Standard.NSmart
 {
-    public abstract class DoServiceBase<TM, TT>
+    public abstract class DoServiceBase<TM, TH, TQ>
         where TM : DoModelBase
-        where TT : DoTermBase, new()
+        where TH : IObHelper<TM>
+        where TQ : IObQueryable<TM>
     {
-        /// <summary>
-        /// 数据库操作对象
-        /// </summary>
-        protected TT Term;
-        protected IList<IObHelper<TM, TT>> BaseDals;
+        protected IList<TH> BaseDals;
         private readonly DoConfigDbs _doConfigDb;
 
         /// <summary>
@@ -27,8 +26,680 @@ namespace DotNet.Standard.NSmart
         /// </summary>
         public int SplitDataKey { get; set; }
 
-        protected DoServiceBase() : this(null, DoConfig.Get(), "MainDbs")
+        protected DoServiceBase(Dictionary<string, DoConfigDbs> doConfigDbs, string dbsName)
+        {
+            BaseDals = new List<TH>();
+            if (doConfigDbs == null || doConfigDbs.Count == 0)
+            {
+                throw new Exception("使用NSmart框架后，数据库连接配置必须在ConnectionConfigs中配置。");
+            }
+            /*var dbsName = "MainDbs";*/
+            var doService = (DoServiceAttribute)GetType().GetCustomAttribute(typeof(DoServiceAttribute), true);
+            if (doService != null)
+            {
+                dbsName = doService.DbsName;
+            }
+            if (!doConfigDbs.ContainsKey(dbsName))
+            {
+                throw new Exception($"{dbsName}在ConnectionConfigs配置中不存在。");
+            }
+            _doConfigDb = doConfigDbs[dbsName];
+            foreach (var config in _doConfigDb.Adds)
+            {
+                var dal = config.ReadConnectionString == config.WriteConnectionString
+                    ? ObHelper.Create<TM>(config.ReadConnectionString, config.ProviderName)
+                    : ObHelper.Create<TM>(config.ReadConnectionString, config.WriteConnectionString, config.ProviderName);
+                BaseDals.Add((TH)dal);
+            }
+        }
+
+        private bool GetDal(string type, out IObHelper<TM> dal)
+        {
+            dal = null;
+            var doType = DoType.None;
+            var doModel = (DoModelAttribute)typeof(TM).GetCustomAttribute(typeof(DoModelAttribute), true);
+            if (doModel != null)
+            {
+                doType = doModel.DoType;
+            }
+            var index = -1;
+            switch (type)
+            {
+                case "ADD": //INSERT
+                    switch (doType)
+                    {
+                        case DoType.None:
+                            return false;
+                        case DoType.Id:
+                        case DoType.Business:
+                            if (SplitDataKey == 0)
+                            {
+                                throw new Exception("请设置SplitDataKey值。");
+                            }
+                            index = SplitDataKey % BaseDals.Count;
+                            break;
+                        case DoType.Minute:
+                            index = DateTime.Now.Minute % BaseDals.Count;
+                            break;
+                        case DoType.Hour:
+                            index = DateTime.Now.Hour % BaseDals.Count;
+                            break;
+                        case DoType.Day:
+                            index = DateTime.Now.Day % BaseDals.Count;
+                            break;
+                    }
+                    break;
+                case "MOD": //UPDATE DELETE
+                    switch (doType)
+                    {
+                        case DoType.None:
+                        case DoType.Minute:
+                        case DoType.Hour:
+                        case DoType.Day:
+                            return false;
+                        case DoType.Id:
+                        case DoType.Business:
+                            if (SplitDataKey == 0)
+                            {
+                                return false;
+                            }
+                            index = SplitDataKey % BaseDals.Count;
+                            break;
+                    }
+                    break;
+                case "QUERY": //SELECT
+                    switch (doType)
+                    {
+                        case DoType.None:
+                            index = new Random((int)DateTime.Now.Ticks).Next(0, BaseDals.Count - 1);
+                            break;
+                        case DoType.Id:
+                        case DoType.Minute:
+                        case DoType.Hour:
+                        case DoType.Day:
+                            return false;
+                        case DoType.Business:
+                            if (SplitDataKey == 0)
+                            {
+                                return false;
+                            }
+                            index = SplitDataKey % BaseDals.Count;
+                            break;
+                    }
+                    break;
+            }
+            dal = BaseDals[index];
+            return true;
+        }
+
+        #region 触发事件
+
+        /// <summary>
+        /// 查询前
+        /// </summary>
+        /// <param name="queryable"></param>
+        protected virtual void OnGlobalExecuting(ref TQ queryable)
+        {
+            if (queryable == null)
+            {
+                queryable = (TQ) BaseDals.First().Queryable();
+            }
+        }
+
+        /// <summary>
+        /// 添加前
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="queryable"></param>
+        protected virtual void OnAdding(TM model, ref TQ queryable)
+        {
+            OnGlobalExecuting(ref queryable);
+        }
+
+        /// <summary>
+        /// 添加后
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="result"></param>
+        protected virtual void OnAdded(TM model, object result)
+        {
+        }
+
+        /// <summary>
+        /// 更新前
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="queryable"></param>
+        protected virtual void OnUpdating(TM model, ref TQ queryable)
+        {
+            OnGlobalExecuting(ref queryable);
+        }
+
+        /// <summary>
+        /// 更新后
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="result"></param>
+        protected virtual void OnUpdated(TM model, int result)
+        {
+        }
+
+        /// <summary>
+        /// 删除前
+        /// </summary>
+        /// <param name="queryable"></param>
+        protected virtual void OnDeleting(ref TQ queryable)
+        {
+            OnGlobalExecuting(ref queryable);
+        }
+
+        /// <summary>
+        /// 删除后
+        /// </summary>
+        /// <param name="result"></param>
+        protected virtual void OnDeleted(int result)
+        {
+        }
+
+        /// <summary>
+        /// 获取列表前
+        /// </summary>
+        /// <param name="queryable"></param>
+        protected virtual void OnListing(ref TQ queryable)
+        {
+            OnGlobalExecuting(ref queryable);
+        }
+
+        /// <summary>
+        /// 获取列表后
+        /// </summary>
+        /// <param name="list"></param>
+        protected virtual void OnListed(IList<TM> list)
+        {
+        }
+
+        /// <summary>
+        /// 获取模型前
+        /// </summary>
+        /// <param name="queryable"></param>
+        protected virtual void OnModeling(ref TQ queryable)
+        {
+            OnGlobalExecuting(ref queryable);
+        }
+
+        /// <summary>
+        /// 获取模型后
+        /// </summary>
+        /// <param name="model"></param>
+        protected virtual void OnModeled(TM model)
+        {
+        }
+
+        /// <summary>
+        /// 判断是否存在前
+        /// </summary>
+        /// <param name="queryable"></param>
+        protected virtual void OnExisting(ref TQ queryable)
+        {
+            OnGlobalExecuting(ref queryable);
+        }
+
+        /// <summary>
+        /// 判断是否存在后
+        /// </summary>
+        /// <param name="result"></param>
+        protected virtual void OnExisted(bool result)
+        {
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Param
+        /// </summary>
+        /// <param name="requestParams"></param>
+        /// <param name="requestGroupParams"></param>
+        /// <param name="requestSorts"></param>
+        /// <param name="queryable"></param>
+        protected virtual void GetList(ref TQ queryable, IDictionary<string, object> requestParams, IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
+        {
+            if (queryable == null)
+            {
+                queryable = (TQ) BaseDals.First().Queryable();
+            }
+        }
+
+        protected int NewIdentity()
+        {
+            var obRedefine = ObRedefine.Create<ObjectsToMaxIdInfo>($"{typeof(TM).ToTableName()}ToMaxID");
+            var dal = ObHelper.Create<ObjectsToMaxIdInfo>(_doConfigDb.ConnectionString, _doConfigDb.ProviderName, obRedefine);
+            int id;
+            using (var ot = ObConnection.BeginTransaction(_doConfigDb.ConnectionString, _doConfigDb.ProviderName))
+            {
+                try
+                {
+                    var model = dal.Query(ot).ToModel();
+                    if (model == null)
+                    {
+                        model = new ObjectsToMaxIdInfo
+                        {
+                            MaxId = 1
+                        };
+                        dal.Add(ot, model);
+                    }
+                    else
+                    {
+                        model.MaxId += 1;
+                        dal.Update(ot, model);
+                    }
+                    id = model.MaxId;
+                    ot.Commit();
+                }
+                catch (Exception)
+                {
+                    ot.Rollback();
+                    throw;
+                }
+            }
+            return id;
+        }
+
+        protected async Task<int> NewIdentityAsync()
+        {
+            return await Task.Run(NewIdentity);
+        }
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected object Add(TM model)
+        {
+            var keySelector = default(TQ);
+            OnAdding(model, ref keySelector);
+            object ret = null;
+            var property = typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var obSettled = (ObSettledAttribute)property?.GetCustomAttribute(typeof(ObSettledAttribute), true);
+            var obIdentity = (ObIdentityAttribute)property?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
+            if (obSettled == null && (obIdentity == null || obIdentity.ObIdentity == ObIdentity.Program))
+            {
+                model.Id = NewIdentity();
+            }
+            if (SplitDataKey == 0)
+            {
+                SplitDataKey = model.Id;
+            }
+            if (GetDal("ADD", out var dal))
+            {
+                ret = dal.Add(model);
+            }
+            else
+            {
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    var r = BaseDals[i].Add(model);
+                    if (r != null)
+                    {
+                        ret = r;
+                    }
+                });
+            }
+            OnAdded(model, ret);
+            return ret;
+        }
+
+        protected async Task<object> AddAsync(TM model)
+        {
+            return await Task.Run(() => Add(model));
+        }
+
+        protected int Update(TM model, Func<TQ, TQ> keySelector)
+        {
+            var queryable = keySelector != null
+                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
+                : (TQ)BaseDals.First().Queryable();
+            OnUpdating(model, ref queryable);
+            var join = queryable.ObJoin;
+            var param = queryable.ObParameter;
+            var ret = 0;
+            if (GetDal("MOD", out var dal))
+            {
+                ret = dal.Update(model, join, param);
+            }
+            else
+            {
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    var r = BaseDals[i].Update(model, join, param);
+                    if (r > ret)
+                    {
+                        ret = r;
+                    }
+                });
+            }
+            OnUpdated(model, ret);
+            return ret;
+        }
+
+        protected async Task<int> UpdateAsync(TM model, Func<TQ, TQ> keySelector)
+        {
+            return await Task.Run(() => Update(model, keySelector));
+        }
+
+        protected int Delete(Func<TQ, TQ> keySelector)
+        {
+            var queryable = keySelector != null
+                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
+                : (TQ)BaseDals.First().Queryable();
+            OnDeleting(ref queryable);
+            var join = queryable.ObJoin;
+            var param = queryable.ObParameter;
+            var ret = 0;
+            if (GetDal("MOD", out var dal))
+            {
+                ret = dal.Delete(join, param);
+            }
+            else
+            {
+                Parallel.For(0, BaseDals.Count, new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = BaseDals.Count
+                }, i =>
+                {
+                    var r = BaseDals[i].Delete(join, param);
+                    if (r > ret)
+                    {
+                        ret = r;
+                    }
+                });
+            }
+            OnDeleted(ret);
+            return ret;
+        }
+
+        protected async Task<int> DeleteAsync(Func<TQ, TQ> keySelector)
+        {
+            return await Task.Run(() => Delete(keySelector));
+        }
+
+        private IList<TM> GetList(TQ queryable, int? pageSize, int? pageIndex, out int count)
+        {
+            var total = 0;
+            OnListing(ref queryable);
+            var join = queryable.ObJoin;
+            var param = queryable.ObParameter;
+            var group = queryable.ObGroup;
+            var groupParam = queryable.ObGroupParameter;
+            var sort = queryable.ObSort;
+            var isDal = GetDal("QUERY", out var dal);
+            var sourceList = new List<TM>();
+            if (pageSize.HasValue)
+            {
+                if (!pageIndex.HasValue)
+                {
+                    pageIndex = 1;
+                }
+                if (isDal)
+                {
+                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList(pageSize.Value, pageIndex.Value, out total);
+                }
+                else
+                {
+                    Parallel.For(0, BaseDals.Count, new ParallelOptions
+                    {
+                        MaxDegreeOfParallelism = BaseDals.Count
+                    }, i =>
+                    {
+                        var subList = BaseDals[i].Query(join, param, group, groupParam, sort).ToList(pageSize.Value * pageIndex.Value, 1, out var c);
+                        lock (sourceList)
+                        {
+                            total += c;
+                            sourceList.AddRange(subList);
+                        }
+                    });
+                }
+            }
+            else
+            {
+                if (isDal)
+                {
+                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList();
+                    total = sourceList.Count;
+                }
+                else
+                {
+                    Parallel.For(0, BaseDals.Count, new ParallelOptions
+                    {
+                        MaxDegreeOfParallelism = BaseDals.Count
+                    }, i =>
+                    {
+                        var query = BaseDals[i].Query(join, param, group, groupParam, sort);
+                        var subList = query.ToList();
+                        lock (sourceList)
+                        {
+                            total += subList.Count;
+                            sourceList.AddRange(subList);
+                        }
+                    });
+                }
+            }
+            IList<TM> list;
+            if (sort != null && !isDal)
+            {
+                //排序
+                IOrderedEnumerable<TM> order = null;
+                foreach (var dbSort in sort.List)
+                {
+                    var properties = $"{dbSort.TableName}_{dbSort.ObProperty.PropertyName}".Split('_').Skip(1).ToArray();
+                    order = order == null
+                        ? (dbSort.IsAsc
+                            ? sourceList.OrderBy(obj => GetValue(obj, properties))
+                            : sourceList.OrderByDescending(obj => GetValue(obj, properties)))
+                        : (dbSort.IsAsc
+                            ? order.ThenBy(obj => GetValue(obj, properties))
+                            : order.ThenByDescending(obj => GetValue(obj, properties)));
+                }
+                list = pageSize.HasValue
+                    ? order?.Skip(pageSize.Value * (pageIndex.Value - 1)).Take(pageSize.Value).ToList()
+                    : order?.ToList();
+            }
+            else
+            {
+                list = sourceList;
+            }
+            count = total;
+            OnListed(list);
+            return list;
+        }
+
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector)
+        {
+            return GetList(keySelector, null, null, out _);
+        }
+
+        /// <summary>
+        /// 获取列表数据
+        /// </summary>
+        /// <param name="keySelector"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(keySelector, null, null, null, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(keySelector, requestParams, null, requestSorts, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            var queryable = keySelector != null
+                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
+                : (TQ)BaseDals.First().Queryable();
+            GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
+            return GetList(queryable, pageSize, pageIndex, out count);
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<TQ, TQ> keySelector)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(keySelector);
+                return list;
+            });
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<TQ, TQ> keySelector, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(keySelector, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<TQ, TQ> keySelector,
+            IDictionary<string, object> requestParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(keySelector, requestParams, requestSorts, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+        protected async Task<IList<TM>> GetListAsync(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(keySelector, requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+        protected TM GetModel(Func<TQ, TQ> keySelector)
+        {
+            var queryable = keySelector != null
+                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
+                : (TQ) BaseDals.First().Queryable();
+            OnModeling(ref queryable);
+            var join = queryable.ObJoin;
+            var param = queryable.ObParameter;
+            var group = queryable.ObGroup;
+            var groupParam = queryable.ObGroupParameter;
+            var sort = queryable.ObSort;
+            TM model = null;
+            Parallel.For(0, BaseDals.Count, new ParallelOptions
+            {
+                MaxDegreeOfParallelism = BaseDals.Count
+            }, i =>
+            {
+                var ret = BaseDals[i].Query(join, param, group, groupParam, sort).ToModel();
+                if (ret != null)
+                {
+                    model = ret;
+                }
+            });
+            OnModeled(model);
+            return model;
+        }
+
+        protected async Task<TM> GetModelAsync(Func<TQ, TQ> keySelector)
+        {
+            return await Task.Run(() => GetModel(keySelector));
+        }
+
+        protected bool Exists(Func<TQ, TQ> keySelector)
+        {
+            var queryable = keySelector != null
+                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
+                : (TQ) BaseDals.First().Queryable();
+            OnExisting(ref queryable);
+            var join = queryable.ObJoin;
+            var param = queryable.ObParameter;
+            var group = queryable.ObGroup;
+            var groupParam = queryable.ObGroupParameter;
+            var sort = queryable.ObSort;
+            var ret = false;
+            Parallel.For(0, BaseDals.Count, new ParallelOptions
+            {
+                MaxDegreeOfParallelism = BaseDals.Count
+            }, i =>
+            {
+                if (BaseDals[i].Query(join, param, group, groupParam, sort).Exists())
+                {
+                    ret = true;
+                }
+            });
+            OnExisted(ret);
+            return ret;
+        }
+
+        protected async Task<bool> ExistsAsync(Func<TQ, TQ> keySelector)
+        {
+            return await Task.Run(() => Exists(keySelector));
+        }
+
+        private static object GetValue(object obj, string[] properties)
+        {
+            var index = 0;
+            while (true)
+            {
+                if (obj == null) return null;
+                obj = obj.GetType().GetProperty(properties[index], BindingFlags.Instance | BindingFlags.Public)?.GetValue(obj);
+                if (index + 1 == properties.Length) return obj;
+                index++;
+            }
+        }
+
+    }
+
+    public abstract class DoServiceBase<TM> : DoServiceBase<TM, IObHelper<TM>, IObQueryable<TM>>
+        where TM : DoModelBase
+    {
+        protected DoServiceBase() : this(DoConfig.Get(), "MainDbs")
+        {
+            //Update(new TM(), o => o.Where(a => a.Id == 0).Join(a => a));
+        }
+
+        protected DoServiceBase(string dbsName) : this(DoConfig.Get(), dbsName)
         { }
+
+        protected DoServiceBase(Dictionary<string, DoConfigDbs> doConfigDbs) : this(doConfigDbs, "MainDbs")
+        { }
+
+        protected DoServiceBase(Dictionary<string, DoConfigDbs> doConfigDbs, string dbsName) : base(doConfigDbs, dbsName)
+        {
+        }
+    }
+
+    public abstract class DoServiceBase<TM, TT> : DoServiceBase<TM, IObHelper<TM, TT>, IObQueryable<TM, TT>>
+        where TM : DoModelBase
+        where TT : DoTermBase, new()
+    {
+        protected TT Term;
+
+        protected DoServiceBase() : this(null, DoConfig.Get(), "MainDbs")
+        {
+            //Update(new TM(), o => o.Where(a => a.Id == 0).Join(a => a));
+        }
 
         protected DoServiceBase(TT term) : this(term, DoConfig.Get(), "MainDbs")
         { }
@@ -45,7 +716,48 @@ namespace DotNet.Standard.NSmart
         protected DoServiceBase(TT term, Dictionary<string, DoConfigDbs> doConfigDbs) : this(term, doConfigDbs, "MainDbs")
         { }
 
-        protected DoServiceBase(TT term, Dictionary<string, DoConfigDbs> doConfigDbs, string dbsName)
+        protected DoServiceBase(TT term, Dictionary<string, DoConfigDbs> doConfigDbs, string dbsName) : base(doConfigDbs, dbsName)
+        {
+            Term = term ?? new TT();
+        }
+    }
+
+
+    public abstract class DoServiceBase2<TM, TT>
+        where TM : DoModelBase
+        where TT : DoTermBase, new()
+    {
+        /// <summary>
+        /// 数据库操作对象
+        /// </summary>
+        protected TT Term;
+        protected IList<IObHelper<TM, TT>> BaseDals;
+        private readonly DoConfigDbs _doConfigDb;
+
+        /// <summary>
+        /// 拆分数据关键字
+        /// </summary>
+        public int SplitDataKey { get; set; }
+
+        protected DoServiceBase2() : this(null, DoConfig.Get(), "MainDbs")
+        { }
+
+        protected DoServiceBase2(TT term) : this(term, DoConfig.Get(), "MainDbs")
+        { }
+
+        protected DoServiceBase2(string dbsName) : this(null, DoConfig.Get(), dbsName)
+        { }
+
+        protected DoServiceBase2(TT term, string dbsName) : this(term, DoConfig.Get(), dbsName)
+        { }
+
+        protected DoServiceBase2(Dictionary<string, DoConfigDbs> doConfigDbs) : this(null, doConfigDbs, "MainDbs")
+        { }
+
+        protected DoServiceBase2(TT term, Dictionary<string, DoConfigDbs> doConfigDbs) : this(term, doConfigDbs, "MainDbs")
+        { }
+
+        protected DoServiceBase2(TT term, Dictionary<string, DoConfigDbs> doConfigDbs, string dbsName)
         {
             Term = term ?? new TT();
             BaseDals = new List<IObHelper<TM, TT>>();
@@ -301,16 +1013,16 @@ namespace DotNet.Standard.NSmart
         /// </summary>
         /// <param name="keySelector"></param>
         /// <returns></returns>
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector)
         {
             return GetList(keySelector, null, null, out _);
         }
 
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, int? pageSize, int? pageIndex, out int count)
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, int? pageSize, int? pageIndex, out int count)
         {
             var query = keySelector != null
-                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
-                : BaseDals.First().Where(o => null);
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Queryable()
+                : BaseDals.First().Queryable();
             return GetList(query.ObJoin, query.ObParameter, query.ObGroup, query.ObGroupParameter, query.ObSort, pageSize, pageIndex, out count);
         }
 
@@ -495,41 +1207,41 @@ namespace DotNet.Standard.NSmart
             }
         }
 
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams)
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams)
         {
             return GetList(keySelector, requestParams, null, null, null, null, out _);
         }
 
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
             IDictionary<string, object> requestGroupParams)
         {
             return GetList(keySelector, requestParams, requestGroupParams, null, null, null, out _);
         }
 
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams,
             IDictionary<string, string> requestSorts)
         {
             return GetList(keySelector, requestParams, null, requestSorts, null, null, out _);
         }
 
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
         {
             return GetList(keySelector, requestParams, requestGroupParams, requestSorts, null, null, out _);
         }
 
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams,
             IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
             return GetList(keySelector, requestParams, null, requestSorts, pageSize, pageIndex, out count);
         }
 
-        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+        protected IList<TM> GetList(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
-            var query = keySelector != null 
-                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
-                : BaseDals.First().Where(o => null);
+            var query = keySelector != null
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Queryable()
+                : BaseDals.First().Queryable();
             return GetList(query.ObJoin, query.ObParameter, requestParams, query.ObGroup, query.ObGroupParameter, requestGroupParams, query.ObSort, requestSorts, pageSize, pageIndex, out count);
         }
 
@@ -765,11 +1477,11 @@ namespace DotNet.Standard.NSmart
             return GetModel(keySelector(Term));
         }
 
-        protected TM GetModel(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
+        protected TM GetModel(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector)
         {
             var query = keySelector != null
-                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
-                : BaseDals.First().Where(o => null);
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Queryable()
+                : BaseDals.First().Queryable();
             var paramBase = (ObParameterBase) query.ObParameter;
             var joinBase = (ObJoinBase) query.ObJoin;
             OnModeling(Term, ref joinBase, ref paramBase);
@@ -832,11 +1544,11 @@ namespace DotNet.Standard.NSmart
             return Exists(keySelector(Term));
         }
 
-        protected bool Exists(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
+        protected bool Exists(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector)
         {
             var query = keySelector != null
-                ? keySelector(BaseDals.First()) ?? BaseDals.First().Where(o => null)
-                : BaseDals.First().Where(o => null);
+                ? keySelector(BaseDals.First()) ?? BaseDals.First().Queryable()
+                : BaseDals.First().Queryable();
             var paramBase = (ObParameterBase) query.ObParameter;
             var joinBase = (ObJoinBase) query.ObJoin;
             OnExisting(Term, ref joinBase, ref paramBase);
@@ -1067,12 +1779,12 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => Delete(joinSelector, keySelector));
         }
 
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector)
         {
             return await GetListAsync(keySelector, (int?)null, null, null);
         }
 
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
             return await Task.Run(() =>
             {
@@ -1168,36 +1880,36 @@ namespace DotNet.Standard.NSmart
         /// <param name="keySelector"></param>
         /// <param name="requestParams"></param>
         /// <returns></returns>
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams)
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams)
         {
             return await GetListAsync(keySelector, requestParams, null, null, null, null, null);
         }
 
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
             IDictionary<string, object> requestGroupParams)
         {
             return await GetListAsync(keySelector, requestParams, requestGroupParams, null, null, null, null);
         }
 
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams,
             IDictionary<string, string> requestSorts)
         {
             return await GetListAsync(keySelector, requestParams, null, requestSorts, null, null, null);
         }
 
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams,
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams,
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
         {
             return await GetListAsync(keySelector, requestParams, requestGroupParams, requestSorts, null, null, null);
         }
 
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
             IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
             return await GetListAsync(keySelector, requestParams, null, requestSorts, pageSize, pageIndex, countAccessor);
         }
 
-        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
+        protected async Task<IList<TM>> GetListAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector, IDictionary<string, object> requestParams, 
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
             return await Task.Run(() =>
@@ -1354,7 +2066,7 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => GetModel(join, param, sort));
         }
 
-        protected async Task<TM> GetModelAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
+        protected async Task<TM> GetModelAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector)
         {
             return await Task.Run(() => GetModel(keySelector));
         }
@@ -1374,7 +2086,7 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => Exists(keySelector));
         }
 
-        protected async Task<bool> ExistsAsync(Func<IObHelper<TM, TT>, IObSelect<TM, TT>> keySelector)
+        protected async Task<bool> ExistsAsync(Func<IObHelper<TM, TT>, IObQueryable<TM, TT>> keySelector)
         {
             return await Task.Run(() => Exists(keySelector));
         }
