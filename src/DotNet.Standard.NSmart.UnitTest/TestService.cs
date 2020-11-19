@@ -52,9 +52,11 @@ namespace DotNet.Standard.NSmart.UnitTest
             queryable.ObSort = MethodBase.GetCurrentMethod().CreateSort<EmployeInfo>(queryable.ObSort, requestSorts);*/
         }
 
-        public void QueryList()
+        public async void QueryList()
         {
-
+            var dal = ObHelper.Create<EmployeInfo, Employe>("database=NSmart.Demo01;server=.;uid=sa;pwd=1;Pooling=true;Connection Timeout=300;", "DotNet.Standard.NParsing.SQLServer");
+            var ba = dal.Queryable();
+            var a = await GetModelAsync(o => o.Where(w => w.Id == 1));
         }
     }
 }

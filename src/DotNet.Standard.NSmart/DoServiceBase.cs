@@ -13,8 +13,9 @@ using DotNet.Standard.NSmart.Utilities;
 
 namespace DotNet.Standard.NSmart
 {
-    public abstract class DoServiceBase<TM, TH, TQ>
+    public abstract class DoServiceBase<TM, TT, TH, TQ>
         where TM : DoModelBase
+        where TT : DoTermBase
         where TH : IObHelper<TM>
         where TQ : IObQueryable<TM>
     {
@@ -46,10 +47,20 @@ namespace DotNet.Standard.NSmart
             _doConfigDb = doConfigDbs[dbsName];
             foreach (var config in _doConfigDb.Adds)
             {
-                var dal = config.ReadConnectionString == config.WriteConnectionString
-                    ? ObHelper.Create<TM>(config.ReadConnectionString, config.ProviderName)
-                    : ObHelper.Create<TM>(config.ReadConnectionString, config.WriteConnectionString, config.ProviderName);
-                BaseDals.Add((TH)dal);
+                TH dal;
+                if (typeof(TH) == typeof(IObHelper<TM, TT>))
+                {
+                    dal = (TH)(config.ReadConnectionString == config.WriteConnectionString
+                        ? ObHelper.Create<TM, TT>(config.ReadConnectionString, config.ProviderName)
+                        : ObHelper.Create<TM, TT>(config.ReadConnectionString, config.WriteConnectionString, config.ProviderName));
+                }
+                else
+                {
+                    dal = (TH)(config.ReadConnectionString == config.WriteConnectionString
+                        ? ObHelper.Create<TM>(config.ReadConnectionString, config.ProviderName)
+                        : ObHelper.Create<TM>(config.ReadConnectionString, config.WriteConnectionString, config.ProviderName));
+                }
+                BaseDals.Add(dal);
             }
         }
 
@@ -671,7 +682,7 @@ namespace DotNet.Standard.NSmart
 
     }
 
-    public abstract class DoServiceBase<TM> : DoServiceBase<TM, IObHelper<TM>, IObQueryable<TM>>
+    public abstract class DoServiceBase<TM> : DoServiceBase<TM, DoTermBase, IObHelper<TM>, IObQueryable<TM>>
         where TM : DoModelBase
     {
         protected DoServiceBase() : this(DoConfig.Get(), "MainDbs")
@@ -690,7 +701,7 @@ namespace DotNet.Standard.NSmart
         }
     }
 
-    public abstract class DoServiceBase<TM, TT> : DoServiceBase<TM, IObHelper<TM, TT>, IObQueryable<TM, TT>>
+    public abstract class DoServiceBase<TM, TT> : DoServiceBase<TM, TT, IObHelper<TM, TT>, IObQueryable<TM, TT>>
         where TM : DoModelBase
         where TT : DoTermBase, new()
     {

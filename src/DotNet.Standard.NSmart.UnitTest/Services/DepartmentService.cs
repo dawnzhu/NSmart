@@ -7,12 +7,12 @@ using DotNet.Standard.NSmart.Utilities;
 
 namespace DotNet.Standard.NSmart.UnitTest.Services
 {
-    public class DepartmentService : BaseService<DepartmentInfo, Department>, IDepartmentService
+    public class DepartmentService : BaseService<DepartmentInfo>, IDepartmentService
     {
-        protected override void GetList(ref IObQueryable<DepartmentInfo, Department> queryable, IDictionary<string, object> requestParams, IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
+        protected override void GetList(ref IObQueryable<DepartmentInfo> queryable, IDictionary<string, object> requestParams, IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
         {
             base.GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
-            queryable = MethodBase.GetCurrentMethod().CreateQueryable(Term, queryable, requestParams, requestGroupParams, requestSorts);
+            queryable = MethodBase.GetCurrentMethod().CreateQueryable(queryable, requestParams, requestGroupParams, requestSorts);
             /*queryable.ObParameter = MethodBase.GetCurrentMethod().CreateParameter(Term, queryable.ObParameter, requestParams);
             queryable.ObGroupParameter = MethodBase.GetCurrentMethod().CreateGroupParameter(Term, queryable.ObGroupParameter, requestParams);
             queryable.ObSort = MethodBase.GetCurrentMethod().CreateSort(Term, queryable.ObSort, requestSorts);*/

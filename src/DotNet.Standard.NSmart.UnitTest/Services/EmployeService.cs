@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using DotNet.Standard.NParsing.Factory;
@@ -10,23 +11,21 @@ using DotNet.Standard.NSmart.Utilities;
 
 namespace DotNet.Standard.NSmart.UnitTest.Services
 {
-    public class EmployeService : BaseService<EmployeInfo, Employe>, IEmployeService
+    public class EmployeService : BaseService<EmployeInfo>, IEmployeService
     {
-        protected override void GetList(ref IObQueryable<EmployeInfo, Employe> queryable, IDictionary<string, object> requestParams, IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
+        protected override void GetList(ref IObQueryable<EmployeInfo> queryable, IDictionary<string, object> requestParams, IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts)
         {
             base.GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
-            queryable.ObParameter = MethodBase.GetCurrentMethod().CreateParameter(Term, queryable.ObParameter, requestParams);
-            queryable.ObGroupParameter = MethodBase.GetCurrentMethod().CreateGroupParameter(Term, queryable.ObGroupParameter, requestParams);
-            queryable.ObSort = MethodBase.GetCurrentMethod().CreateSort(Term, queryable.ObSort, requestSorts);
+            queryable = MethodBase.GetCurrentMethod().CreateQueryable(queryable, requestParams, requestGroupParams, requestSorts);
         }
 
-        protected override void OnAdding(EmployeInfo model, ref IObQueryable<EmployeInfo, Employe> queryable)
+        protected override void OnAdding(EmployeInfo model, ref IObQueryable<EmployeInfo> queryable)
         {
             base.OnAdding(model, ref queryable);
             model.CreateTime = DateTime.Now;
         }
 
-        protected override void OnUpdating(EmployeInfo model, ref IObQueryable<EmployeInfo, Employe> queryable)
+        protected override void OnUpdating(EmployeInfo model, ref IObQueryable<EmployeInfo> queryable)
         {
             base.OnUpdating(model, ref queryable);
             queryable = queryable.Join(o => o);
@@ -43,13 +42,13 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
                         g.Department.Name
                     }).Select(s => new
                     {
-                        s.DepartmentId,
+                        s.FirstOrDefault().DepartmentId,
                         Department = new
                         {
-                            s.Department.Id,
-                            s.Department.Name
+                            s.FirstOrDefault().Department.Id,
+                            s.FirstOrDefault().Department.Name
                         },
-                        Age = s.Avg(a => a.Age)
+                        Age = s.Average(a => a.Age)
                     }));
             return new ResultInfo<IList<EmployeInfo>>
             {

@@ -1783,7 +1783,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "DotNet.Standard.Common/2.0.0": {
+      "DotNet.Standard.Common/2.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "compile": {
@@ -1793,11 +1793,11 @@
           "bin/placeholder/DotNet.Standard.Common.dll": {}
         }
       },
-      "DotNet.Standard.NParsing/2.0.0": {
+      "DotNet.Standard.NParsing/2.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "DotNet.Standard.Common": "2.0.0",
+          "DotNet.Standard.Common": "2.0.1",
           "System.Reflection.Emit": "4.6.0"
         },
         "compile": {
@@ -1807,12 +1807,12 @@
           "bin/placeholder/DotNet.Standard.NParsing.dll": {}
         }
       },
-      "DotNet.Standard.NParsing.DbUtilities/2.0.0": {
+      "DotNet.Standard.NParsing.DbUtilities/2.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "DotNet.Standard.Common": "2.0.0",
-          "DotNet.Standard.NParsing": "2.0.0"
+          "DotNet.Standard.Common": "2.0.1",
+          "DotNet.Standard.NParsing": "2.0.1"
         },
         "compile": {
           "bin/placeholder/DotNet.Standard.NParsing.DbUtilities.dll": {}
@@ -1821,12 +1821,12 @@
           "bin/placeholder/DotNet.Standard.NParsing.DbUtilities.dll": {}
         }
       },
-      "DotNet.Standard.NParsing.SQLServer/2.0.0": {
+      "DotNet.Standard.NParsing.SQLServer/2.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "DotNet.Standard.Common": "2.0.0",
-          "DotNet.Standard.NParsing": "2.0.0",
+          "DotNet.Standard.Common": "2.0.1",
+          "DotNet.Standard.NParsing": "2.0.1",
           "System.Data.Common": "4.3.0",
           "System.Data.SqlClient": "4.8.2"
         },
@@ -1837,11 +1837,11 @@
           "bin/placeholder/DotNet.Standard.NParsing.SQLServer.dll": {}
         }
       },
-      "DotNet.Standard.NSmart/2.0.0": {
+      "DotNet.Standard.NSmart/2.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "DotNet.Standard.NParsing.DbUtilities": "2.0.0",
+          "DotNet.Standard.NParsing.DbUtilities": "2.0.1",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
           "Newtonsoft.Json": "11.0.1"
         },
@@ -2651,11 +2651,12 @@
       ]
     },
     "runtime.native.System/4.3.0": {
-      "sha512": "1Kg83HpZ7vWX85oZeBwOTy3dSRqvmTKnuDRHt6kHKyI6flNL28pzxd5zjXo0NxQs0Vjkq4jZ4XIoB0eggtqmdw==",
+      "sha512": "c/qWt2LieNZIj1jGnVNsE2Kl23Ya2aSTBuXMD6V7k9KWr6l16Tqdwq+hJScEpWER9753NWC8h96PaVNY5Ld7Jw==",
       "type": "package",
       "path": "runtime.native.system/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/_._",
@@ -2693,11 +2694,12 @@
       ]
     },
     "runtime.native.System.Net.Http/4.3.0": {
-      "sha512": "sSEWbfsQkP2OkJ9z/4KLK+6Yom+iMz4umsczGC+gTamBHj6/L17W+udeQ+zqSO4SLwzQvclPELcy054E40WcfQ==",
+      "sha512": "ZVuZJqnnegJhd2k/PtAbbIcZ3aZeITq3sj06oKfMBSfphW3HDmk/t4ObvbOk/JA/swGR0LNqMksAh/f7gpTROg==",
       "type": "package",
       "path": "runtime.native.system.net.http/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/_._",
@@ -2706,7 +2708,7 @@
       ]
     },
     "runtime.native.System.Security.Cryptography.Apple/4.3.0": {
-      "sha512": "Mvp27yfHdvJdloESQH09zrP/nRcPRbXKIWtXc6QTMTB1I3CrjPwECoZICViCQNAFkRhmj5QbyouTinKIIZGj/Q==",
+      "sha512": "DloMk88juo0OuOWr56QG7MNchmafTLYWvABy36izkrLI5VledI0rq28KGs1i9wbpeT9NPQrx/wTf8U2vazqQ3Q==",
       "type": "package",
       "path": "runtime.native.system.security.cryptography.apple/4.3.0",
       "files": [
@@ -2761,11 +2763,12 @@
       ]
     },
     "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple/4.3.0": {
-      "sha512": "M6TzDB/EH/WYHuu9auayRvonDhuG+VnYGblREqNDNSZqcqMgCwbucaIYElqRxVFdWdRzph54oXbBG9LUzTS/6Q==",
+      "sha512": "kVXCuMTrTlxq4XOOMAysuNwsXWpYeboGddNGpIgNSZmv1b6r/s/DPk0fYMB7Q5Qo4bY68o48jt4T4y5BVecbCQ==",
       "type": "package",
       "path": "runtime.osx.10.10-x64.runtime.native.system.security.cryptography.apple/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.osx.10.10-x64.runtime.native.system.security.cryptography.apple.4.3.0.nupkg.sha512",
@@ -5402,11 +5405,12 @@
       ]
     },
     "System.Security.Cryptography.Csp/4.3.0": {
-      "sha512": "V/FbApuOoCjBXAD47daW3YARN/9ORIqTh4JfJRVBXz8mIdcZ5ldYU8sBdqUIfLDetSYLiSczHBifJSDYga95eg==",
+      "sha512": "X4s/FCkEUnRGnwR3aSfVIkldBmtURMhmexALNTwpjklzxWU7yjMk7GHLKOZTNkgnWnE0q7+BCf9N2LVRWxewaA==",
       "type": "package",
       "path": "system.security.cryptography.csp/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -5474,11 +5478,12 @@
       ]
     },
     "System.Security.Cryptography.OpenSsl/4.3.0": {
-      "sha512": "l/OOL6mxsDaaK56pF3Fy32MEkJe+kUjMIdo4KwEENHiLjqMLBRVHa99nrDQM0CwKeCTD16w7TSMuDix6spQ1jA==",
+      "sha512": "h4CEgOgv5PKVF/HwaHzJRiVboL2THYCou97zpmhjghx5frc7fIvlkY1jL+lnIQyChrJDMNEXS6r7byGif8Cy4w==",
       "type": "package",
       "path": "system.security.cryptography.openssl/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.6/System.Security.Cryptography.OpenSsl.dll",
@@ -6200,27 +6205,27 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "DotNet.Standard.Common/2.0.0": {
+    "DotNet.Standard.Common/2.0.1": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.Common/DotNet.Standard.Common.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.Common/DotNet.Standard.Common.csproj"
     },
-    "DotNet.Standard.NParsing/2.0.0": {
+    "DotNet.Standard.NParsing/2.0.1": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.NParsing/DotNet.Standard.NParsing.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing/DotNet.Standard.NParsing.csproj"
     },
-    "DotNet.Standard.NParsing.DbUtilities/2.0.0": {
+    "DotNet.Standard.NParsing.DbUtilities/2.0.1": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.NParsing.DbUtilities/DotNet.Standard.NParsing.DbUtilities.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing.DbUtilities/DotNet.Standard.NParsing.DbUtilities.csproj"
     },
-    "DotNet.Standard.NParsing.SQLServer/2.0.0": {
+    "DotNet.Standard.NParsing.SQLServer/2.0.1": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.NParsing.SQLServer/DotNet.Standard.NParsing.SQLServer.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing.SQLServer/DotNet.Standard.NParsing.SQLServer.csproj"
     },
-    "DotNet.Standard.NSmart/2.0.0": {
+    "DotNet.Standard.NSmart/2.0.1": {
       "type": "project",
       "path": "../DotNet.Standard.NSmart/DotNet.Standard.NSmart.csproj",
       "msbuildProject": "../DotNet.Standard.NSmart/DotNet.Standard.NSmart.csproj"
@@ -6228,8 +6233,8 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "DotNet.Standard.NParsing.SQLServer >= 2.0.0",
-      "DotNet.Standard.NSmart >= 2.0.0",
+      "DotNet.Standard.NParsing.SQLServer >= 2.0.1",
+      "DotNet.Standard.NSmart >= 2.0.1",
       "MSTest.TestAdapter >= 2.1.0",
       "MSTest.TestFramework >= 2.1.0",
       "Microsoft.NET.Test.Sdk >= 16.5.0",

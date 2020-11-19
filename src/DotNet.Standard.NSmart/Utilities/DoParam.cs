@@ -599,7 +599,10 @@ namespace DotNet.Standard.NSmart.Utilities
                 propertyName = pns[index];
                 var property = type.GetProperties(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault(obj => obj.Name == propertyName);
                 if (property == null) return null;
-                type = property.PropertyType;
+                if (index + 1 < pns.Count)
+                {
+                    type = property.PropertyType;
+                }
                 index++;
             }
             pns.Insert(0, tableName);
@@ -622,11 +625,14 @@ namespace DotNet.Standard.NSmart.Utilities
                 propertyName = pns[index];
                 var property = type.GetProperties(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault(obj => obj.Name == propertyName);
                 if (property == null) return null;
-                type = property.PropertyType;
-                if (typeof(ObTermBase).IsAssignableFrom(type))
+                if (index + 1 < pns.Count)
                 {
-                    model = property.GetValue(model);
-                    if (m == null) return null;
+                    type = property.PropertyType;
+                    if (typeof(ObTermBase).IsAssignableFrom(type))
+                    {
+                        model = property.GetValue(model);
+                        if (m == null) return null;
+                    }
                 }
                 index++;
             }

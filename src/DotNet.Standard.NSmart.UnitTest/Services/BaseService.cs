@@ -11,11 +11,11 @@ using DotNet.Standard.NSmart.Utilities;
 
 namespace DotNet.Standard.NSmart.UnitTest.Services
 {
-    public class BaseService<TM, TT> : DoServiceBase<TM, TT>, IBaseService<TM>
+    public class BaseService<TM> : DoServiceBase<TM>, IBaseService<TM>
         where TM: BaseInfo, new()
-        where TT: BaseTerm, new()
+        //where TT: BaseTerm, new()
     {
-        public BaseService() : base(new TT().Of())
+        public BaseService() //: base(new TT().Of())
         {
             if (!DoParam.Initialized)
             {
@@ -25,19 +25,19 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
 
         public RequestParamInfo RequestParam { get; protected set; }
 
-        protected virtual ResultInfo OnAddingJudge(TM model, ref IObQueryable<TM, TT> queryable)
+        protected virtual ResultInfo OnAddingJudge(TM model, ref IObQueryable<TM> queryable)
         {
             OnGlobalExecuting(ref queryable);
             return new ResultInfo();
         }
 
-        protected virtual ResultInfo OnUpdatingJudge(TM model, ref IObQueryable<TM, TT> queryable)
+        protected virtual ResultInfo OnUpdatingJudge(TM model, ref IObQueryable<TM> queryable)
         {
             OnGlobalExecuting(ref queryable);
             return new ResultInfo();
         }
 
-        protected virtual ResultInfo OnDeletingJudge(ref IObQueryable<TM, TT> queryable)
+        protected virtual ResultInfo OnDeletingJudge(ref IObQueryable<TM> queryable)
         {
             OnGlobalExecuting(ref queryable);
             return new ResultInfo();
@@ -45,7 +45,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
 
         public new async Task<ResultInfo<TM>> Add(TM model)
         {
-            IObQueryable<TM, TT> queryable = null;
+            IObQueryable<TM> queryable = null;
             var ret = OnAddingJudge(model, ref queryable);
             var result = new ResultInfo<TM>(ret)
             {
@@ -60,7 +60,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
 
         public async Task<ResultInfo<TM>> Update(TM model)
         {
-            IObQueryable<TM, TT> queryable = null;
+            IObQueryable<TM> queryable = null;
             var ret = OnUpdatingJudge(model, ref queryable);
             var result = new ResultInfo<TM>(ret)
             {
@@ -75,7 +75,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
 
         public async Task<ResultInfo<IList<TM>>> Delete(int[] ids)
         {
-            IObQueryable<TM, TT> queryable = null;
+            IObQueryable<TM> queryable = null;
             var result = OnDeletingJudge(ref queryable);
             var ret = new ResultInfo<IList<TM>>(result)
             {
@@ -83,7 +83,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
             };
             if (!ret.IsSuccess())
                 return ret;
-            await DeleteAsync(o => o.Where(k => k.Id.In(ids)));
+            await DeleteAsync(o => o.Where(k => ids.Contains(k.Id)));
             return new ResultInfo<IList<TM>>
             {
                 Data = ids.Select(id => new TM
@@ -93,9 +93,9 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
             };
         }
 
-        public async Task<ResultInfo<TM>> GetModel(int id)
+        public async Task<ResultInfo<TM>> GetModel(int[] id)
         {
-            var data = await GetModelAsync(o => o.Where(k => k.Id == id));
+            var data = await GetModelAsync(o => o.Where(k =>id.Contains(k.Id)));
             return new ResultInfo<TM>
             {
                 Data = data

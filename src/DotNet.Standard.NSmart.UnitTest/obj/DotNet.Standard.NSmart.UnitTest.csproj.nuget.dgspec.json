@@ -5,7 +5,7 @@
   },
   "projects": {
     "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "restore": {
         "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj",
         "projectName": "DotNet.Standard.Common",
@@ -72,7 +72,7 @@
       }
     },
     "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "restore": {
         "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
         "projectName": "DotNet.Standard.NParsing.DbUtilities",
@@ -146,7 +146,7 @@
       }
     },
     "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "restore": {
         "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
         "projectName": "DotNet.Standard.NParsing.SQLServer",
@@ -228,7 +228,7 @@
       }
     },
     "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "restore": {
         "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
         "projectName": "DotNet.Standard.NParsing",
@@ -387,7 +387,7 @@
       }
     },
     "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "restore": {
         "projectUniqueName": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
         "projectName": "DotNet.Standard.NSmart",
