@@ -20,7 +20,7 @@ namespace DotNet.Standard.NSmart.Utilities
             Initialize(DoParamConfig.Get());
         }
 
-        public static void Initialize(Dictionary<string, ParamConfig> config)
+        public static void Initialize(this Dictionary<string, ParamConfig> config)
         {
             Config = config;
             Initialized = true;

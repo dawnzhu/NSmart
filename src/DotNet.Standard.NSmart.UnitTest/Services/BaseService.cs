@@ -111,7 +111,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
 
         public async Task<IList<TM>> GetDataList(Action<int> countAccessor)
         {
-            return await GetListAsync(null, RequestParam.Params, RequestParam.Sorts, RequestParam.PageSize, RequestParam.PageIndex, countAccessor);
+            return await GetListAsync(RequestParam.Params, RequestParam.Sorts, RequestParam.PageSize, RequestParam.PageIndex, countAccessor);
         }
 
         public void Initialize(IApiBase iApiBase)

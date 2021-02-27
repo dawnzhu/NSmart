@@ -54,9 +54,17 @@ namespace DotNet.Standard.NSmart.UnitTest
 
         public async void QueryList()
         {
-            var dal = ObHelper.Create<EmployeInfo, Employe>("database=NSmart.Demo01;server=.;uid=sa;pwd=1;Pooling=true;Connection Timeout=300;", "DotNet.Standard.NParsing.SQLServer");
-            var ba = dal.Queryable();
-            var a = await GetModelAsync(o => o.Where(w => w.Id == 1));
+            var dal = ObHelper.Create<EmployeInfo>("database=NSmart.Demo01;server=.;uid=sa;pwd=1;Pooling=true;Connection Timeout=300;", "DotNet.Standard.NParsing.SQLServer");
+            //var ba = dal.Where(o => o.Id == 1 && o.Age == 3);
+            //var ba2 = dal.Where(o => o.Id == 1);
+            //ba.And(o => o.Id != 0);
+            //ba.OrderBy(o => o.Id);
+            var e = new EmployeInfo
+            {
+                
+            };
+            var a = GetModel(q => q.Where(o => o.Id == e.DepartmentId));
+            var b = a;
         }
     }
 }

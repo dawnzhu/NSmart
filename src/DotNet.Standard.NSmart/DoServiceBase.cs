@@ -27,10 +27,13 @@ namespace DotNet.Standard.NSmart
         /// </summary>
         public int SplitDataKey { get; set; }
 
-        protected DoServiceBase(Dictionary<string, DoConfigDbs> doConfigDbs, string dbsName)
+        protected DoServiceBase(string dbsName) : this(DoConfig.DoOptions.DbConfigs, dbsName)
+        { }
+
+        protected DoServiceBase(Dictionary<string, DoConfigDbs> dbConfigs, string dbsName)
         {
             BaseDals = new List<TH>();
-            if (doConfigDbs == null || doConfigDbs.Count == 0)
+            if (dbConfigs == null || dbConfigs.Count == 0)
             {
                 throw new Exception("使用NSmart框架后，数据库连接配置必须在ConnectionConfigs中配置。");
             }
@@ -40,11 +43,11 @@ namespace DotNet.Standard.NSmart
             {
                 dbsName = doService.DbsName;
             }
-            if (!doConfigDbs.ContainsKey(dbsName))
+            if (!dbConfigs.ContainsKey(dbsName))
             {
                 throw new Exception($"{dbsName}在ConnectionConfigs配置中不存在。");
             }
-            _doConfigDb = doConfigDbs[dbsName];
+            _doConfigDb = dbConfigs[dbsName];
             foreach (var config in _doConfigDb.Adds)
             {
                 TH dal;
@@ -368,11 +371,22 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => Add(model));
         }
 
+        protected int UpdateAll(TM model)
+        {
+            return Update(model, null);
+        }
+
         protected int Update(TM model, Func<TQ, TQ> keySelector)
         {
             var queryable = keySelector != null
-                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
-                : (TQ)BaseDals.First().Queryable();
+                ? keySelector((TQ) BaseDals.First().Queryable())
+                : (TQ) BaseDals.First().Queryable();
+            return Update(model, queryable);
+        }
+
+        protected int Update(TM model, TQ queryable)
+        {
+            queryable ??= (TQ)BaseDals.First().Queryable();
             OnUpdating(model, ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -399,16 +413,37 @@ namespace DotNet.Standard.NSmart
             return ret;
         }
 
+        protected async Task<int> UpdateAllAsync(TM model)
+        {
+            return await Task.Run(() => UpdateAll(model));
+        }
+
         protected async Task<int> UpdateAsync(TM model, Func<TQ, TQ> keySelector)
         {
             return await Task.Run(() => Update(model, keySelector));
         }
 
+        protected async Task<int> UpdateAsync(TM model, TQ queryable)
+        {
+            return await Task.Run(() => Update(model, queryable));
+        }
+
+        protected int DeleteAll()
+        {
+            return Delete(null);
+        }
+
         protected int Delete(Func<TQ, TQ> keySelector)
         {
             var queryable = keySelector != null
-                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
-                : (TQ)BaseDals.First().Queryable();
+                ? keySelector((TQ) BaseDals.First().Queryable())
+                : (TQ) BaseDals.First().Queryable();
+            return Delete(queryable);
+        }
+
+        protected int Delete(TQ queryable)
+        {
+            queryable ??= (TQ)BaseDals.First().Queryable();
             OnDeleting(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -435,13 +470,89 @@ namespace DotNet.Standard.NSmart
             return ret;
         }
 
+        protected async Task<int> DeleteAllAsync()
+        {
+            return await Task.Run(DeleteAll);
+        }
+
         protected async Task<int> DeleteAsync(Func<TQ, TQ> keySelector)
         {
             return await Task.Run(() => Delete(keySelector));
         }
 
-        private IList<TM> GetList(TQ queryable, int? pageSize, int? pageIndex, out int count)
+        protected async Task<int> DeleteAsync(TQ queryable)
         {
+            return await Task.Run(() => Delete(queryable));
+        }
+
+        protected IList<TM> GetListAll()
+        {
+            return GetList(null, null, null, out _);
+        }
+
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector)
+        {
+            return GetList(keySelector, null, null, out _);
+        }
+
+        protected IList<TM> GetList(TQ queryable)
+        {
+            return GetList(queryable, null, null, out _);
+        }
+
+        protected IList<TM> GetList(int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(null,null, null, null, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(keySelector, null, null, null, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(TQ queryable, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(queryable, null, null, null, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(IDictionary<string, object> requestParams,
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(null, requestParams, null, requestSorts, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(keySelector, requestParams, null, requestSorts, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(TQ queryable, IDictionary<string, object> requestParams,
+            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(queryable, requestParams, null, requestSorts, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            return GetList(null, requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            var queryable = keySelector != null
+                ? keySelector((TQ)BaseDals.First().Queryable())
+                : (TQ)BaseDals.First().Queryable();
+            return GetList(queryable, requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out count);
+        }
+
+        protected IList<TM> GetList(TQ queryable, IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
+        {
+            queryable ??= (TQ)BaseDals.First().Queryable();
+            GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
             var total = 0;
             OnListing(ref queryable);
             var join = queryable.ObJoin;
@@ -530,45 +641,27 @@ namespace DotNet.Standard.NSmart
             return list;
         }
 
-        protected IList<TM> GetList(Func<TQ, TQ> keySelector)
+        protected async Task<IList<TM>> GetListAllAsync()
         {
-            return GetList(keySelector, null, null, out _);
-        }
-
-        /// <summary>
-        /// 获取列表数据
-        /// </summary>
-        /// <param name="keySelector"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        protected IList<TM> GetList(Func<TQ, TQ> keySelector, int? pageSize, int? pageIndex, out int count)
-        {
-            return GetList(keySelector, null, null, null, pageSize, pageIndex, out count);
-        }
-
-        protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
-            IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
-        {
-            return GetList(keySelector, requestParams, null, requestSorts, pageSize, pageIndex, out count);
-        }
-
-        protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
-            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
-        {
-            var queryable = keySelector != null
-                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
-                : (TQ)BaseDals.First().Queryable();
-            GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
-            return GetList(queryable, pageSize, pageIndex, out count);
+            return await Task.Run(GetListAll);
         }
 
         protected async Task<IList<TM>> GetListAsync(Func<TQ, TQ> keySelector)
         {
+            return await Task.Run(() => GetList(keySelector));
+        }
+
+        protected async Task<IList<TM>> GetListAsync(TQ queryable)
+        {
+            return await Task.Run(() => GetList(queryable));
+        }
+
+        protected async Task<IList<TM>> GetListAsync(int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
             return await Task.Run(() =>
             {
-                var list = GetList(keySelector);
+                var list = GetList(pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
                 return list;
             });
         }
@@ -578,6 +671,26 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() =>
             {
                 var list = GetList(keySelector, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+        protected async Task<IList<TM>> GetListAsync(TQ queryable, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(queryable, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+        protected async Task<IList<TM>> GetListAsync(IDictionary<string, object> requestParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(requestParams, requestSorts, pageSize, pageIndex, out var count);
                 countAccessor?.Invoke(count);
                 return list;
             });
@@ -594,6 +707,28 @@ namespace DotNet.Standard.NSmart
             });
         }
 
+        protected async Task<IList<TM>> GetListAsync(TQ queryable,
+            IDictionary<string, object> requestParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(queryable, requestParams, requestSorts, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+        protected async Task<IList<TM>> GetListAsync(IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
         protected async Task<IList<TM>> GetListAsync(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
         {
@@ -605,11 +740,33 @@ namespace DotNet.Standard.NSmart
             });
         }
 
+        protected async Task<IList<TM>> GetListAsync(TQ queryable, IDictionary<string, object> requestParams,
+            IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, Action<int> countAccessor)
+        {
+            return await Task.Run(() =>
+            {
+                var list = GetList(queryable, requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out var count);
+                countAccessor?.Invoke(count);
+                return list;
+            });
+        }
+
+        protected TM GetModel()
+        {
+            return GetModel(null);
+        }
+
         protected TM GetModel(Func<TQ, TQ> keySelector)
         {
             var queryable = keySelector != null
-                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
+                ? keySelector((TQ) BaseDals.First().Queryable())
                 : (TQ) BaseDals.First().Queryable();
+            return GetModel(queryable);
+        }
+
+        protected TM GetModel(TQ queryable)
+        {
+            queryable ??= (TQ)BaseDals.First().Queryable();
             OnModeling(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -632,16 +789,37 @@ namespace DotNet.Standard.NSmart
             return model;
         }
 
+        protected async Task<TM> GetModelAsync()
+        {
+            return await Task.Run(GetModel);
+        }
+
         protected async Task<TM> GetModelAsync(Func<TQ, TQ> keySelector)
         {
             return await Task.Run(() => GetModel(keySelector));
         }
 
+        protected async Task<TM> GetModelAsync(TQ queryable)
+        {
+            return await Task.Run(() => GetModel(queryable));
+        }
+
+        protected bool Exists()
+        {
+            return Exists(null);
+        }
+
         protected bool Exists(Func<TQ, TQ> keySelector)
         {
             var queryable = keySelector != null
-                ? keySelector((TQ)BaseDals.First().Queryable()) ?? (TQ)BaseDals.First().Queryable()
+                ? keySelector((TQ) BaseDals.First().Queryable()) ?? (TQ) BaseDals.First().Queryable()
                 : (TQ) BaseDals.First().Queryable();
+            return Exists(queryable);
+        }
+
+        protected bool Exists(TQ queryable)
+        {
+            queryable ??= (TQ) BaseDals.First().Queryable();
             OnExisting(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -663,9 +841,19 @@ namespace DotNet.Standard.NSmart
             return ret;
         }
 
+        protected async Task<bool> ExistsAsync()
+        {
+            return await Task.Run(Exists);
+        }
+
         protected async Task<bool> ExistsAsync(Func<TQ, TQ> keySelector)
         {
             return await Task.Run(() => Exists(keySelector));
+        }
+
+        protected async Task<bool> ExistsAsync(TQ queryable)
+        {
+            return await Task.Run(() => Exists(queryable));
         }
 
         private static object GetValue(object obj, string[] properties)
@@ -685,20 +873,19 @@ namespace DotNet.Standard.NSmart
     public abstract class DoServiceBase<TM> : DoServiceBase<TM, DoTermBase, IObHelper<TM>, IObQueryable<TM>>
         where TM : DoModelBase
     {
-        protected DoServiceBase() : this(DoConfig.Get(), "MainDbs")
+        protected DoServiceBase() : this("MainDbs")
         {
             //Update(new TM(), o => o.Where(a => a.Id == 0).Join(a => a));
         }
 
-        protected DoServiceBase(string dbsName) : this(DoConfig.Get(), dbsName)
+        protected DoServiceBase(string dbsName) : base(dbsName)
         { }
 
         protected DoServiceBase(Dictionary<string, DoConfigDbs> doConfigDbs) : this(doConfigDbs, "MainDbs")
         { }
 
         protected DoServiceBase(Dictionary<string, DoConfigDbs> doConfigDbs, string dbsName) : base(doConfigDbs, dbsName)
-        {
-        }
+        { }
     }
 
     public abstract class DoServiceBase<TM, TT> : DoServiceBase<TM, TT, IObHelper<TM, TT>, IObQueryable<TM, TT>>
@@ -707,19 +894,21 @@ namespace DotNet.Standard.NSmart
     {
         protected TT Term;
 
-        protected DoServiceBase() : this(null, DoConfig.Get(), "MainDbs")
+        protected DoServiceBase() : this(null, "MainDbs")
         {
             //Update(new TM(), o => o.Where(a => a.Id == 0).Join(a => a));
         }
 
-        protected DoServiceBase(TT term) : this(term, DoConfig.Get(), "MainDbs")
+        protected DoServiceBase(TT term) : this(term, "MainDbs")
         { }
 
-        protected DoServiceBase(string dbsName) : this(null, DoConfig.Get(), dbsName)
+        protected DoServiceBase(string dbsName) : this(null, dbsName)
         { }
 
-        protected DoServiceBase(TT term, string dbsName) : this(term, DoConfig.Get(), dbsName)
-        { }
+        protected DoServiceBase(TT term, string dbsName) : base(dbsName)
+        {
+            Term = term ?? new TT();
+        }
 
         protected DoServiceBase(Dictionary<string, DoConfigDbs> doConfigDbs) : this(null, doConfigDbs, "MainDbs")
         { }

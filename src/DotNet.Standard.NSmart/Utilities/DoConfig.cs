@@ -9,9 +9,14 @@ namespace DotNet.Standard.NSmart.Utilities
     {
         public static Dictionary<string, DoConfigDbs> Get()
         {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true).Build();
-            var config = builder.GetSection("ConnectionConfigs").GetChildren().ToDictionary(key => key["Name"], value =>
+            return Get(configuration);
+        }
+
+        public static Dictionary<string, DoConfigDbs> Get(IConfiguration configuration)
+        {
+            var config = configuration.GetSection("ConnectionConfigs").GetChildren().ToDictionary(key => key["Name"], value =>
                 new DoConfigDbs
                 {
                     ConnectionString = value["ConnectionString"],
@@ -37,6 +42,8 @@ namespace DotNet.Standard.NSmart.Utilities
                 });
             return config;
         }
+
+        public static DoOptions DoOptions { get; internal set; }
     }
 
     public class DoConfigDbs

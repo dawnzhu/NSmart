@@ -72,6 +72,27 @@
           "lib/netstandard2.0/Microsoft.Extensions.Configuration.Json.dll": {}
         }
       },
+      "Microsoft.Extensions.DependencyInjection/5.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {}
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
+        }
+      },
       "Microsoft.Extensions.FileProviders.Abstractions/2.0.1": {
         "type": "package",
         "dependencies": {
@@ -1793,7 +1814,7 @@
           "bin/placeholder/DotNet.Standard.Common.dll": {}
         }
       },
-      "DotNet.Standard.NParsing/2.0.1": {
+      "DotNet.Standard.NParsing/2.0.2": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -1807,12 +1828,12 @@
           "bin/placeholder/DotNet.Standard.NParsing.dll": {}
         }
       },
-      "DotNet.Standard.NParsing.DbUtilities/2.0.1": {
+      "DotNet.Standard.NParsing.DbUtilities/2.0.2": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "DotNet.Standard.Common": "2.0.1",
-          "DotNet.Standard.NParsing": "2.0.1"
+          "DotNet.Standard.NParsing": "2.0.2"
         },
         "compile": {
           "bin/placeholder/DotNet.Standard.NParsing.DbUtilities.dll": {}
@@ -1826,7 +1847,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "DotNet.Standard.Common": "2.0.1",
-          "DotNet.Standard.NParsing": "2.0.1",
+          "DotNet.Standard.NParsing": "2.0.2",
           "System.Data.Common": "4.3.0",
           "System.Data.SqlClient": "4.8.2"
         },
@@ -1837,12 +1858,13 @@
           "bin/placeholder/DotNet.Standard.NParsing.SQLServer.dll": {}
         }
       },
-      "DotNet.Standard.NSmart/2.0.1": {
+      "DotNet.Standard.NSmart/2.0.2": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "DotNet.Standard.NParsing.DbUtilities": "2.0.1",
+          "DotNet.Standard.NParsing.DbUtilities": "2.0.2",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
+          "Microsoft.Extensions.DependencyInjection": "5.0.1",
           "Newtonsoft.Json": "11.0.1"
         },
         "compile": {
@@ -1972,6 +1994,50 @@
         "lib/netstandard2.0/Microsoft.Extensions.Configuration.Json.xml",
         "microsoft.extensions.configuration.json.2.0.2.nupkg.sha512",
         "microsoft.extensions.configuration.json.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.DependencyInjection/5.0.1": {
+      "sha512": "//mDNrYeiJ0eh/awFhDFJQzkRVra/njU5Y4fyK7X29g5HScrzbUkKOKlyTtygthcGFt4zNC8G5CFCjb/oizomA==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencyinjection/5.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/net461/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/net5.0/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/net5.0/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.xml",
+        "microsoft.extensions.dependencyinjection.5.0.1.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
+      "sha512": "ORj7Zh81gC69TyvmcUm9tSzytcy8AVousi+IVRAI8nLieQjOFryRusSFh7+aLk16FN9pQNqJAiMd7BTKINK0kA==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "Microsoft.Extensions.FileProviders.Abstractions/2.0.1": {
@@ -6210,12 +6276,12 @@
       "path": "../../../NParsing/src/DotNet.Standard.Common/DotNet.Standard.Common.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.Common/DotNet.Standard.Common.csproj"
     },
-    "DotNet.Standard.NParsing/2.0.1": {
+    "DotNet.Standard.NParsing/2.0.2": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.NParsing/DotNet.Standard.NParsing.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing/DotNet.Standard.NParsing.csproj"
     },
-    "DotNet.Standard.NParsing.DbUtilities/2.0.1": {
+    "DotNet.Standard.NParsing.DbUtilities/2.0.2": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.NParsing.DbUtilities/DotNet.Standard.NParsing.DbUtilities.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing.DbUtilities/DotNet.Standard.NParsing.DbUtilities.csproj"
@@ -6225,7 +6291,7 @@
       "path": "../../../NParsing/src/DotNet.Standard.NParsing.SQLServer/DotNet.Standard.NParsing.SQLServer.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing.SQLServer/DotNet.Standard.NParsing.SQLServer.csproj"
     },
-    "DotNet.Standard.NSmart/2.0.1": {
+    "DotNet.Standard.NSmart/2.0.2": {
       "type": "project",
       "path": "../DotNet.Standard.NSmart/DotNet.Standard.NSmart.csproj",
       "msbuildProject": "../DotNet.Standard.NSmart/DotNet.Standard.NSmart.csproj"
@@ -6234,7 +6300,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "DotNet.Standard.NParsing.SQLServer >= 2.0.1",
-      "DotNet.Standard.NSmart >= 2.0.1",
+      "DotNet.Standard.NSmart >= 2.0.2",
       "MSTest.TestAdapter >= 2.1.0",
       "MSTest.TestFramework >= 2.1.0",
       "Microsoft.NET.Test.Sdk >= 16.5.0",
@@ -6266,7 +6332,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "E:\\Work\\GitHub\\Release": {},
+        "E:\\Work\\GitHub\\Debug": {},
         "https://api.nuget.org/v3/index.json": {},
         "https://nuget.pkg.github.com/dawnzhu/index.json": {}
       },
@@ -6325,7 +6391,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
       }
     }
   }

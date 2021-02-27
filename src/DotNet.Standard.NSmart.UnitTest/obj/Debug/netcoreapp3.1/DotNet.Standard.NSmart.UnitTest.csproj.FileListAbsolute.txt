@@ -119,3 +119,5 @@ E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.dll
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.pdb
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.genruntimeconfig.cache
+E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll

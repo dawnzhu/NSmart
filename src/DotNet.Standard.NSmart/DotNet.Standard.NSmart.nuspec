@@ -11,10 +11,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Main class library.</releaseNotes>
-    <copyright>Copyright 2020</copyright>
+    <copyright>$copyright$</copyright>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="DotNet.Standard.NParsing.DbUtilities" version="2.0.1"/>
+        <dependency id="DotNet.Standard.NParsing.DbUtilities" version="2.0.2"/>
         <dependency id="Microsoft.Extensions.Configuration.Json" version="2.0.2"/>
         <dependency id="Newtonsoft.Json" version="11.0.1"/>
       </group>

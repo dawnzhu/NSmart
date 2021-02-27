@@ -10,9 +10,23 @@ namespace DotNet.Standard.NSmart.Utilities
     {
         public static Dictionary<string, ParamConfig> Get()
         {
+            return Get(Directory.GetCurrentDirectory() + "/Configs", "*.json");
+        }
+
+        public static Dictionary<string, ParamConfig> Get(IConfiguration configuration)
+        {
+            var path = configuration["ParamConfig:Path"];
+            if (path.StartsWith("~"))
+            {
+                path = Directory.GetCurrentDirectory() + path.TrimStart('~');
+            }
+            return Get(path, configuration["ParamConfig:SearchPattern"]);
+        }
+
+        public static Dictionary<string, ParamConfig> Get(string path, string searchPattern)
+        {
             var dic = new Dictionary<string, ParamConfig>();
-            var path = Directory.GetCurrentDirectory() + "/Configs";
-            var files = Directory.GetFiles(path, "*.json");
+            var files = Directory.GetFiles(path, searchPattern);
             foreach (var file in files)
             {
                 var builder = new ConfigurationBuilder().SetBasePath(path)
