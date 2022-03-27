@@ -19,6 +19,7 @@ namespace DotNet.Standard.NSmart
         where TH : IObHelper<TM>
         where TQ : IObQueryable<TM>
     {
+        protected TH MainDal;
         protected IList<TH> BaseDals;
         private readonly DoConfigDbs _doConfigDb;
 
@@ -48,6 +49,14 @@ namespace DotNet.Standard.NSmart
                 throw new Exception($"{dbsName}在ConnectionConfigs配置中不存在。");
             }
             _doConfigDb = dbConfigs[dbsName];
+            if (typeof(TH) == typeof(IObHelper<TM, TT>))
+            {
+                MainDal = (TH)ObHelper.Create<TM, TT>(_doConfigDb.ConnectionString, _doConfigDb.ProviderName);
+            }
+            else
+            {
+                MainDal = (TH)ObHelper.Create<TM>(_doConfigDb.ConnectionString, _doConfigDb.ProviderName);
+            }
             foreach (var config in _doConfigDb.Adds)
             {
                 TH dal;
@@ -64,6 +73,10 @@ namespace DotNet.Standard.NSmart
                         : ObHelper.Create<TM>(config.ReadConnectionString, config.WriteConnectionString, config.ProviderName));
                 }
                 BaseDals.Add(dal);
+            }
+            if (BaseDals.Count == 0)
+            {
+                BaseDals.Add(MainDal);
             }
         }
 
@@ -288,32 +301,30 @@ namespace DotNet.Standard.NSmart
             var obRedefine = ObRedefine.Create<ObjectsToMaxIdInfo>($"{typeof(TM).ToTableName()}ToMaxID");
             var dal = ObHelper.Create<ObjectsToMaxIdInfo>(_doConfigDb.ConnectionString, _doConfigDb.ProviderName, obRedefine);
             int id;
-            using (var ot = ObConnection.BeginTransaction(_doConfigDb.ConnectionString, _doConfigDb.ProviderName))
+            using var ot = ObConnection.BeginTransaction(_doConfigDb.ConnectionString, _doConfigDb.ProviderName);
+            try
             {
-                try
+                var model = dal.Query(ot).ToModel();
+                if (model == null)
                 {
-                    var model = dal.Query(ot).ToModel();
-                    if (model == null)
+                    model = new ObjectsToMaxIdInfo
                     {
-                        model = new ObjectsToMaxIdInfo
-                        {
-                            MaxId = 1
-                        };
-                        dal.Add(ot, model);
-                    }
-                    else
-                    {
-                        model.MaxId += 1;
-                        dal.Update(ot, model);
-                    }
-                    id = model.MaxId;
-                    ot.Commit();
+                        MaxId = 1
+                    };
+                    dal.Add(ot, model);
                 }
-                catch (Exception)
+                else
                 {
-                    ot.Rollback();
-                    throw;
+                    model.MaxId += 1;
+                    dal.Update(ot, model);
                 }
+                id = model.MaxId;
+                ot.Commit();
+            }
+            catch (Exception)
+            {
+                ot.Rollback();
+                throw;
             }
             return id;
         }

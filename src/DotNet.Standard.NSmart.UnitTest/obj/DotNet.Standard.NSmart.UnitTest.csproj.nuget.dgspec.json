@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj": {}
+    "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj": {}
   },
   "projects": {
-    "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
+    "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
       "version": "2.0.1",
       "restore": {
-        "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj",
+        "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj",
         "projectName": "DotNet.Standard.Common",
-        "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj",
-        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
-        "outputPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\obj\\",
+        "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,9 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "E:\\Work\\GitHub\\Debug": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.pkg.github.com/dawnzhu/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
@@ -67,24 +66,25 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
-      "version": "2.0.2",
+    "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
+      "version": "2.0.3",
       "restore": {
-        "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
+        "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
         "projectName": "DotNet.Standard.NParsing.DbUtilities",
-        "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
-        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
-        "outputPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\obj\\",
+        "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -92,19 +92,17 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "E:\\Work\\GitHub\\Debug": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.pkg.github.com/dawnzhu/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj"
+              "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj"
               },
-              "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj"
+              "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj"
               }
             }
           }
@@ -141,24 +139,25 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
+    "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
       "version": "2.0.1",
       "restore": {
-        "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
+        "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
         "projectName": "DotNet.Standard.NParsing.SQLServer",
-        "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
-        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
-        "outputPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\obj\\",
+        "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -166,19 +165,17 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "E:\\Work\\GitHub\\Debug": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.pkg.github.com/dawnzhu/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj"
+              "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj"
               },
-              "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj"
+              "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj"
               }
             }
           }
@@ -223,24 +220,25 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
-      "version": "2.0.2",
+    "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
+      "version": "2.0.3",
       "restore": {
-        "projectUniqueName": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
+        "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
         "projectName": "DotNet.Standard.NParsing",
-        "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
-        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
-        "outputPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\obj\\",
+        "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -248,16 +246,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "E:\\Work\\GitHub\\Debug": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.pkg.github.com/dawnzhu/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj"
+              "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj"
               }
             }
           }
@@ -298,24 +294,25 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj": {
+    "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
+        "projectUniqueName": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
         "projectName": "DotNet.Standard.NSmart.UnitTest",
-        "projectPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
-        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
-        "outputPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\obj\\",
+        "projectPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -323,19 +320,17 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "E:\\Work\\GitHub\\Debug": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.pkg.github.com/dawnzhu/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj"
+              "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj"
               },
-              "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj"
+              "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj"
               }
             }
           }
@@ -377,29 +372,44 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
-      "version": "2.0.2",
+    "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
+      "version": "2.0.3",
       "restore": {
-        "projectUniqueName": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
+        "projectUniqueName": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
         "projectName": "DotNet.Standard.NSmart",
-        "projectPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
-        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
-        "outputPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\obj\\",
+        "projectPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -407,16 +417,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "E:\\Work\\GitHub\\Debug": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.pkg.github.com/dawnzhu/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
-                "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj"
+              "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
+                "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj"
               }
             }
           }
@@ -465,7 +473,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

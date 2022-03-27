@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>dawn zhu</Authors>
     <Description>DotNet.Standard.NSmart .Net Standard Class Library</Description>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -13,7 +13,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/dawnzhu/NSmart</RepositoryUrl>
     <PackageReleaseNotes>Main class library.</PackageReleaseNotes>
-    <Copyright>Copyright 2021</Copyright>
+    <Copyright>Copyright 2022</Copyright>
     <RepositoryType>Public</RepositoryType>
   </PropertyGroup>
 

@@ -1814,7 +1814,7 @@
           "bin/placeholder/DotNet.Standard.Common.dll": {}
         }
       },
-      "DotNet.Standard.NParsing/2.0.2": {
+      "DotNet.Standard.NParsing/2.0.3": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -1828,12 +1828,12 @@
           "bin/placeholder/DotNet.Standard.NParsing.dll": {}
         }
       },
-      "DotNet.Standard.NParsing.DbUtilities/2.0.2": {
+      "DotNet.Standard.NParsing.DbUtilities/2.0.3": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "DotNet.Standard.Common": "2.0.1",
-          "DotNet.Standard.NParsing": "2.0.2"
+          "DotNet.Standard.NParsing": "2.0.3"
         },
         "compile": {
           "bin/placeholder/DotNet.Standard.NParsing.DbUtilities.dll": {}
@@ -1847,7 +1847,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "DotNet.Standard.Common": "2.0.1",
-          "DotNet.Standard.NParsing": "2.0.2",
+          "DotNet.Standard.NParsing": "2.0.3",
           "System.Data.Common": "4.3.0",
           "System.Data.SqlClient": "4.8.2"
         },
@@ -1858,11 +1858,11 @@
           "bin/placeholder/DotNet.Standard.NParsing.SQLServer.dll": {}
         }
       },
-      "DotNet.Standard.NSmart/2.0.2": {
+      "DotNet.Standard.NSmart/2.0.3": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "DotNet.Standard.NParsing.DbUtilities": "2.0.2",
+          "DotNet.Standard.NParsing.DbUtilities": "2.0.3",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
           "Microsoft.Extensions.DependencyInjection": "5.0.1",
           "Newtonsoft.Json": "11.0.1"
@@ -6276,12 +6276,12 @@
       "path": "../../../NParsing/src/DotNet.Standard.Common/DotNet.Standard.Common.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.Common/DotNet.Standard.Common.csproj"
     },
-    "DotNet.Standard.NParsing/2.0.2": {
+    "DotNet.Standard.NParsing/2.0.3": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.NParsing/DotNet.Standard.NParsing.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing/DotNet.Standard.NParsing.csproj"
     },
-    "DotNet.Standard.NParsing.DbUtilities/2.0.2": {
+    "DotNet.Standard.NParsing.DbUtilities/2.0.3": {
       "type": "project",
       "path": "../../../NParsing/src/DotNet.Standard.NParsing.DbUtilities/DotNet.Standard.NParsing.DbUtilities.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing.DbUtilities/DotNet.Standard.NParsing.DbUtilities.csproj"
@@ -6291,7 +6291,7 @@
       "path": "../../../NParsing/src/DotNet.Standard.NParsing.SQLServer/DotNet.Standard.NParsing.SQLServer.csproj",
       "msbuildProject": "../../../NParsing/src/DotNet.Standard.NParsing.SQLServer/DotNet.Standard.NParsing.SQLServer.csproj"
     },
-    "DotNet.Standard.NSmart/2.0.2": {
+    "DotNet.Standard.NSmart/2.0.3": {
       "type": "project",
       "path": "../DotNet.Standard.NSmart/DotNet.Standard.NSmart.csproj",
       "msbuildProject": "../DotNet.Standard.NSmart/DotNet.Standard.NSmart.csproj"
@@ -6300,7 +6300,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "DotNet.Standard.NParsing.SQLServer >= 2.0.1",
-      "DotNet.Standard.NSmart >= 2.0.2",
+      "DotNet.Standard.NSmart >= 2.0.3",
       "MSTest.TestAdapter >= 2.1.0",
       "MSTest.TestFramework >= 2.1.0",
       "Microsoft.NET.Test.Sdk >= 16.5.0",
@@ -6308,23 +6308,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\zhi_d\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Administrator\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
+      "projectUniqueName": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
       "projectName": "DotNet.Standard.NSmart.UnitTest",
-      "projectPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
-      "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
-      "outputPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\obj\\",
+      "projectPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
+      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+      "outputPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6332,19 +6333,17 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "E:\\Work\\GitHub\\Debug": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://nuget.pkg.github.com/dawnzhu/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
-              "projectPath": "E:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj"
+            "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
+              "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj"
             },
-            "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
-              "projectPath": "E:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj"
+            "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
+              "projectPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj"
             }
           }
         }
@@ -6386,12 +6385,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

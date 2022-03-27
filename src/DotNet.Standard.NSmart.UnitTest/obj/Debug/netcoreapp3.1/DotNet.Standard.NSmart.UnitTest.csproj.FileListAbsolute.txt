@@ -111,7 +111,6 @@ E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.1\DotNet.Standard.Common.pdb
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.1\DotNet.Standard.NParsing.pdb
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.1\DotNet.Standard.NParsing.DbUtilities.pdb
-E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.csprojAssemblyReference.cache
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.AssemblyInfoInputs.cache
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.AssemblyInfo.cs
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.csproj.CoreCompileInputs.cache
@@ -121,3 +120,5 @@ E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.genruntimeconfig.cache
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
 E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.csproj.AssemblyReference.cache
+E:\Work\GitHub\NSmart\src\DotNet.Standard.NSmart.UnitTest\obj\Debug\netcoreapp3.1\DotNet.Standard.NSmart.UnitTest.GeneratedMSBuildEditorConfig.editorconfig

@@ -9,7 +9,7 @@
       "DotNet.Standard.NSmart.UnitTest/1.0.0": {
         "dependencies": {
           "DotNet.Standard.NParsing.SQLServer": "2.0.1",
-          "DotNet.Standard.NSmart": "2.0.2",
+          "DotNet.Standard.NSmart": "2.0.3",
           "MSTest.TestAdapter": "2.1.0",
           "MSTest.TestFramework": "2.1.0",
           "Microsoft.NET.Test.Sdk": "16.5.0",
@@ -1195,7 +1195,7 @@
           "DotNet.Standard.Common.dll": {}
         }
       },
-      "DotNet.Standard.NParsing/2.0.2": {
+      "DotNet.Standard.NParsing/2.0.3": {
         "dependencies": {
           "DotNet.Standard.Common": "2.0.1",
           "System.Reflection.Emit": "4.6.0"
@@ -1204,10 +1204,10 @@
           "DotNet.Standard.NParsing.dll": {}
         }
       },
-      "DotNet.Standard.NParsing.DbUtilities/2.0.2": {
+      "DotNet.Standard.NParsing.DbUtilities/2.0.3": {
         "dependencies": {
           "DotNet.Standard.Common": "2.0.1",
-          "DotNet.Standard.NParsing": "2.0.2"
+          "DotNet.Standard.NParsing": "2.0.3"
         },
         "runtime": {
           "DotNet.Standard.NParsing.DbUtilities.dll": {}
@@ -1216,7 +1216,7 @@
       "DotNet.Standard.NParsing.SQLServer/2.0.1": {
         "dependencies": {
           "DotNet.Standard.Common": "2.0.1",
-          "DotNet.Standard.NParsing": "2.0.2",
+          "DotNet.Standard.NParsing": "2.0.3",
           "System.Data.Common": "4.3.0",
           "System.Data.SqlClient": "4.8.2"
         },
@@ -1224,9 +1224,9 @@
           "DotNet.Standard.NParsing.SQLServer.dll": {}
         }
       },
-      "DotNet.Standard.NSmart/2.0.2": {
+      "DotNet.Standard.NSmart/2.0.3": {
         "dependencies": {
-          "DotNet.Standard.NParsing.DbUtilities": "2.0.2",
+          "DotNet.Standard.NParsing.DbUtilities": "2.0.3",
           "Microsoft.Extensions.Configuration.Json": "2.0.2",
           "Microsoft.Extensions.DependencyInjection": "5.0.1",
           "Newtonsoft.Json": "11.0.1"
@@ -1976,12 +1976,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "DotNet.Standard.NParsing/2.0.2": {
+    "DotNet.Standard.NParsing/2.0.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "DotNet.Standard.NParsing.DbUtilities/2.0.2": {
+    "DotNet.Standard.NParsing.DbUtilities/2.0.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -1991,7 +1991,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "DotNet.Standard.NSmart/2.0.2": {
+    "DotNet.Standard.NSmart/2.0.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
