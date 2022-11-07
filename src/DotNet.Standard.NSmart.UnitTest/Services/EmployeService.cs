@@ -17,6 +17,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
         {
             base.GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
             queryable = MethodBase.GetCurrentMethod().CreateQueryable(queryable, requestParams, requestGroupParams, requestSorts);
+            queryable.Join(o => new { o.Department, o.Department.Director });
         }
 
         protected override void OnAdding(EmployeInfo model, ref IObQueryable<EmployeInfo> queryable)
@@ -48,7 +49,8 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
                             s.FirstOrDefault().Department.Id,
                             s.FirstOrDefault().Department.Name
                         },
-                        Age = s.Average(a => a.Age)
+                        Age = s.Average(a => a.Age),
+                        Dimission = s.Custom("dbo.Abc", a => new object[]{a.Max(d => d.Dimission), 1})
                     }));
             return new ResultInfo<IList<EmployeInfo>>
             {

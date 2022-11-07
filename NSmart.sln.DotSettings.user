@@ -4,6 +4,16 @@
     &lt;TestId&gt;MSTest::65AE1637-ED93-4013-BF52-D00B178E6016::.NETCoreApp,Version=v3.1::DotNet.Standard.NSmart.UnitTest.UnitTest1.TestMethod1&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9cac1114_002De751_002D4230_002Da2a8_002De7e5995153dc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestMethod1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::65AE1637-ED93-4013-BF52-D00B178E6016::.NETCoreApp,Version=v3.1::DotNet.Standard.NSmart.UnitTest.UnitTest1.TestMethod1&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b57ea39c_002D43bc_002D4daa_002D92ed_002D1b2c17b9e0ad/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestMethod1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::65AE1637-ED93-4013-BF52-D00B178E6016::.NETCoreApp,Version=v3.1::DotNet.Standard.NSmart.UnitTest.UnitTest1.TestMethod1&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e9c2d810_002D25de_002D4bb6_002Db74b_002D231a88df8aac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestMethod1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;MSTest::65AE1637-ED93-4013-BF52-D00B178E6016::.NETCoreApp,Version=v3.1::DotNet.Standard.NSmart.UnitTest.UnitTest1&lt;/TestId&gt;&#xD;

@@ -8,6 +8,7 @@ using DotNet.Standard.NParsing.Factory;
 using DotNet.Standard.NParsing.Interface;
 using DotNet.Standard.NParsing.Utilities;
 using DotNet.Standard.Common.Utilities;
+using Newtonsoft.Json.Linq;
 
 namespace DotNet.Standard.NSmart.Utilities
 {
@@ -52,7 +53,8 @@ namespace DotNet.Standard.NSmart.Utilities
                     var dict = strJson.ToObject<IDictionary<string, object>>();
                     foreach (var d in dict)
                     {
-                        var rpp = rpps.FirstOrDefault(obj => string.Equals(obj.Name, d.Key, StringComparison.OrdinalIgnoreCase));
+                        var dkey = d.Key.ToCamelCaseNaming();
+                        var rpp = rpps.FirstOrDefault(obj => string.Equals(obj.Name, dkey, StringComparison.OrdinalIgnoreCase));
                         if (rpp != null)
                         {
                             if (string.Equals(rpp.Name, "Sorts", StringComparison.OrdinalIgnoreCase))
@@ -61,7 +63,7 @@ namespace DotNet.Standard.NSmart.Utilities
                                 rp.Sorts = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                                 foreach (var sortField in dictSortFields)
                                 {
-                                    rp.Sorts.Add(sortField.Key, sortField.Value);
+                                    rp.Sorts.Add(sortField.Key.ToCamelCaseNaming(), sortField.Value);
                                 }
                             }
                             else
@@ -71,7 +73,7 @@ namespace DotNet.Standard.NSmart.Utilities
                         }
                         else
                         {
-                            rp.Params.Add(d.Key, d.Value);
+                            rp.Params.Add(dkey, d.Value);
                         }
                     }
                 }
@@ -83,6 +85,7 @@ namespace DotNet.Standard.NSmart.Utilities
             return rp;
         }
 
+        /*
         public static Dictionary<string, object> ToProxyArguments<T>(this T requestParam, Dictionary<string, object> args)
             where T : DoRequestParamBase
         {
@@ -139,6 +142,7 @@ namespace DotNet.Standard.NSmart.Utilities
             }
             return value;
         }
+        */
 
         private static bool TryKey(MethodBase method, out string key)
         {

@@ -23,7 +23,7 @@
       ]
     },
     {
-      "Class": "DotNet.Core.Demo.Services.EmployeService",
+      "Class": "DotNet.Standard.NSmart.UnitTest.Services.EmployeService",
       "Method": [
         {
           "Key": "GetList",

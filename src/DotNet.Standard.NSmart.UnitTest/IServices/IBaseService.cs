@@ -10,8 +10,8 @@ namespace DotNet.Standard.NSmart.UnitTest.IServices
     {
         Task<ResultInfo<T>> Add(T model);
         Task<ResultInfo<T>> Update(T model);
-        Task<ResultInfo<IList<T>>> Delete(int[] ids);
-        Task<ResultInfo<T>> GetModel(int[] id);
+        Task<ResultInfo<IList<T>>> Delete(long[] ids);
+        Task<ResultInfo<T>> GetModel(long id);
         Task<ResultInfo<IList<T>>> GetList();
         Task<IList<T>> GetDataList(Action<int> fileNameMetadataAccessor = null);
     }

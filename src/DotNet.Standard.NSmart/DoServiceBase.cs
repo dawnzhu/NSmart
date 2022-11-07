@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using DotNet.Standard.NParsing.Factory;
 using DotNet.Standard.NParsing.Interface;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using DotNet.Standard.NParsing.ComponentModel;
 using DotNet.Standard.NParsing.Utilities;
 using DotNet.Standard.NSmart.ComponentModel;
 using DotNet.Standard.NSmart.Utilities;
+using System.Security.Principal;
 
 namespace DotNet.Standard.NSmart
 {
@@ -26,7 +26,7 @@ namespace DotNet.Standard.NSmart
         /// <summary>
         /// 拆分数据关键字
         /// </summary>
-        public int SplitDataKey { get; set; }
+        public long SplitDataKey { get; set; }
 
         protected DoServiceBase(string dbsName) : this(DoConfig.DoOptions.DbConfigs, dbsName)
         { }
@@ -103,7 +103,7 @@ namespace DotNet.Standard.NSmart
                             {
                                 throw new Exception("请设置SplitDataKey值。");
                             }
-                            index = SplitDataKey % BaseDals.Count;
+                            index = (int)(SplitDataKey % BaseDals.Count);
                             break;
                         case DoType.Minute:
                             index = DateTime.Now.Minute % BaseDals.Count;
@@ -130,7 +130,7 @@ namespace DotNet.Standard.NSmart
                             {
                                 return false;
                             }
-                            index = SplitDataKey % BaseDals.Count;
+                            index = (int)(SplitDataKey % BaseDals.Count);
                             break;
                     }
                     break;
@@ -150,13 +150,21 @@ namespace DotNet.Standard.NSmart
                             {
                                 return false;
                             }
-                            index = SplitDataKey % BaseDals.Count;
+                            index = (int)(SplitDataKey % BaseDals.Count);
                             break;
                     }
                     break;
             }
             dal = BaseDals[index];
             return true;
+        }
+
+        private TQ GetQueryable()
+        {
+            var queryable = (TQ)BaseDals.First().Queryable();
+            queryable.CreateEmptyObject = false;
+            queryable.Join();
+            return queryable;
         }
 
         #region 触发事件
@@ -169,7 +177,7 @@ namespace DotNet.Standard.NSmart
         {
             if (queryable == null)
             {
-                queryable = (TQ) BaseDals.First().Queryable();
+                queryable = GetQueryable();
             }
         }
 
@@ -292,15 +300,27 @@ namespace DotNet.Standard.NSmart
         {
             if (queryable == null)
             {
-                queryable = (TQ) BaseDals.First().Queryable();
+                queryable = GetQueryable();
             }
         }
 
-        protected int NewIdentity()
+        protected long NewIdentity()
+        {
+            var property = typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var obSettled = (ObSettledAttribute)property?.GetCustomAttribute(typeof(ObSettledAttribute), true);
+            var obIdentity = (ObIdentityAttribute)property?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
+            if (obSettled == null && obIdentity != null && obIdentity.ObIdentity == ObIdentity.Program)
+            {
+                return NewIdentity(obIdentity);
+            }
+            return 0;
+        }
+
+        private long NewIdentity(ObIdentityAttribute obIdentity)
         {
             var obRedefine = ObRedefine.Create<ObjectsToMaxIdInfo>($"{typeof(TM).ToTableName()}ToMaxID");
             var dal = ObHelper.Create<ObjectsToMaxIdInfo>(_doConfigDb.ConnectionString, _doConfigDb.ProviderName, obRedefine);
-            int id;
+            long id;
             using var ot = ObConnection.BeginTransaction(_doConfigDb.ConnectionString, _doConfigDb.ProviderName);
             try
             {
@@ -309,13 +329,13 @@ namespace DotNet.Standard.NSmart
                 {
                     model = new ObjectsToMaxIdInfo
                     {
-                        MaxId = 1
+                        MaxId = obIdentity.Seed
                     };
                     dal.Add(ot, model);
                 }
                 else
                 {
-                    model.MaxId += 1;
+                    model.MaxId += obIdentity.Increment;
                     dal.Update(ot, model);
                 }
                 id = model.MaxId;
@@ -329,9 +349,14 @@ namespace DotNet.Standard.NSmart
             return id;
         }
 
-        protected async Task<int> NewIdentityAsync()
+        protected async Task<long> NewIdentityAsync()
         {
             return await Task.Run(NewIdentity);
+        }
+
+        protected async Task<long> NewIdentityAsync(ObIdentityAttribute obIdentity)
+        {
+            return await Task.Run(() => NewIdentity(obIdentity));
         }
 
         /// <summary>
@@ -347,9 +372,9 @@ namespace DotNet.Standard.NSmart
             var property = typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             var obSettled = (ObSettledAttribute)property?.GetCustomAttribute(typeof(ObSettledAttribute), true);
             var obIdentity = (ObIdentityAttribute)property?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
-            if (obSettled == null && (obIdentity == null || obIdentity.ObIdentity == ObIdentity.Program))
+            if (obSettled == null && obIdentity != null && obIdentity.ObIdentity == ObIdentity.Program)
             {
-                model.Id = NewIdentity();
+                model.Id = NewIdentity(obIdentity);
             }
             if (SplitDataKey == 0)
             {
@@ -389,15 +414,13 @@ namespace DotNet.Standard.NSmart
 
         protected int Update(TM model, Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null
-                ? keySelector((TQ) BaseDals.First().Queryable())
-                : (TQ) BaseDals.First().Queryable();
+            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
             return Update(model, queryable);
         }
 
         protected int Update(TM model, TQ queryable)
         {
-            queryable ??= (TQ)BaseDals.First().Queryable();
+            queryable ??= GetQueryable();
             OnUpdating(model, ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -446,15 +469,13 @@ namespace DotNet.Standard.NSmart
 
         protected int Delete(Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null
-                ? keySelector((TQ) BaseDals.First().Queryable())
-                : (TQ) BaseDals.First().Queryable();
+            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
             return Delete(queryable);
         }
 
         protected int Delete(TQ queryable)
         {
-            queryable ??= (TQ)BaseDals.First().Queryable();
+            queryable ??= GetQueryable();
             OnDeleting(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -553,16 +574,14 @@ namespace DotNet.Standard.NSmart
         protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
-            var queryable = keySelector != null
-                ? keySelector((TQ)BaseDals.First().Queryable())
-                : (TQ)BaseDals.First().Queryable();
+            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
             return GetList(queryable, requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out count);
         }
 
         protected IList<TM> GetList(TQ queryable, IDictionary<string, object> requestParams,
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
-            queryable ??= (TQ)BaseDals.First().Queryable();
+            queryable ??= GetQueryable();
             GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
             var total = 0;
             OnListing(ref queryable);
@@ -581,7 +600,9 @@ namespace DotNet.Standard.NSmart
                 }
                 if (isDal)
                 {
-                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList(pageSize.Value, pageIndex.Value, out total);
+                    var query = dal.Query(join, param, group, groupParam, sort);
+                    query.CreateEmptyObject = queryable.CreateEmptyObject;
+                    sourceList = (List<TM>)query.ToList(pageSize.Value, pageIndex.Value, out total);
                 }
                 else
                 {
@@ -590,7 +611,9 @@ namespace DotNet.Standard.NSmart
                         MaxDegreeOfParallelism = BaseDals.Count
                     }, i =>
                     {
-                        var subList = BaseDals[i].Query(join, param, group, groupParam, sort).ToList(pageSize.Value * pageIndex.Value, 1, out var c);
+                        var query = BaseDals[i].Query(join, param, group, groupParam, sort);
+                        query.CreateEmptyObject = queryable.CreateEmptyObject;
+                        var subList = query.ToList(pageSize.Value * pageIndex.Value, 1, out var c);
                         lock (sourceList)
                         {
                             total += c;
@@ -603,7 +626,9 @@ namespace DotNet.Standard.NSmart
             {
                 if (isDal)
                 {
-                    sourceList = (List<TM>)dal.Query(join, param, group, groupParam, sort).ToList();
+                    var query = dal.Query(join, param, group, groupParam, sort);
+                    query.CreateEmptyObject = queryable.CreateEmptyObject;
+                    sourceList = (List<TM>)query.ToList();
                     total = sourceList.Count;
                 }
                 else
@@ -614,6 +639,7 @@ namespace DotNet.Standard.NSmart
                     }, i =>
                     {
                         var query = BaseDals[i].Query(join, param, group, groupParam, sort);
+                        query.CreateEmptyObject = queryable.CreateEmptyObject;
                         var subList = query.ToList();
                         lock (sourceList)
                         {
@@ -769,15 +795,13 @@ namespace DotNet.Standard.NSmart
 
         protected TM GetModel(Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null
-                ? keySelector((TQ) BaseDals.First().Queryable())
-                : (TQ) BaseDals.First().Queryable();
+            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
             return GetModel(queryable);
         }
 
         protected TM GetModel(TQ queryable)
         {
-            queryable ??= (TQ)BaseDals.First().Queryable();
+            queryable ??= GetQueryable();
             OnModeling(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -790,7 +814,9 @@ namespace DotNet.Standard.NSmart
                 MaxDegreeOfParallelism = BaseDals.Count
             }, i =>
             {
-                var ret = BaseDals[i].Query(join, param, group, groupParam, sort).ToModel();
+                var query = BaseDals[i].Query(join, param, group, groupParam, sort);
+                query.CreateEmptyObject = queryable.CreateEmptyObject;
+                var ret = query.ToModel();
                 if (ret != null)
                 {
                     model = ret;
@@ -822,15 +848,13 @@ namespace DotNet.Standard.NSmart
 
         protected bool Exists(Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null
-                ? keySelector((TQ) BaseDals.First().Queryable()) ?? (TQ) BaseDals.First().Queryable()
-                : (TQ) BaseDals.First().Queryable();
+            var queryable = keySelector != null ? keySelector(GetQueryable()) ?? GetQueryable() : GetQueryable();
             return Exists(queryable);
         }
 
         protected bool Exists(TQ queryable)
         {
-            queryable ??= (TQ) BaseDals.First().Queryable();
+            queryable ??= GetQueryable();
             OnExisting(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -948,7 +972,7 @@ namespace DotNet.Standard.NSmart
         /// <summary>
         /// 拆分数据关键字
         /// </summary>
-        public int SplitDataKey { get; set; }
+        public long SplitDataKey { get; set; }
 
         protected DoServiceBase2() : this(null, DoConfig.Get(), "MainDbs")
         { }
@@ -1019,7 +1043,7 @@ namespace DotNet.Standard.NSmart
                             {
                                 throw new Exception("请设置SplitDataKey值。");
                             }
-                            index = SplitDataKey % BaseDals.Count;
+                            index = (int)(SplitDataKey % BaseDals.Count);
                             break;
                         case DoType.Minute:
                             index = DateTime.Now.Minute % BaseDals.Count;
@@ -1046,7 +1070,7 @@ namespace DotNet.Standard.NSmart
                             {
                                 return false;
                             }
-                            index = SplitDataKey % BaseDals.Count;
+                            index = (int)(SplitDataKey % BaseDals.Count);
                             break;
                     }
                     break;
@@ -1066,7 +1090,7 @@ namespace DotNet.Standard.NSmart
                             {
                                 return false;
                             }
-                            index = SplitDataKey % BaseDals.Count;
+                            index = (int)(SplitDataKey % BaseDals.Count);
                             break;
                     }
                     break;
@@ -1089,9 +1113,9 @@ namespace DotNet.Standard.NSmart
             var property = typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             var obSettled = (ObSettledAttribute)property?.GetCustomAttribute(typeof(ObSettledAttribute), true);
             var obIdentity = (ObIdentityAttribute)property?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
-            if (obSettled == null && (obIdentity == null || obIdentity.ObIdentity == ObIdentity.Program))
+            if (obSettled == null && obIdentity != null && obIdentity.ObIdentity == ObIdentity.Program)
             {
-                model.Id = NewIdentity();
+                model.Id = NewIdentity(obIdentity);
             }
             if (SplitDataKey == 0)
             {
@@ -1910,11 +1934,23 @@ namespace DotNet.Standard.NSmart
 
         #endregion
 
-        protected int NewIdentity()
+        protected long NewIdentity()
+        {
+            var property = typeof(TM).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var obSettled = (ObSettledAttribute)property?.GetCustomAttribute(typeof(ObSettledAttribute), true);
+            var obIdentity = (ObIdentityAttribute)property?.GetCustomAttribute(typeof(ObIdentityAttribute), true);
+            if (obSettled == null && obIdentity != null && obIdentity.ObIdentity == ObIdentity.Program)
+            {
+                return NewIdentity(obIdentity);
+            }
+            return 0;
+        }
+
+        protected long NewIdentity(ObIdentityAttribute obIdentity)
         {
             var obRedefine = ObRedefine.Create<ObjectsToMaxIdInfo>($"{Term.ObTableName}ToMaxID");
             var dal = ObHelper.Create<ObjectsToMaxIdInfo>(_doConfigDb.ConnectionString, _doConfigDb.ProviderName, obRedefine);
-            int id;
+            long id;
             using (var ot = ObConnection.BeginTransaction(_doConfigDb.ConnectionString, _doConfigDb.ProviderName))
             {
                 try
@@ -1924,13 +1960,13 @@ namespace DotNet.Standard.NSmart
                     {
                         model = new ObjectsToMaxIdInfo
                         {
-                            MaxId = 1
+                            MaxId = obIdentity.Seed
                         };
                         dal.Add(ot, model);
                     }
                     else
                     {
-                        model.MaxId += 1;
+                        model.MaxId += obIdentity.Increment;
                         dal.Update(ot, model);
                     }
                     id = model.MaxId;
@@ -2302,9 +2338,14 @@ namespace DotNet.Standard.NSmart
             return await Task.Run(() => Exists(keySelector));
         }
 
-        protected async Task<int> NewIdentityAsync()
+        protected async Task<long> NewIdentityAsync()
         {
             return await Task.Run(NewIdentity);
+        }
+
+        protected async Task<long> NewIdentityAsync(ObIdentityAttribute obIdentity)
+        {
+            return await Task.Run(() => NewIdentity(obIdentity));
         }
     }
 }

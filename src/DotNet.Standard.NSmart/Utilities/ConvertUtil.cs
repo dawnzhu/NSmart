@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Web;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace DotNet.Standard.NSmart.Utilities
@@ -66,19 +69,103 @@ namespace DotNet.Standard.NSmart.Utilities
             return dic;
         }
 
+        /// <summary>
+        /// 转蛇形命名
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string ToSnakeCaseNaming(this string name)
+        {
+            var builder = new StringBuilder();
+            var previousUpper = false;
+            for (var i = 0; i < name.Length; i++)
+            {
+                var c = name[i];
+                if (char.IsUpper(c))
+                {
+                    if (i > 0 && !previousUpper)
+                    {
+                        builder.Append("_");
+                    }
+                    builder.Append(char.ToLowerInvariant(c));
+                    previousUpper = true;
+                }
+                else
+                {
+                    builder.Append(c);
+                    previousUpper = false;
+                }
+            }
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// 转小驼峰命名
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string ToCamelCaseNaming(this string name)
+        {
+            return ToCamelCaseNaming(name, true);
+        }
+
+        /// <summary>
+        /// 转驼峰命名
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="isLower"></param>
+        /// <returns></returns>
+        public static string ToCamelCaseNaming(this string name, bool isLower)
+        {
+            var builder = new StringBuilder();
+            var previousSplit = false;
+            for (var i = 0; i < name.Length; i++)
+            {
+                var c = name[i];
+                if (i == 0)
+                {
+                    c = isLower ?  char.ToLowerInvariant(c) : char.ToUpperInvariant(c);
+                }
+                if (c == '_')
+                {
+                    previousSplit = true;
+                }
+                else
+                {
+                    if (previousSplit)
+                    {
+                        c = char.ToUpperInvariant(c);
+                    }
+                    builder.Append(c);
+                    previousSplit = false;
+                }
+            }
+            return builder.ToString();
+        }
+
         private static JsonSerializerSettings CreateJsonSerializerSettings()
         {
             return new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(), //首字母小写
-                NullValueHandling = NullValueHandling.Ignore, //不显示值为null的属性
-                DateFormatString = "yyyy-MM-dd HH:mm:ss.fff", //日期格式化
-                Converters = new JsonConverter[]
-                {
-                    new DoModelConverter()
-                }
-            };
+                Converters = new List<JsonConverter>()
+            }.UseNSmart();
         }
 
+        public static JsonSerializerSettings UseNSmart(this JsonSerializerSettings settings)
+        {
+            //忽略null属性
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            //日期格式
+            settings.DateFormatString = "yyyy-MM-dd HH:mm:ss.fff";
+            //小驼峰命名
+            //settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //属性蛇形命名
+            settings.ContractResolver = new DefaultContractResolver { NamingStrategy = new SnakeCaseNamingStrategy() };
+            //DoModel对象转换
+            settings.Converters.Add(new DoModelConverter());
+            //枚举转字符串
+            settings.Converters.Add(new StringEnumConverter());
+            return settings;
+        }
     }
 }

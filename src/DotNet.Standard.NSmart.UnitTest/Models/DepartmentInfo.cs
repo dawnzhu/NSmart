@@ -15,7 +15,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Models
         /// </summary>	
         [ObConstraint(ObConstraint.PrimaryKey)]
         [ObProperty(Name = "ID", Length = 4, Nullable = false)]
-        public override int Id
+        public override long Id
         {
             get => base.Id;
             set => base.Id = value;

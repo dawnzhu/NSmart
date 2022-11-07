@@ -23,7 +23,7 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
             }
         }
 
-        public RequestParamInfo RequestParam { get; protected set; }
+        public RequestParamInfo RequestParam { get; set; }
 
         protected virtual ResultInfo OnAddingJudge(TM model, ref IObQueryable<TM> queryable)
         {
@@ -68,12 +68,13 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
             };
             if (!ret.IsSuccess())
                 return result;
-            await UpdateAsync(model, o => o.Where(k => k.Id == model.Id));
+            queryable.Where(o => o.Id == model.Id);
+            await UpdateAsync(model, queryable);
             result.Data = model;
             return result;
         }
 
-        public async Task<ResultInfo<IList<TM>>> Delete(int[] ids)
+        public async Task<ResultInfo<IList<TM>>> Delete(long[] ids)
         {
             IObQueryable<TM> queryable = null;
             var result = OnDeletingJudge(ref queryable);
@@ -83,7 +84,8 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
             };
             if (!ret.IsSuccess())
                 return ret;
-            await DeleteAsync(o => o.Where(k => ids.Contains(k.Id)));
+            queryable.Where(o => ids.Contains(o.Id));
+            await DeleteAsync(queryable);
             return new ResultInfo<IList<TM>>
             {
                 Data = ids.Select(id => new TM
@@ -93,9 +95,12 @@ namespace DotNet.Standard.NSmart.UnitTest.Services
             };
         }
 
-        public async Task<ResultInfo<TM>> GetModel(int[] id)
+        public async Task<ResultInfo<TM>> GetModel(long id)
         {
-            var data = await GetModelAsync(o => o.Where(k =>id.Contains(k.Id)));
+            IObQueryable<TM> queryable = null;
+            OnGlobalExecuting(ref queryable);
+            queryable.Where(o => o.Id == id);
+            var data = await GetModelAsync(queryable);
             return new ResultInfo<TM>
             {
                 Data = data

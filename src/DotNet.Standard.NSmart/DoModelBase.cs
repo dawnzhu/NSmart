@@ -8,12 +8,12 @@ namespace DotNet.Standard.NSmart
     [Serializable]
     public abstract class DoModelBase : ObModelBase
     {
-        private int _id;
+        private long _id;
 
         /// <summary>
         /// 编号
         /// </summary>
-        public virtual int Id
+        public virtual long Id
         {
             get => _id;
             set

@@ -11,13 +11,13 @@ namespace DotNet.Standard.NSmart
     [ObModel(Name = "CompanysToMaxID", Extra = "WITH (TABLOCKX)")]
     public class ObjectsToMaxIdInfo : ObModelBase
     {
-        private int _maxId;
+        private long _maxId;
 
         /// <summary>
         /// 最大编号
         /// </summary>
         [ObProperty(Name = "MaxID", Length = 4, Nullable = true)]
-        public int MaxId
+        public long MaxId
         {
             get => _maxId;
             set
