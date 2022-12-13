@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CffpC4zMfuNjdKqiJEQ0Wb53ZnGkYg5WXU50yMqygLvuX0ZUb8hYn13Timj6qSZQs8r4EC9sZ9GWfpACXlSxog==",
+  "dgSpecHash": "PPd7E853dmjGg42HWfyBULlaK/QFS6fXu5DDeVI/BVRNGFk2bI441rG7Iy1RmcF4Qi2ROjMTh0KQcWIVaQoMhg==",
   "success": true,
   "projectFilePath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
   "expectedPackageFiles": [
@@ -112,7 +112,7 @@
     "C:\\Users\\Administrator\\.nuget\\packages\\dotnet.standard.common\\2.0.1\\dotnet.standard.common.2.0.1.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\dotnet.standard.nparsing\\2.1.0\\dotnet.standard.nparsing.2.1.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\dotnet.standard.nparsing.dbutilities\\2.1.0\\dotnet.standard.nparsing.dbutilities.2.1.0.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\dotnet.standard.nparsing.sqlserver\\2.0.1\\dotnet.standard.nparsing.sqlserver.2.0.1.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\dotnet.standard.nparsing.sqlserver\\2.1.0\\dotnet.standard.nparsing.sqlserver.2.1.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\dotnet.standard.nsmart\\2.1.0\\dotnet.standard.nsmart.2.1.0.nupkg.sha512"
   ],
   "logs": []

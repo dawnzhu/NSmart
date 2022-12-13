@@ -11,6 +11,8 @@ namespace DotNet.Standard.NSmart.Utilities
 {
     public static class ConvertUtil
     {
+        private static JsonSerializerSettings _settings;
+
         public static string ToJsonString(this object value)
         {
             return ToJsonString(value, Formatting.None);
@@ -145,12 +147,28 @@ namespace DotNet.Standard.NSmart.Utilities
 
         private static JsonSerializerSettings CreateJsonSerializerSettings()
         {
-            return new JsonSerializerSettings
+            return _settings ?? new JsonSerializerSettings
             {
                 Converters = new List<JsonConverter>()
             }.UseNSmart();
         }
 
+        /// <summary>
+        /// 使用外部设置JSON格式
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static JsonSerializerSettings MapNSmart(this JsonSerializerSettings settings)
+        {
+            _settings = settings;
+            return settings;
+        }
+
+        /// <summary>
+        /// 使用默认设置JSON格式
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         public static JsonSerializerSettings UseNSmart(this JsonSerializerSettings settings)
         {
             //忽略null属性
@@ -165,6 +183,7 @@ namespace DotNet.Standard.NSmart.Utilities
             settings.Converters.Add(new DoModelConverter());
             //枚举转字符串
             settings.Converters.Add(new StringEnumConverter());
+            _settings = settings;
             return settings;
         }
     }
