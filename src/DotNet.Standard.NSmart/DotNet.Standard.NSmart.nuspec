@@ -14,9 +14,10 @@
     <copyright>$copyright$</copyright>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="DotNet.Standard.NParsing.DbUtilities" version="2.1.0"/>
-        <dependency id="Microsoft.Extensions.Configuration.Json" version="2.0.2"/>
-        <dependency id="Newtonsoft.Json" version="11.0.1"/>
+        <dependency id="DotNet.Standard.NParsing.DbUtilities" version="2.1.1"/>
+        <dependency id="Microsoft.Extensions.Configuration.Json" version="7.0.0"/>
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="7.0.0"/>
+        <dependency id="Newtonsoft.Json" version="13.0.2"/>
       </group>
     </dependencies>
   </metadata>

@@ -25,8 +25,6 @@
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "D:\\Work\\GitHub\\Release": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -69,12 +67,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
-      "version": "2.1.0",
+      "version": "2.1.1",
       "restore": {
         "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
         "projectName": "DotNet.Standard.NParsing.DbUtilities",
@@ -94,8 +92,6 @@
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "D:\\Work\\GitHub\\Release": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -145,12 +141,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
-      "version": "2.1.0",
+      "version": "2.1.1",
       "restore": {
         "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
         "projectName": "DotNet.Standard.NParsing.SQLServer",
@@ -170,8 +166,6 @@
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "D:\\Work\\GitHub\\Release": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -215,7 +209,7 @@
             },
             "System.Data.SqlClient": {
               "target": "Package",
-              "version": "[4.8.2, )"
+              "version": "[4.8.5, )"
             }
           },
           "imports": [
@@ -229,12 +223,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj": {
-      "version": "2.1.0",
+      "version": "2.1.1",
       "restore": {
         "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
         "projectName": "DotNet.Standard.NParsing",
@@ -254,8 +248,6 @@
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "D:\\Work\\GitHub\\Release": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -292,7 +284,7 @@
             },
             "System.Reflection.Emit": {
               "target": "Package",
-              "version": "[4.6.0, )"
+              "version": "[4.7.0, )"
             }
           },
           "imports": [
@@ -306,7 +298,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -328,17 +320,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "D:\\Work\\GitHub\\Release": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {
               "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
                 "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj"
@@ -356,8 +346,8 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
             "MSTest.TestAdapter": {
               "target": "Package",
@@ -392,12 +382,12 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj": {
-      "version": "2.1.0",
+      "version": "2.1.1",
       "restore": {
         "projectUniqueName": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
         "projectName": "DotNet.Standard.NSmart",
@@ -417,8 +407,6 @@
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "D:\\Work\\GitHub\\Release": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -444,11 +432,11 @@
           "dependencies": {
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
-              "version": "[2.0.2, )"
+              "version": "[7.0.0, )"
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[5.0.1, )"
+              "version": "[7.0.0, )"
             },
             "Microsoft.SourceLink.GitHub": {
               "suppressParent": "All",
@@ -463,7 +451,7 @@
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[11.0.1, )"
+              "version": "[13.0.2, )"
             }
           },
           "imports": [
@@ -477,7 +465,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

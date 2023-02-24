@@ -10,6 +10,7 @@ using DotNet.Standard.NParsing.Utilities;
 using DotNet.Standard.NSmart.ComponentModel;
 using DotNet.Standard.NSmart.Utilities;
 using System.Security.Principal;
+using System.Data.Common;
 
 namespace DotNet.Standard.NSmart
 {
@@ -22,6 +23,7 @@ namespace DotNet.Standard.NSmart
         protected TH MainDal;
         protected IList<TH> BaseDals;
         private readonly DoConfigDbs _doConfigDb;
+        public (string Key, string Text, IList<DbParameter> Parameters) CurrentExeSql { get; private set; }
 
         /// <summary>
         /// 拆分数据关键字
@@ -159,7 +161,7 @@ namespace DotNet.Standard.NSmart
             return true;
         }
 
-        private TQ GetQueryable()
+        protected TQ Queryable()
         {
             var queryable = (TQ)BaseDals.First().Queryable();
             queryable.CreateEmptyObject = false;
@@ -177,7 +179,7 @@ namespace DotNet.Standard.NSmart
         {
             if (queryable == null)
             {
-                queryable = GetQueryable();
+                queryable = Queryable();
             }
         }
 
@@ -300,7 +302,7 @@ namespace DotNet.Standard.NSmart
         {
             if (queryable == null)
             {
-                queryable = GetQueryable();
+                queryable = Queryable();
             }
         }
 
@@ -324,7 +326,9 @@ namespace DotNet.Standard.NSmart
             using var ot = ObConnection.BeginTransaction(_doConfigDb.ConnectionString, _doConfigDb.ProviderName);
             try
             {
-                var model = dal.Query(ot).ToModel();
+                var query = dal.Query(ot);
+                var model = query.ToModel();
+                CurrentExeSql = query.CurrentExeSql;
                 if (model == null)
                 {
                     model = new ObjectsToMaxIdInfo
@@ -414,13 +418,13 @@ namespace DotNet.Standard.NSmart
 
         protected int Update(TM model, Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
+            var queryable = keySelector != null ? keySelector(Queryable()) : Queryable();
             return Update(model, queryable);
         }
 
         protected int Update(TM model, TQ queryable)
         {
-            queryable ??= GetQueryable();
+            queryable ??= Queryable();
             OnUpdating(model, ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -469,13 +473,13 @@ namespace DotNet.Standard.NSmart
 
         protected int Delete(Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
+            var queryable = keySelector != null ? keySelector(Queryable()) : Queryable();
             return Delete(queryable);
         }
 
         protected int Delete(TQ queryable)
         {
-            queryable ??= GetQueryable();
+            queryable ??= Queryable();
             OnDeleting(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -574,14 +578,14 @@ namespace DotNet.Standard.NSmart
         protected IList<TM> GetList(Func<TQ, TQ> keySelector, IDictionary<string, object> requestParams,
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
-            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
+            var queryable = keySelector != null ? keySelector(Queryable()) : Queryable();
             return GetList(queryable, requestParams, requestGroupParams, requestSorts, pageSize, pageIndex, out count);
         }
 
         protected IList<TM> GetList(TQ queryable, IDictionary<string, object> requestParams,
             IDictionary<string, object> requestGroupParams, IDictionary<string, string> requestSorts, int? pageSize, int? pageIndex, out int count)
         {
-            queryable ??= GetQueryable();
+            queryable ??= Queryable();
             GetList(ref queryable, requestParams, requestGroupParams, requestSorts);
             var total = 0;
             OnListing(ref queryable);
@@ -603,6 +607,7 @@ namespace DotNet.Standard.NSmart
                     var query = dal.Query(join, param, group, groupParam, sort);
                     query.CreateEmptyObject = queryable.CreateEmptyObject;
                     sourceList = (List<TM>)query.ToList(pageSize.Value, pageIndex.Value, out total);
+                    CurrentExeSql = query.CurrentExeSql;
                 }
                 else
                 {
@@ -614,6 +619,7 @@ namespace DotNet.Standard.NSmart
                         var query = BaseDals[i].Query(join, param, group, groupParam, sort);
                         query.CreateEmptyObject = queryable.CreateEmptyObject;
                         var subList = query.ToList(pageSize.Value * pageIndex.Value, 1, out var c);
+                        CurrentExeSql = query.CurrentExeSql;
                         lock (sourceList)
                         {
                             total += c;
@@ -629,6 +635,7 @@ namespace DotNet.Standard.NSmart
                     var query = dal.Query(join, param, group, groupParam, sort);
                     query.CreateEmptyObject = queryable.CreateEmptyObject;
                     sourceList = (List<TM>)query.ToList();
+                    CurrentExeSql = query.CurrentExeSql;
                     total = sourceList.Count;
                 }
                 else
@@ -641,6 +648,7 @@ namespace DotNet.Standard.NSmart
                         var query = BaseDals[i].Query(join, param, group, groupParam, sort);
                         query.CreateEmptyObject = queryable.CreateEmptyObject;
                         var subList = query.ToList();
+                        CurrentExeSql = query.CurrentExeSql;
                         lock (sourceList)
                         {
                             total += subList.Count;
@@ -795,13 +803,13 @@ namespace DotNet.Standard.NSmart
 
         protected TM GetModel(Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null ? keySelector(GetQueryable()) : GetQueryable();
+            var queryable = keySelector != null ? keySelector(Queryable()) : Queryable();
             return GetModel(queryable);
         }
 
         protected TM GetModel(TQ queryable)
         {
-            queryable ??= GetQueryable();
+            queryable ??= Queryable();
             OnModeling(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -817,6 +825,7 @@ namespace DotNet.Standard.NSmart
                 var query = BaseDals[i].Query(join, param, group, groupParam, sort);
                 query.CreateEmptyObject = queryable.CreateEmptyObject;
                 var ret = query.ToModel();
+                CurrentExeSql = query.CurrentExeSql;
                 if (ret != null)
                 {
                     model = ret;
@@ -848,13 +857,13 @@ namespace DotNet.Standard.NSmart
 
         protected bool Exists(Func<TQ, TQ> keySelector)
         {
-            var queryable = keySelector != null ? keySelector(GetQueryable()) ?? GetQueryable() : GetQueryable();
+            var queryable = keySelector != null ? keySelector(Queryable()) ?? Queryable() : Queryable();
             return Exists(queryable);
         }
 
         protected bool Exists(TQ queryable)
         {
-            queryable ??= GetQueryable();
+            queryable ??= Queryable();
             OnExisting(ref queryable);
             var join = queryable.ObJoin;
             var param = queryable.ObParameter;
@@ -867,10 +876,9 @@ namespace DotNet.Standard.NSmart
                 MaxDegreeOfParallelism = BaseDals.Count
             }, i =>
             {
-                if (BaseDals[i].Query(join, param, group, groupParam, sort).Exists())
-                {
-                    ret = true;
-                }
+                var query = BaseDals[i].Query(join, param, group, groupParam, sort);
+                ret = query.Exists();
+                CurrentExeSql = query.CurrentExeSql;
             });
             OnExisted(ret);
             return ret;
