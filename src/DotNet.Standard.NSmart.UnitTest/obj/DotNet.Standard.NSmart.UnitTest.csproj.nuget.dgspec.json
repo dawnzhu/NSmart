@@ -10,14 +10,14 @@
         "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj",
         "projectName": "DotNet.Standard.Common",
         "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,11 +25,12 @@
           "netstandard2.0"
         ],
         "sources": {
-          "D:\\Work\\GitHub\\Release": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
+            "framework": "netstandard2.0",
             "targetAlias": "netstandard2.0",
             "projectReferences": {}
           }
@@ -38,10 +39,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "netstandard2.0": {
+          "framework": "netstandard2.0",
           "targetAlias": "netstandard2.0",
           "dependencies": {
             "Microsoft.SourceLink.GitHub": {
@@ -67,24 +75,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
-      "version": "2.1.1",
+      "version": "2.1.2",
       "restore": {
         "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
         "projectName": "DotNet.Standard.NParsing.DbUtilities",
         "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -92,11 +100,12 @@
           "netstandard2.0"
         ],
         "sources": {
-          "D:\\Work\\GitHub\\Release": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
+            "framework": "netstandard2.0",
             "targetAlias": "netstandard2.0",
             "projectReferences": {
               "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
@@ -112,10 +121,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "netstandard2.0": {
+          "framework": "netstandard2.0",
           "targetAlias": "netstandard2.0",
           "dependencies": {
             "Microsoft.SourceLink.GitHub": {
@@ -141,24 +157,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
     "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
-      "version": "2.1.1",
+      "version": "2.1.2",
       "restore": {
         "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
         "projectName": "DotNet.Standard.NParsing.SQLServer",
         "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -166,11 +182,12 @@
           "netstandard2.0"
         ],
         "sources": {
-          "D:\\Work\\GitHub\\Release": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
+            "framework": "netstandard2.0",
             "targetAlias": "netstandard2.0",
             "projectReferences": {
               "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
@@ -186,10 +203,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "netstandard2.0": {
+          "framework": "netstandard2.0",
           "targetAlias": "netstandard2.0",
           "dependencies": {
             "Microsoft.SourceLink.GitHub": {
@@ -223,7 +247,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -233,14 +257,14 @@
         "projectUniqueName": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
         "projectName": "DotNet.Standard.NParsing",
         "projectPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\DotNet.Standard.NParsing.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -248,11 +272,12 @@
           "netstandard2.0"
         ],
         "sources": {
-          "D:\\Work\\GitHub\\Release": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
+            "framework": "netstandard2.0",
             "targetAlias": "netstandard2.0",
             "projectReferences": {
               "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.Common\\DotNet.Standard.Common.csproj": {
@@ -265,10 +290,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "netstandard2.0": {
+          "framework": "netstandard2.0",
           "targetAlias": "netstandard2.0",
           "dependencies": {
             "Microsoft.SourceLink.GitHub": {
@@ -298,7 +330,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -308,14 +340,14 @@
         "projectUniqueName": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
         "projectName": "DotNet.Standard.NSmart.UnitTest",
         "projectPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\DotNet.Standard.NSmart.UnitTest.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart.UnitTest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -323,11 +355,12 @@
           "net6.0"
         ],
         "sources": {
-          "D:\\Work\\GitHub\\Release": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
+            "framework": "net6.0",
             "targetAlias": "net6.0",
             "projectReferences": {
               "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.SQLServer\\DotNet.Standard.NParsing.SQLServer.csproj": {
@@ -343,10 +376,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net6.0": {
+          "framework": "net6.0",
           "targetAlias": "net6.0",
           "dependencies": {
             "MSTest.TestAdapter": {
@@ -382,7 +422,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -392,14 +432,14 @@
         "projectUniqueName": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
         "projectName": "DotNet.Standard.NSmart",
         "projectPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\DotNet.Standard.NSmart.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\zhi_d\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\GitHub\\NSmart\\src\\DotNet.Standard.NSmart\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zhi_d\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -407,11 +447,12 @@
           "netstandard2.0"
         ],
         "sources": {
-          "D:\\Work\\GitHub\\Release": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
+            "framework": "netstandard2.0",
             "targetAlias": "netstandard2.0",
             "projectReferences": {
               "D:\\Work\\GitHub\\NParsing\\src\\DotNet.Standard.NParsing.DbUtilities\\DotNet.Standard.NParsing.DbUtilities.csproj": {
@@ -424,10 +465,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "netstandard2.0": {
+          "framework": "netstandard2.0",
           "targetAlias": "netstandard2.0",
           "dependencies": {
             "Microsoft.Extensions.Configuration.Json": {
@@ -465,7 +513,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
